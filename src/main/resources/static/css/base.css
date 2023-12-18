@@ -1,0 +1,29 @@
+:root{
+    --main-color: #d2e4fa;
+    --text-link: #939393;
+    --header-height: 90px;
+    --side-bar-width: 80px;
+}
+
+*{
+    box-sizing: inherit;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html{
+    /* font-size: 62.5%; */
+    /* => 1rem = 10px */
+    /* line-height: 1.6rem; */
+    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;
+    --table-heading: #3498db;
+    /* overflow-x: auto; */
+}
+
+body{
+    margin: 0;
+}
+
+.bg--outside{
+    background-color: var(--main-color);
+}

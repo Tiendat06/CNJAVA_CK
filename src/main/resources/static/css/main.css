@@ -1,0 +1,97 @@
+/* login + account */
+.login{
+    border-radius: 15px;
+    border: 1px solid #ccc;
+}
+
+.login-body{
+    height: 100vh;
+}
+
+.login-bg__img{
+    width: 100%;
+    height: 450px;
+    /* border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px; */
+}
+
+.login-form__title{
+    color: #4593b9;
+}
+
+.login-form__small{
+    color: var(--text-link);
+}
+
+.login-form__label{
+    color: var(--text-link);
+}
+
+.login-form__link{
+    text-decoration: underline;
+    color: var(--text-link);
+}
+
+.login-form__para{
+    color: #5c5c5c;
+}
+
+/* nav bar */
+.nav-bar{
+    /*height: var(--header-height);*/
+}
+
+
+/*side bar*/
+
+.main-sidebar{
+    /*width: 120px;*/
+    /*height: 100vh;*/
+}
+
+.main-sidebar__list{
+    list-style: none;
+    padding-left: 0;
+}
+
+.main-sidebar__item{
+    padding: 20px;
+    text-align: center;
+}
+
+.main-sidebar__item--icon{
+    border-radius: 10px;
+    border: 0.5px solid #ccc;
+    cursor: pointer;
+}
+
+.main-sidebar__item--icon:hover{
+    transform: scale(1.2);
+    transition: ease-in-out 0.3s;
+}
+
+/*user + account + customer*/
+.main-content-user__table{
+    /*width: 100vw;*/
+    overflow: scroll;
+}
+
+.main-content-account__role-action{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.main-content-user__manage{
+    background-color: white;
+    overflow-y: scroll;
+    width:100%;
+}
+
+.main-content-user__manage::-webkit-scrollbar{
+    display: none;
+}
+
+.main-content-user__thead{
+    background-color: var(--table-heading);
+}

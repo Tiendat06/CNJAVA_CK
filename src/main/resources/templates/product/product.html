@@ -1,0 +1,248 @@
+<div th:fragment="product">
+    <div class="main-content-user">
+        <p style="font-size: 1.6rem">User Management</p>
+    </div>
+
+    <div class="main-content-user__button text-light p-3 w-100 text-right" style="">
+        <button data-toggle="modal" data-target="#add-user" type="submit" class="btn btn-primary text-light pt-2 pl-3 pr-3 pb-2 bg-primary">
+            <i style="background-color: white" class="text-light bg-primary fa-solid fa-user-gear"></i>
+            Add product
+        </button>
+    </div>
+
+    <div style="" class="main-content-user__manage pt-3 pl-4 pr-4">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="main-content-user__manage-title">
+                    <h5 class="main-content-user__manage-heading pb-3">
+                        Users list
+                    </h5>
+                </div>
+
+                <table class="main-content-user__table table table-striped table-bordered table-hover">
+                    <thead class="main-content-user__thead text-white text-center">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Full name</th>
+                        <th scope="col">Phone number</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Gender</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Birthday</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>
+                            <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">
+                            Jake Jason
+                        </td>
+                        <td>0123456789</td>
+                        <td>jake@gmail.com</td>
+                        <td>Male</td>
+                        <td>TP.HCM</td>
+                        <td>29/09/2003</td>
+                        <td class="text-center">
+                            <a data-toggle="modal" id="edit-btn" data-id="123" data-target="#edit-user">
+                                <i style="cursor: pointer" class="p-2 text-primary fa-solid fa-pen-to-square"></i>
+                            </a>
+
+                            <a data-toggle="modal" id="delete-btn" data-id="456" data-target="#delete-user">
+                                <i style="cursor: pointer" class="p-2 text-danger fa-solid fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>
+                            <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">
+                            Jake Jason
+                        </td>
+                        <td>0123456789</td>
+                        <td>jake@gmail.com</td>
+                        <td>Male</td>
+                        <td>TP.HCM</td>
+                        <td>29/09/2003</td>
+                        <td class="text-center">
+                            <i style="cursor: pointer" class="p-2 text-primary fa-solid fa-pen-to-square"></i>
+                            <i style="cursor: pointer" class="p-2 text-danger fa-solid fa-trash"></i>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">3</th>
+                        <td class="">
+                            <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">
+                            Jake Jason
+                        </td>
+                        <td>0123456789</td>
+                        <td>jake@gmail.com</td>
+                        <td>Male</td>
+                        <td>TP.HCM</td>
+                        <td>29/09/2003</td>
+                        <td class="text-center">
+                            <i style="cursor: pointer" class="p-2 text-primary fa-solid fa-pen-to-square"></i>
+                            <i style="cursor: pointer" class="p-2 text-danger fa-solid fa-trash"></i>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!--    add modal -->
+    <div class="modal fade" id="add-user">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="/user/add" method="post">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add User</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="form-group login-form--info">
+                                <label class="login-form__label" for="fullname">Fullname</label>
+                                <input class="form-control login-form__input" type="text" name="fullname" id="fullname" placeholder="Username" required>
+                            </div>
+
+                            <div class="form-group login-form--info">
+                                <label class="login-form__label" for="email">Email</label>
+                                <input class="form-control login-form__input" type="email" name="email" id="email" placeholder="Email" required>
+                            </div>
+
+                            <div class="form-group login-form--info">
+                                <label class="login-form__label" for="address">Address</label>
+                                <input class="form-control login-form__input" type="text" name="address" id="address" placeholder="Address" required>
+                            </div>
+
+                            <div class="form-group login-form--info">
+                                <label class="login-form__label" for="date">Birthday</label>
+                                <input class="form-control login-form__input" type="date" name="date" id="date" placeholder="Address" required>
+                            </div>
+
+                            <div class="form-group login-form--info">
+                                <label class="login-form__label" for="date">Gender</label>
+                                <select name="gender" class="form-control" id="gender">
+                                    <option value="none">--Choose gender--</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--    edit modal -->
+    <div class="modal fade" tabindex="-1"  id="edit-user">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="/user/edit" method="post">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit User</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <!-- ID item đc click gắn ở đây, kéo lên mục edit chỉnh lại data-id -->
+                            <input type="hidden" name="userIdEdit" id="userId" value="">
+
+                            <div class="form-group login-form--info">
+                                <label class="login-form__label" for="fullname-edit">Fullname</label>
+                                <input class="form-control login-form__input" type="text" name="fullname" id="fullname-edit" placeholder="Username" required>
+                            </div>
+
+                            <div class="form-group login-form--info">
+                                <label class="login-form__label" for="email-edit">Email</label>
+                                <input class="form-control login-form__input" type="email" name="email" id="email-edit" placeholder="Email" required>
+                            </div>
+
+                            <div class="form-group login-form--info">
+                                <label class="login-form__label" for="address">Address</label>
+                                <input class="form-control login-form__input" type="text" name="address" id="address-edit" placeholder="Address" required>
+                            </div>
+
+                            <div class="form-group login-form--info">
+                                <label class="login-form__label" for="date-edit">Birthday</label>
+                                <input class="form-control login-form__input" type="date" name="date" id="date-edit" placeholder="Address" required>
+                            </div>
+
+                            <div class="form-group login-form--info">
+                                <label class="login-form__label" for="date">Gender</label>
+                                <select name="gender" class="form-control" id="gender-edit">
+                                    <option value="none">--Choose gender--</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--    delete modal -->
+    <div class="modal fade" tabindex="-1"  id="delete-user">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="/user/delete" method="post">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Delete User</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <!-- ID item đc click gắn ở đây, kéo lên mục delete chỉnh lại data-id -->
+                            <input type="hidden" name="userIdDelete" id="userId-delete" value="">
+
+                            <p>Are you sure to delete user ___ ?</p>
+
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Delete</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        showEditModel();
+    </script>
+</div>

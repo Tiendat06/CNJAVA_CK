@@ -1,0 +1,185 @@
+<div th:fragment="customer">
+    <div class="main-content-user">
+        <p style="font-size: 1.6rem">Customer Management</p>
+    </div>
+
+<!--    <div class="main-content-user__button text-light p-3 w-100 text-right" style="">-->
+<!--        <button data-toggle="modal" data-target="#add-user" type="submit" class="btn btn-primary text-light pt-2 pl-3 pr-3 pb-2 bg-primary">-->
+<!--            <i style="background-color: white" class="text-light bg-primary fa-solid fa-user-gear"></i>-->
+<!--            Add user-->
+<!--        </button>-->
+<!--    </div>-->
+
+    <div style="" class="main-content-user__manage pt-3 pl-4 pr-4">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="main-content-user__manage-title">
+                    <h5 class="main-content-user__manage-heading pb-3">
+                        Customer list
+                    </h5>
+                </div>
+
+                <table class="main-content-user__table table table-striped table-bordered table-hover">
+                    <thead class="main-content-user__thead text-white text-center">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Full name</th>
+                        <th scope="col">Phone number</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Date Created</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>
+                                <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">
+                                Jake Jason
+                            </td>
+                            <td>0123456789</td>
+                            <td>jake@gmail.com</td>
+                            <td>TP.HCM</td>
+                            <td>29/09/2003</td>
+                            <td class="text-center">
+                                <a data-toggle="modal" id="customer" data-id="123" data-target="#purchase-history">
+                                    <i style="cursor: pointer" class="p-2 text-primary fa-solid fa-eye"></i>
+                                </a>
+
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <!--    purchase modal -->
+    <div class="modal fade" style="" id="purchase-history">
+        <div class="modal-dialog modal-lg" style="">
+            <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Purchase History</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body" style="overflow-y: scroll">
+                        <div class="form-group">
+                            <table class="main-content-user__table table table-striped table-bordered table-hover">
+                                <thead class="main-content-user__thead text-white text-center">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Date Created</th>
+                                    <th scope="col">Total amount</th>
+                                    <th scope="col">Amount paid</th>
+                                    <th scope="col">Change given</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>29/09/2003</td>
+                                    <td>100$</td>
+                                    <td>150$</td>
+                                    <td>50$</td>
+                                    <td>3</td>
+                                    <td class="text-center">
+                                        <a data-toggle="modal" id="" data-id="123" data-target="#order-detail">
+                                            <i style="cursor: pointer" class="p-2 text-primary fa-solid fa-eye"></i>
+                                        </a>
+
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+<!--                        <button type="submit" class="btn btn-primary">Submit</button>-->
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <!--    order detail-->
+    <div class="modal fade" id="order-detail">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Order Detail</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body" style="overflow-y: scroll">
+                        <div class="form-group">
+                            <input type="hidden" id="order-id" name="" value="">
+                            <table class="main-content-user__table table table-striped table-bordered table-hover">
+                                <tbody>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>
+                                        <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">
+                                        Pho Bo
+                                    </td>
+                                    <td>x3</td>
+                                    <td>100$</td>
+                                    <td>This is Pho from VietNam</td>
+                                </tr>
+
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>
+                                        <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">
+                                        Pho Bo
+                                    </td>
+                                    <td>x3</td>
+                                    <td>100$</td>
+                                    <td>This is Pho from VietNam</td>
+                                </tr>
+
+                                <tr>
+                                    <th scope="row">3</th>
+                                    <td>
+                                        <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">
+                                        Pho Bo
+                                    </td>
+                                    <td>x3</td>
+                                    <td>100$</td>
+                                    <td>This is Pho from VietNam</td>
+                                </tr>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+<!--                        <button type="submit" class="btn btn-primary">Submit</button>-->
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        showModalInCustomer();
+    </script>
+</div>
