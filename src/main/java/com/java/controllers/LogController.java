@@ -24,6 +24,8 @@ public class LogController {
 //        if (session.getAttribute("username") != null){
 //            resp.sendRedirect("");
 //        }
+//        comment line 27
+//        comment line 28
         return "/log/login";
     }
 
