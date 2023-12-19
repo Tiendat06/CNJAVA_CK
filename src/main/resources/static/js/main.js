@@ -58,4 +58,21 @@ function showModalInHome(id){
     });
 }
 
+function handleUploadImg() {
+    const fileInput = document.getElementById('fileInput');
+    const img = document.getElementById('profile-img');
+
+    const file = fileInput.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            img.src = e.target.result;
+        };
+
+        reader.readAsDataURL(file);
+    }
+}
+
 

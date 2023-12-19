@@ -128,3 +128,25 @@
 .main-content-user__thead{
     background-color: var(--table-heading);
 }
+
+/*profile*/
+.main-profile__top-side{
+    height: 110px;
+    width: 100%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.main-profile__img{
+    transform: translateY(-50%);
+    position: relative;
+    z-index: 1;
+}
+
+.main-profile__bottom-side{
+    height: 230px;
+    background-color: white;
+    transform: translateY(-47%);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}

@@ -1,10 +1,10 @@
 <div th:fragment="product">
     <div class="main-content-user">
-        <p style="font-size: 1.6rem">User Management</p>
+        <p style="font-size: 1.6rem">Product Management</p>
     </div>
 
     <div class="main-content-user__button text-light p-3 w-100 text-right" style="">
-        <button data-toggle="modal" data-target="#add-user" type="submit" class="btn btn-primary text-light pt-2 pl-3 pr-3 pb-2 bg-primary">
+        <button data-toggle="modal" data-target="#add-product" type="submit" class="btn btn-primary text-light pt-2 pl-3 pr-3 pb-2 bg-primary">
             <i style="background-color: white" class="text-light bg-primary fa-solid fa-user-gear"></i>
             Add product
         </button>
@@ -15,7 +15,7 @@
             <div class="col-lg-12">
                 <div class="main-content-user__manage-title">
                     <h5 class="main-content-user__manage-heading pb-3">
-                        Users list
+                        Product list
                     </h5>
                 </div>
 
@@ -23,12 +23,14 @@
                     <thead class="main-content-user__thead text-white text-center">
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Full name</th>
-                        <th scope="col">Phone number</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Gender</th>
-                        <th scope="col">Address</th>
-                        <th scope="col">Birthday</th>
+                        <th scope="col">Product name</th>
+                        <th scope="col">Import price</th>
+                        <th scope="col">Retail price</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Date Created</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Barcode</th>
                         <th scope="col">Actions</th>
                     </tr>
                     </thead>
@@ -37,20 +39,22 @@
                     <tr>
                         <th scope="row">1</th>
                         <td>
-                            <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">
-                            Jake Jason
+                            <img style="width: 40px" th:src="@{/img/product.png}" alt="" srcset="">
+                            Pho Bo
                         </td>
-                        <td>0123456789</td>
-                        <td>jake@gmail.com</td>
-                        <td>Male</td>
-                        <td>TP.HCM</td>
+                        <td>20.00$</td>
+                        <td>24.00$</td>
+                        <td>Food</td>
+                        <td>50</td>
                         <td>29/09/2003</td>
+                        <td>This is Pho from Vietnam</td>
+                        <td></td>
                         <td class="text-center">
-                            <a data-toggle="modal" id="edit-btn" data-id="123" data-target="#edit-user">
+                            <a data-toggle="modal" id="edit-btn" data-id="123" data-target="#edit-product">
                                 <i style="cursor: pointer" class="p-2 text-primary fa-solid fa-pen-to-square"></i>
                             </a>
 
-                            <a data-toggle="modal" id="delete-btn" data-id="456" data-target="#delete-user">
+                            <a data-toggle="modal" id="delete-btn" data-id="456" data-target="#delete-product">
                                 <i style="cursor: pointer" class="p-2 text-danger fa-solid fa-trash"></i>
                             </a>
                         </td>
@@ -59,36 +63,51 @@
                     <tr>
                         <th scope="row">2</th>
                         <td>
-                            <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">
-                            Jake Jason
+                            <img style="width: 40px" th:src="@{/img/product.png}" alt="" srcset="">
+                            Pho Bo
                         </td>
-                        <td>0123456789</td>
-                        <td>jake@gmail.com</td>
-                        <td>Male</td>
-                        <td>TP.HCM</td>
+                        <td>20.00$</td>
+                        <td>24.00$</td>
+                        <td>Food</td>
+                        <td>50</td>
                         <td>29/09/2003</td>
+                        <td>This is Pho from Vietnam</td>
+                        <td></td>
                         <td class="text-center">
-                            <i style="cursor: pointer" class="p-2 text-primary fa-solid fa-pen-to-square"></i>
-                            <i style="cursor: pointer" class="p-2 text-danger fa-solid fa-trash"></i>
+                            <a data-toggle="modal" data-id="123" data-target="#edit-user">
+                                <i style="cursor: pointer" class="p-2 text-primary fa-solid fa-pen-to-square"></i>
+                            </a>
+
+                            <a data-toggle="modal" data-id="456" data-target="#delete-user">
+                                <i style="cursor: pointer" class="p-2 text-danger fa-solid fa-trash"></i>
+                            </a>
                         </td>
                     </tr>
 
                     <tr>
                         <th scope="row">3</th>
-                        <td class="">
-                            <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">
-                            Jake Jason
+                        <td>
+                            <img style="width: 40px" th:src="@{/img/product.png}" alt="" srcset="">
+                            Pho Bo
                         </td>
-                        <td>0123456789</td>
-                        <td>jake@gmail.com</td>
-                        <td>Male</td>
-                        <td>TP.HCM</td>
+                        <td>20.00$</td>
+                        <td>24.00$</td>
+                        <td>Food</td>
+                        <td>50</td>
                         <td>29/09/2003</td>
+                        <td>This is Pho from Vietnam</td>
+                        <td></td>
                         <td class="text-center">
-                            <i style="cursor: pointer" class="p-2 text-primary fa-solid fa-pen-to-square"></i>
-                            <i style="cursor: pointer" class="p-2 text-danger fa-solid fa-trash"></i>
+                            <a data-toggle="modal" data-id="123" data-target="#edit-user">
+                                <i style="cursor: pointer" class="p-2 text-primary fa-solid fa-pen-to-square"></i>
+                            </a>
+
+                            <a data-toggle="modal" data-id="456" data-target="#delete-user">
+                                <i style="cursor: pointer" class="p-2 text-danger fa-solid fa-trash"></i>
+                            </a>
                         </td>
                     </tr>
+
                     </tbody>
                 </table>
             </div>
@@ -96,14 +115,14 @@
     </div>
 
     <!--    add modal -->
-    <div class="modal fade" id="add-user">
+    <div class="modal fade" id="add-product">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="/user/add" method="post">
+                <form action="" enctype="multipart/form-data" method="post">
 
                     <!-- Modal Header -->
                     <div class="modal-header">
-                        <h4 class="modal-title">Add User</h4>
+                        <h4 class="modal-title">Add Product</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
 
@@ -111,33 +130,44 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <div class="form-group login-form--info">
-                                <label class="login-form__label" for="fullname">Fullname</label>
-                                <input class="form-control login-form__input" type="text" name="fullname" id="fullname" placeholder="Username" required>
+                                <label class="login-form__label" for="name-add">Product name</label>
+                                <input class="form-control login-form__input" type="text" name="name-add" id="name-add" placeholder="Product name" required>
                             </div>
 
                             <div class="form-group login-form--info">
-                                <label class="login-form__label" for="email">Email</label>
-                                <input class="form-control login-form__input" type="email" name="email" id="email" placeholder="Email" required>
-                            </div>
-
-                            <div class="form-group login-form--info">
-                                <label class="login-form__label" for="address">Address</label>
-                                <input class="form-control login-form__input" type="text" name="address" id="address" placeholder="Address" required>
-                            </div>
-
-                            <div class="form-group login-form--info">
-                                <label class="login-form__label" for="date">Birthday</label>
-                                <input class="form-control login-form__input" type="date" name="date" id="date" placeholder="Address" required>
-                            </div>
-
-                            <div class="form-group login-form--info">
-                                <label class="login-form__label" for="date">Gender</label>
-                                <select name="gender" class="form-control" id="gender">
-                                    <option value="none">--Choose gender--</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
+                                <label class="login-form__label" for="type">Category</label>
+                                <select name="type" class="form-control" id="type">
+                                    <option value="none">--Choose type--</option>
+                                    <option value="Male">Electronics</option>
+                                    <option value="Female">Food</option>
                                 </select>
                             </div>
+
+                            <div class="form-group login-form--info">
+                                <label class="login-form__label" for="img-add">Image</label>
+                                <input class="form-control login-form__input" type="file" name="img-add" id="img-add" required>
+                            </div>
+
+                            <div class="form-group login-form--info">
+                                <label class="login-form__label" for="Iprice-add">Import price</label>
+                                <input class="form-control login-form__input" type="number" name="Iprice-add" id="Iprice-add" placeholder="Import price" required>
+                            </div>
+
+                            <div class="form-group login-form--info">
+                                <label class="login-form__label" for="Rprice-add">Retail price</label>
+                                <input class="form-control login-form__input" type="number" name="Rprice-add" id="Rprice-add" placeholder="Retail price" required>
+                            </div>
+
+                            <div class="form-group login-form--info">
+                                <label class="login-form__label" for="quan-add">Quantity</label>
+                                <input class="form-control login-form__input" type="number" name="quan-add" id="quan-add" placeholder="Quantity" required>
+                            </div>
+
+                            <div class="form-group login-form--info">
+                                <label class="login-form__label" for="des-add">Description</label> </br>
+                                <textarea class="form-control" name="des-add" id="des-add" cols="61" rows="5"></textarea>
+                            </div>
+
                         </div>
                     </div>
 
@@ -151,14 +181,14 @@
         </div>
     </div>
     <!--    edit modal -->
-    <div class="modal fade" tabindex="-1"  id="edit-user">
+    <div class="modal fade" tabindex="-1"  id="edit-product">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="/user/edit" method="post">
+                <form action="" method="post">
 
                     <!-- Modal Header -->
                     <div class="modal-header">
-                        <h4 class="modal-title">Edit User</h4>
+                        <h4 class="modal-title">Edit Product</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
 
@@ -169,32 +199,42 @@
                             <input type="hidden" name="userIdEdit" id="userId" value="">
 
                             <div class="form-group login-form--info">
-                                <label class="login-form__label" for="fullname-edit">Fullname</label>
-                                <input class="form-control login-form__input" type="text" name="fullname" id="fullname-edit" placeholder="Username" required>
+                                <label class="login-form__label" for="name-edit">Product name</label>
+                                <input class="form-control login-form__input" type="text" name="name-edit" id="name-edit" placeholder="Product name" required>
                             </div>
 
                             <div class="form-group login-form--info">
-                                <label class="login-form__label" for="email-edit">Email</label>
-                                <input class="form-control login-form__input" type="email" name="email" id="email-edit" placeholder="Email" required>
-                            </div>
-
-                            <div class="form-group login-form--info">
-                                <label class="login-form__label" for="address">Address</label>
-                                <input class="form-control login-form__input" type="text" name="address" id="address-edit" placeholder="Address" required>
-                            </div>
-
-                            <div class="form-group login-form--info">
-                                <label class="login-form__label" for="date-edit">Birthday</label>
-                                <input class="form-control login-form__input" type="date" name="date" id="date-edit" placeholder="Address" required>
-                            </div>
-
-                            <div class="form-group login-form--info">
-                                <label class="login-form__label" for="date">Gender</label>
-                                <select name="gender" class="form-control" id="gender-edit">
-                                    <option value="none">--Choose gender--</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
+                                <label class="login-form__label" for="type-edit">Category</label>
+                                <select name="type-edit" class="form-control" id="type-edit">
+                                    <option value="none">--Choose type--</option>
+                                    <option value="Male">Electronics</option>
+                                    <option value="Female">Food</option>
                                 </select>
+                            </div>
+
+                            <div class="form-group login-form--info">
+                                <label class="login-form__label" for="img-edit">Image</label>
+                                <input class="form-control login-form__input" type="file" name="img-edit" id="img-edit" required>
+                            </div>
+
+                            <div class="form-group login-form--info">
+                                <label class="login-form__label" for="Iprice-edit">Import price</label>
+                                <input class="form-control login-form__input" type="number" name="Iprice-edit" id="Iprice-edit" placeholder="Import price" required>
+                            </div>
+
+                            <div class="form-group login-form--info">
+                                <label class="login-form__label" for="Rprice-edit">Retail price</label>
+                                <input class="form-control login-form__input" type="number" name="Rprice-edit" id="Rprice-edit" placeholder="Retail price" required>
+                            </div>
+
+                            <div class="form-group login-form--info">
+                                <label class="login-form__label" for="quan-edit">Quantity</label>
+                                <input class="form-control login-form__input" type="number" name="quan-edit" id="quan-edit" placeholder="Quantity" required>
+                            </div>
+
+                            <div class="form-group login-form--info">
+                                <label class="login-form__label" for="des-edit">Description</label> </br>
+                                <textarea class="form-control" name="des-add" id="des-edit" cols="61" rows="5"></textarea>
                             </div>
 
                         </div>
@@ -210,14 +250,14 @@
         </div>
     </div>
     <!--    delete modal -->
-    <div class="modal fade" tabindex="-1"  id="delete-user">
+    <div class="modal fade" tabindex="-1"  id="delete-product">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="/user/delete" method="post">
+                <form action="" method="post">
 
                     <!-- Modal Header -->
                     <div class="modal-header">
-                        <h4 class="modal-title">Delete User</h4>
+                        <h4 class="modal-title">Delete Product</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
 
@@ -227,7 +267,7 @@
                             <!-- ID item đc click gắn ở đây, kéo lên mục delete chỉnh lại data-id -->
                             <input type="hidden" name="userIdDelete" id="userId-delete" value="">
 
-                            <p>Are you sure to delete user ___ ?</p>
+                            <p>Are you sure to delete product ___ ?</p>
 
                         </div>
                     </div>

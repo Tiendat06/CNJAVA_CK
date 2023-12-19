@@ -14,4 +14,10 @@ public class UserController {
         model.addAttribute("content", "user");
         return "index";
     }
+
+    @GetMapping("/profile")
+    public String user_profile_GET(Model model){
+        model.addAttribute("content", "profile");
+        return "index";
+    }
 }
