@@ -43,7 +43,7 @@
 
         <div class="main-home-product mt-4">
             <div class="col-lg-12 d-flex flex-wrap">
-                <a href="/product/add_order" style="text-decoration: none" class="main-home-product__item col-lg-4 col-md-4 col-sm-6 text-center text-dark mt-3">
+                <a data-toggle="modal" data-id="123" data-target="#add-product" style="text-decoration: none" class="main-home-product__item col-lg-4 col-md-4 col-sm-6 text-center text-dark mt-3">
                     <div style="background-color: white;border-radius: 10px" class=" p-3">
                         <div class="main-home-product__img">
                             <img style="width: 80px" th:src="@{../img/product.png}" alt="" srcset="">
@@ -58,7 +58,7 @@
                     </div>
                 </a>
 
-                <a href="/product/add_order" style="text-decoration: none" class="main-home-product__item col-lg-4 col-md-4 col-sm-6 text-center text-dark mt-3">
+                <a data-toggle="modal" data-id="123" data-target="#add-product" style="text-decoration: none" class="main-home-product__item col-lg-4 col-md-4 col-sm-6 text-center text-dark mt-3">
                     <div style="background-color: white;border-radius: 10px" class=" p-3">
                         <div class="main-home-product__img">
                             <img style="width: 80px" th:src="@{../img/product.png}" alt="" srcset="">
@@ -73,7 +73,7 @@
                     </div>
                 </a>
 
-                <a href="/product/add_order" style="text-decoration: none" class="main-home-product__item col-lg-4 col-md-4 col-sm-6 text-center text-dark mt-3">
+                <a data-toggle="modal" data-id="123" data-target="#add-product" style="text-decoration: none" class="main-home-product__item col-lg-4 col-md-4 col-sm-6 text-center text-dark mt-3">
                     <div style="background-color: white;border-radius: 10px" class=" p-3">
                         <div class="main-home-product__img">
                             <img style="width: 80px" th:src="@{../img/product.png}" alt="" srcset="">
@@ -106,6 +106,18 @@
                     <input placeholder="Phone number..." type="number" class="form-control col-lg-8" name="phone" id="phone">
                     <button type="submit" class="btn btn-primary col-lg-3">FIND</button>
                 </div>
+
+                <div class="main-home-payment__customer alert alert-info">
+                    <div class="d-flex main-home-payment__customer--fullname">
+                        <p class="col-lg-6 mb-2">Full name:</p>
+                        <p class="col-lg-6 text-right mb-2">Jake Jason</p>
+                    </div>
+
+                    <div class="d-flex main-home-payment__customer--address">
+                        <p class="col-lg-6 mb-0">Address:</p>
+                        <p class="col-lg-6 text-right mb-0">TP.HCM</p>
+                    </div>
+                </div>
             </div>
 
             <div class="main-home-payment__order">
@@ -114,7 +126,7 @@
                     <p class="main-home-payment__order--para mb-0">Pho Bo VietNam</p>
                     <p class="main-home-payment__order--para mb-0">x2</p>
                     <p class="main-home-payment__order--para mb-0">24.00$</p>
-                    <p style="cursor: pointer" class="main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
+                    <p data-toggle="modal" data-target="#delete-product" data-id="123" style="cursor: pointer" class="main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
 
                 </div>
 
@@ -123,7 +135,7 @@
                     <p class="main-home-payment__order--para mb-0">Pho Bo VietNam</p>
                     <p class="main-home-payment__order--para mb-0">x2</p>
                     <p class="main-home-payment__order--para mb-0">24.00$</p>
-                    <p style="cursor: pointer" class="main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
+                    <p data-toggle="modal" data-target="#delete-product" style="cursor: pointer" class="main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
 
                 </div>
 
@@ -132,7 +144,7 @@
                     <p class="main-home-payment__order--para mb-0">Pho Bo VietNam</p>
                     <p class="main-home-payment__order--para mb-0">x2</p>
                     <p class="main-home-payment__order--para mb-0">24.00$</p>
-                    <p style="cursor: pointer" class="main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
+                    <p data-toggle="modal" data-target="#delete-product" style="cursor: pointer" class="main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
 
                 </div>
             </div>
@@ -162,10 +174,11 @@
         </div>
     </div>
 
+<!--    add cus-->
     <div class="modal fade" id="add-customer">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="/user/add" method="post">
+                <form action="" method="post">
 
                     <!-- Modal Header -->
                     <div class="modal-header">
@@ -208,4 +221,76 @@
             </div>
         </div>
     </div>
+
+<!--    add product-->
+    <div class="modal fade" id="add-product">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="" method="post">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Select quantity</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="form-group login-form--info">
+                                <label class="login-form__label" for="quantity">Quantity</label>
+                                <input class="form-control login-form__input" type="number" name="quantity" id="quantity" placeholder="Quantity" required>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!--    remove product-->
+    <div class="modal fade" tabindex="-1"  id="delete-product">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="" method="post">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Delete Product</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <!-- ID item đc click gắn ở đây, kéo lên mục delete chỉnh lại data-id -->
+                            <input type="hidden" name="productID" id="productID" value="">
+
+                            <p>Are you sure to remove product ___ ?</p>
+
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Delete</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // showModalInHome() nhìn vào file js r tự thêm
+    </script>
 </div>
