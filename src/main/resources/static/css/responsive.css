@@ -12,6 +12,12 @@
     .navbar-bottom{
         margin-top: 25px;
     }
+
+    /*index*/
+    .main-content{
+        margin-top: calc(var(--header-height) + 60px);
+    }
+
 }
 
 /* Tablet */
@@ -28,9 +34,17 @@
     .navbar-bottom{
         margin-top: 25px;
     }
+
+    /*index*/
+    .main-content{
+        margin-top: calc(var(--header-height) + 60px);
+    }
 }
 
 /* PC */
 @media only screen and (min-width: 64em){
-
+    /*index*/
+    .main-content{
+        margin-top: var(--header-height);
+    }
 }

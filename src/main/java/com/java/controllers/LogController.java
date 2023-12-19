@@ -36,15 +36,12 @@ public class LogController {
 
         if (username.equals("") || pwd.equals("")) {
             model.addAttribute("error", "Username or Password is empty!");
-//            resp.sendRedirect("/log/login");
         } else if (username == null || pwd == null) {
             model.addAttribute("error", "Username or Password is empty!");
-//            resp.sendRedirect("/log/login");
         } else if (username.equals("admin") && pwd.equals("admin")) {
             resp.sendRedirect("/");
         } else{
             model.addAttribute("error", "Invalid Username or Password!");
-//            resp.sendRedirect("/log/login");
         }
 
         System.out.println(username);

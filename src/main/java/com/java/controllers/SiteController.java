@@ -18,8 +18,9 @@ import java.io.IOException;
 public class SiteController implements ErrorController {
 
     @GetMapping("")
-    public String index(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public String index(Model model, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession session = req.getSession();
+        model.addAttribute("content", "home");
 
 //        if (session.getAttribute("username") == null){
 ////            dispatcher.forward(req, resp);
@@ -28,12 +29,12 @@ public class SiteController implements ErrorController {
         return "index";
     }
 
-//    @GetMapping("/error")
-//    public String error(Model model, HttpServletRequest req){
-//        model.addAttribute("code", req.getAttribute(RequestDispatcher.ERROR_STATUS_CODE));
-//        model.addAttribute("url", req.getAttribute(RequestDispatcher.ERROR_REQUEST_URI));
-//        model.addAttribute("msg", req.getAttribute(RequestDispatcher.ERROR_MESSAGE));
-//
-//        return "/error/error";
-//    }
+    @GetMapping("/error")
+    public String error(Model model, HttpServletRequest req){
+        model.addAttribute("code", req.getAttribute(RequestDispatcher.ERROR_STATUS_CODE));
+        model.addAttribute("url", req.getAttribute(RequestDispatcher.ERROR_REQUEST_URI));
+        model.addAttribute("msg", req.getAttribute(RequestDispatcher.ERROR_MESSAGE));
+
+        return "/error/error";
+    }
 }

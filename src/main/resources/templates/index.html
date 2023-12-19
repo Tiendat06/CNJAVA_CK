@@ -4,10 +4,11 @@
 </head>
 <body class="bg-light">
 <div lang="en" style="position: fixed; top: 0; left: 0; right: 0; height: var(--header-height); width: 100%; z-index: 999" th:include="bar/main_navbar :: main_navbar"></div>
-    <div class="d-flex" style="margin-top: var(--header-height)">
+    <div class="d-flex main-content" style="">
 
-        <div class="col-lg-1 col-md-6 col-sm-2 pl-0" lang="en" style="" th:include="bar/main_sidebar :: main_sidebar"></div>
+        <div class="col-lg-1 col-md-6 col-sm-2 pl-0" lang="en" style="height: 100vh" th:include="bar/main_sidebar :: main_sidebar"></div>
 
+        <div th:include="home/home :: home" th:if="${content == 'home'}" style="padding: 20px;" class="main-content-user d-flex flex-wrap col-lg-11 col-md-9 col-sm-10"></div>
         <div th:include="user/user :: user" th:if="${content == 'user'}" style="padding: 20px;" class="main-content-user col-lg-11 col-md-9 col-sm-10"></div>
         <div th:include="account/account :: account" th:if="${content == 'account'}" style="padding: 20px;" class="main-content-user col-lg-11 col-md-9 col-sm-10"></div>
         <div th:include="product/product :: product" th:if="${content == 'product'}" style="padding: 20px;" class="main-content-user col-lg-11 col-md-9 col-sm-10"></div>
