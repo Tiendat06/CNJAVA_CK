@@ -43,7 +43,7 @@
 
         <div class="main-home-product mt-4">
             <div class="col-lg-12 d-flex flex-wrap">
-                <a data-toggle="modal" data-id="123" data-target="#add-product" style="text-decoration: none" class="main-home-product__item col-lg-4 col-md-4 col-sm-6 text-center text-dark mt-3">
+                <a data-toggle="modal" data-id="123" id="123" onclick="showModalInHome(this.id)" data-target="#add-product" style="text-decoration: none" class="main-home-product__item col-lg-4 col-md-4 col-sm-6 text-center text-dark mt-3">
                     <div style="background-color: white;border-radius: 10px" class=" p-3">
                         <div class="main-home-product__img">
                             <img style="width: 80px" th:src="@{../img/product.png}" alt="" srcset="">
@@ -120,13 +120,13 @@
                 </div>
             </div>
 
-            <div class="main-home-payment__order">
+            <div class="main-home-payment__order" style="height: 500px; overflow-y: scroll">
                 <div style="border-bottom: 0.5px solid #ccc" class="p-3 main-home-payment__order--item align-items-center justify-content-between col-lg-12 d-flex">
                     <p class="main-home-payment__order--para mb-0">1</p>
                     <p class="main-home-payment__order--para mb-0">Pho Bo VietNam</p>
                     <p class="main-home-payment__order--para mb-0">x2</p>
                     <p class="main-home-payment__order--para mb-0">24.00$</p>
-                    <p data-toggle="modal" data-target="#delete-product" data-id="123" style="cursor: pointer" class="main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
+                    <p data-toggle="modal" data-target="#delete-product" data-id="123" id="456" onclick="showModalInHome(this.id)" style="cursor: pointer" class="main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
 
                 </div>
 
@@ -147,11 +147,75 @@
                     <p data-toggle="modal" data-target="#delete-product" style="cursor: pointer" class="main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
 
                 </div>
+                <div style="border-bottom: 0.5px solid #ccc" class="p-3 main-home-payment__order--item align-items-center justify-content-between col-lg-12 d-flex">
+                    <p class="main-home-payment__order--para mb-0">3</p>
+                    <p class="main-home-payment__order--para mb-0">Pho Bo VietNam</p>
+                    <p class="main-home-payment__order--para mb-0">x2</p>
+                    <p class="main-home-payment__order--para mb-0">24.00$</p>
+                    <p data-toggle="modal" data-target="#delete-product" style="cursor: pointer" class="main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
+
+                </div>
+
+                <div style="border-bottom: 0.5px solid #ccc" class="p-3 main-home-payment__order--item align-items-center justify-content-between col-lg-12 d-flex">
+                    <p class="main-home-payment__order--para mb-0">3</p>
+                    <p class="main-home-payment__order--para mb-0">Pho Bo VietNam</p>
+                    <p class="main-home-payment__order--para mb-0">x2</p>
+                    <p class="main-home-payment__order--para mb-0">24.00$</p>
+                    <p data-toggle="modal" data-target="#delete-product" style="cursor: pointer" class="main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
+
+                </div>
+
+                <div style="border-bottom: 0.5px solid #ccc" class="p-3 main-home-payment__order--item align-items-center justify-content-between col-lg-12 d-flex">
+                    <p class="main-home-payment__order--para mb-0">3</p>
+                    <p class="main-home-payment__order--para mb-0">Pho Bo VietNam</p>
+                    <p class="main-home-payment__order--para mb-0">x2</p>
+                    <p class="main-home-payment__order--para mb-0">24.00$</p>
+                    <p data-toggle="modal" data-target="#delete-product" style="cursor: pointer" class="main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
+
+                </div>
+
+                <div style="border-bottom: 0.5px solid #ccc" class="p-3 main-home-payment__order--item align-items-center justify-content-between col-lg-12 d-flex">
+                    <p class="main-home-payment__order--para mb-0">3</p>
+                    <p class="main-home-payment__order--para mb-0">Pho Bo VietNam</p>
+                    <p class="main-home-payment__order--para mb-0">x2</p>
+                    <p class="main-home-payment__order--para mb-0">24.00$</p>
+                    <p data-toggle="modal" data-target="#delete-product" style="cursor: pointer" class="main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
+
+                </div>
+
+                <div style="border-bottom: 0.5px solid #ccc" class="p-3 main-home-payment__order--item align-items-center justify-content-between col-lg-12 d-flex">
+                    <p class="main-home-payment__order--para mb-0">3</p>
+                    <p class="main-home-payment__order--para mb-0">Pho Bo VietNam</p>
+                    <p class="main-home-payment__order--para mb-0">x2</p>
+                    <p class="main-home-payment__order--para mb-0">24.00$</p>
+                    <p data-toggle="modal" data-target="#delete-product" style="cursor: pointer" class="main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
+
+                </div>
+
+                <div style="border-bottom: 0.5px solid #ccc" class="p-3 main-home-payment__order--item align-items-center justify-content-between col-lg-12 d-flex">
+                    <p class="main-home-payment__order--para mb-0">3</p>
+                    <p class="main-home-payment__order--para mb-0">Pho Bo VietNam</p>
+                    <p class="main-home-payment__order--para mb-0">x2</p>
+                    <p class="main-home-payment__order--para mb-0">24.00$</p>
+                    <p data-toggle="modal" data-target="#delete-product" style="cursor: pointer" class="main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
+
+                </div>
+                <div style="border-bottom: 0.5px solid #ccc" class="p-3 main-home-payment__order--item align-items-center justify-content-between col-lg-12 d-flex">
+                    <p class="main-home-payment__order--para mb-0">3</p>
+                    <p class="main-home-payment__order--para mb-0">Pho Bo VietNam</p>
+                    <p class="main-home-payment__order--para mb-0">x2</p>
+                    <p class="main-home-payment__order--para mb-0">24.00$</p>
+                    <p data-toggle="modal" data-target="#delete-product" style="cursor: pointer" class="main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
+
+                </div>
+
+
             </div>
 
         </div>
 
-        <div style="position: fixed; bottom: 0; right: 0; width: 38%" class="bg-light main-home-payment__money">
+<!--        position: fixed; bottom: 0; right: 0; width: 38%-->
+        <div style="" class="bg-light main-home-payment__money mt-2">
             <div class="d-flex p-2 col-lg-12 main-home-payment__money--total">
                 <p class="col-lg-9">Total bill:</p>
                 <p class="col-lg-3 text-center">72.00$</p>
@@ -237,11 +301,11 @@
                     <!-- Modal body -->
                     <div class="modal-body">
                         <div class="form-group">
+                            <input type="hidden" name="" id="product_id">
                             <div class="form-group login-form--info">
                                 <label class="login-form__label" for="quantity">Quantity</label>
                                 <input class="form-control login-form__input" type="number" name="quantity" id="quantity" placeholder="Quantity" required>
                             </div>
-
 
                         </div>
                     </div>
@@ -255,7 +319,6 @@
             </div>
         </div>
     </div>
-
 
     <!--    remove product-->
     <div class="modal fade" tabindex="-1"  id="delete-product">
@@ -291,6 +354,6 @@
     </div>
 
     <script>
-        // showModalInHome() nhìn vào file js r tự thêm
+        showModalInHome()
     </script>
 </div>
