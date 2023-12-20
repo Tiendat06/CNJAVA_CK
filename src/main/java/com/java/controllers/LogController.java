@@ -3,8 +3,7 @@ package com.java.controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import org.springframework.boot.web.servlet.error.ErrorController;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,15 +17,8 @@ import java.io.IOException;
 public class LogController {
 
     @GetMapping("/login")
-    public String login_GET(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
-//        HttpSession session = req.getSession();
-//        if (session.getAttribute("username") != null){
-//            resp.sendRedirect("");
-//        }
-//        comment line 27
-//        comment line 28
-        return "/log/login";
+    public String login_GET() {
+        return  "/log/login";
     }
 
     @PostMapping("/login")
