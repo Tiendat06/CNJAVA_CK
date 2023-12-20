@@ -1,13 +1,19 @@
 package com.java.controllers;
 
+import com.java.models.Account;
 import com.java.models.User;
+import com.java.service.AccountService;
 import com.java.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.sql.Date;
 import java.util.List;
 
 @Controller
@@ -16,10 +22,21 @@ public class UserController {
 
     @Autowired
     public UserService userService;
+    @Autowired
+    public AccountService accountService;
+
     @GetMapping("")
     public String index(Model model){
         model.addAttribute("content", "user");
-        List<User> userList = (List<User>) userService.userRepository.findAll();
+
+        return "index";
+    }
+
+    @GetMapping("/{pageNo}")
+    public String getUserPagination(@PathVariable int pageNo,
+                              @RequestParam(defaultValue = "5") int pageSize, Model model){
+        Page<User> userList = userService.getUserPagination(pageNo - 1, pageSize);
+        model.addAttribute("content", "user");
         model.addAttribute("userList", userList);
         return "index";
     }
@@ -28,5 +45,52 @@ public class UserController {
     public String user_profile_GET(Model model){
         model.addAttribute("content", "profile");
         return "index";
+    }
+
+    @PostMapping("/add")
+    public void addUser_POST(HttpServletRequest req, HttpServletResponse resp, Model model) throws IOException {
+        model.addAttribute("content", "user");
+        String maxID = userService.AUTO_USER_ID();
+        String acc_id = accountService.AUTO_ACC_ID();
+        String firstname = req.getParameter("firstname");
+        String lastname = req.getParameter("lastname");
+        String email = req.getParameter("email");
+        String address = req.getParameter("address");
+        String phone = req.getParameter("phone");
+        Date date = Date.valueOf(req.getParameter("date"));
+        String gender = req.getParameter("gender");
+
+        userService.userRepository.save(new User(maxID, firstname, lastname, email, phone, address, null, "ACC0000001", date, gender));
+
+        String[] check = email.split("@");
+        String pwd = check[0];
+        accountService.accountRepository.save(new Account(acc_id, false, false, false, 2, pwd));
+        resp.sendRedirect("/user/1");
+    }
+
+    @PostMapping("/edit")
+    public void updateUser_POST(HttpServletRequest req, HttpServletResponse resp, Model model) throws IOException {
+        model.addAttribute("content", "user");
+        String user_id = req.getParameter("userIdEdit");
+        String firstname = req.getParameter("firstname_edit");
+        String lastname = req.getParameter("lastname_edit");
+        String email = req.getParameter("email_edit");
+        String address = req.getParameter("address_edit");
+        String phone = req.getParameter("phone_edit");
+        Date date = Date.valueOf(req.getParameter("date_edit"));
+        String gender = req.getParameter("gender_edit");
+
+        userService.updateUser(user_id, new User(user_id, firstname, lastname, email, phone, address, null, "ACC0000001", date, gender));
+        resp.sendRedirect("/user/1");
+    }
+
+    @PostMapping("/delete")
+    public void deleteUser_POST(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String user_id = req.getParameter("userIdDelete");
+        userService.deleteByID(user_id);
+
+        String acc_id = userService.getAccIDByUserID(user_id);
+        accountService.deleteByID(acc_id);
+        resp.sendRedirect("/user/1");
     }
 }

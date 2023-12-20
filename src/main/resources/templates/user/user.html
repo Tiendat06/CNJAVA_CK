@@ -69,6 +69,19 @@
 
                     </tbody>
                 </table>
+
+                <div th:if="${userList.totalPages > 1}">
+                    <div>
+                        <span>Page </span>
+                        <span th:each="pageNumber : ${#numbers.sequence(0, userList.totalPages - 1)}">
+                            <a th:href="@{'/user/' + ${pageNumber + 1}}"
+                               th:text="${pageNumber + 1}"
+                               th:class="${pageNumber + 1 == userList.number ? 'active' : ''}">
+                            </a>
+                        </span>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -109,6 +122,11 @@
                             </div>
 
                             <div class="form-group login-form--info">
+                                <label class="login-form__label" for="phone">Phone number</label>
+                                <input class="form-control login-form__input" type="text" name="phone" id="phone" placeholder="Phone number" required>
+                            </div>
+
+                            <div class="form-group login-form--info">
                                 <label class="login-form__label" for="date">Birthday</label>
                                 <input class="form-control login-form__input" type="date" name="date" id="date" placeholder="Address" required>
                             </div>
@@ -138,7 +156,7 @@
          aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="" method="post">
+                <form action="/user/edit" method="post">
 
                     <!-- Modal Header -->
                     <div class="modal-header">
@@ -173,6 +191,11 @@
                             </div>
 
                             <div class="form-group login-form--info">
+                                <label class="login-form__label" for="phone_edit">Phone number</label>
+                                <input class="form-control login-form__input" type="text" name="phone_edit" id="phone_edit" placeholder="Phone number" required>
+                            </div>
+
+                            <div class="form-group login-form--info">
                                 <label class="login-form__label" for="date_edit">Birthday</label>
                                 <input class="form-control login-form__input" type="date" name="date_edit" id="date_edit" placeholder="Address" required>
                             </div>
@@ -202,7 +225,7 @@
     <div class="modal fade" tabindex="-1"  id="delete-user">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="" method="post">
+                <form action="/user/delete" method="post">
 
                     <!-- Modal Header -->
                     <div class="modal-header">
@@ -214,9 +237,9 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <!-- ID item đc click gắn ở đây, kéo lên mục delete chỉnh lại data-id -->
-                            <input type="hidden" name="userIdDelete" id="userId-delete" value="">
+                            <input type="hidden" name="userIdDelete" id="userIdDelete" value="">
 
-                            <p>Are you sure to delete user ___ ?</p>
+                            <p id="userIdDelete-para">Are you sure to delete user ___ ?</p>
 
                         </div>
                     </div>
@@ -249,6 +272,7 @@
                 var firstname = $(this).data('first_name')
                 var lastname = $(this).data('last_name')
                 var email = $(this).data('email')
+                var phone = $(this).data('phone')
                 var gender = $(this).data('gender')
                 var address = $(this).data('address')
                 var dob = $(this).data('birthday')
@@ -259,6 +283,7 @@
                 $('#lastname_edit').attr('value', lastname);
                 $('#email_edit').attr('value', email);
                 $('#address_edit').attr('value', address);
+                $('#phone_edit').val(phone);
                 $('#date_edit').val(dob);
                 $('#gender_edit').val(gender);
 
