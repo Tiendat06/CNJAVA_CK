@@ -9,5 +9,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, String> {
-    // Custom query to retrieve email, password, and role based on email
 }
