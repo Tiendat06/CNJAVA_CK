@@ -1,0 +1,141 @@
+<div th:fragment="report">
+    <div class="main-content-user">
+        <p style="font-size: 1.6rem">Report Management</p>
+    </div>
+
+    <div class="main-content-report d-flex col-lg-12">
+        <div class="col-lg-3 col-md-12 col-sm-12">
+            <div class="main-content-report-item d-flex align-items-center  pt-3 pb-2 pl-2 pr-2 text-light bg-success-new">
+                <div class="col-lg-10">
+                    <h2>201</h2>
+                    <p>TOTAL MONEY</p>
+                </div>
+
+                <div class="col-lg-2 col-md-12 col-sm-12 d-flex align-items-center bg-success" style="border-left: 0.5px solid #ccc; position: absolute; top: 0; bottom: 0; right: 0">
+                    <i style="font-size: 1.6rem" class="fa-solid fa-money-bill-wave"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-12 col-sm-12">
+            <div class="main-content-report-item d-flex align-items-center pt-3 pb-2 pl-2 pr-2 text-light bg-danger">
+                <div class="col-lg-10">
+                    <h2>500</h2>
+                    <p>TOTAL ORDER</p>
+                </div>
+
+                <div class="col-lg-2 d-flex align-items-center" style="border-left: 0.5px solid #ccc; position: absolute; top: 0; bottom: 0; right: 0; background-color: #cf4436">
+                    <i style="font-size: 1.6rem" class="fa-solid fa-cart-shopping"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-12 col-sm-12">
+            <div style="background-color: #1fa4ce" class="main-content-report-item d-flex align-items-center pt-3 pb-2 pl-2 pr-2 text-light">
+                <div class="col-lg-10">
+                    <h2>500</h2>
+                    <p>TOTAL PRODUCT</p>
+                </div>
+
+                <div class="col-lg-2 d-flex align-items-center bg-info" style="border-left: 0.5px solid #ccc; position: absolute; top: 0; bottom: 0; right: 0;">
+                    <i style="font-size: 1.6rem" class="fa-brands fa-product-hunt"></i>                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-12 col-sm-12">
+            <div style="" class="main-content-report-item bg-warning d-flex align-items-center pt-3 pb-2 pl-2 pr-2 text-light">
+                <div class="col-lg-10">
+                    <h2>5000</h2>
+                    <p>TOTAL PROFIT</p>
+                </div>
+
+                <div class="col-lg-2 d-flex align-items-center" style="border-left: 0.5px solid #ccc; position: absolute; top: 0; bottom: 0; right: 0;background-color: #da8c10;">
+                    <i style="font-size: 1.6rem" class="fa-solid fa-credit-card"></i>                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="main-content-report__date-change d-flex justify-content-end mt-5">
+        <div class="form-group main-content-report__date-change--start mr-4">
+            <label class="login-form__label" for="date-start">From</label>
+            <input type="date" class="form-control" name="date-start" id="date-start">
+        </div>
+
+        <div class="form-group main-content-report__date-change--end">
+            <label class="login-form__label" for="date-end">To</label>
+            <input type="date" class="form-control" name="date-end" id="date-end">
+        </div>
+    </div>
+
+    <table class="main-content-user__table mt-4 table table-striped table-bordered table-hover">
+        <thead class="main-content-user__thead text-white text-center">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Order ID</th>
+            <th scope="col">Product name</th>
+            <th scope="col">Date created</th>
+            <th scope="col">Customer name</th>
+            <th scope="col">User creator</th>
+            <th scope="col">Address</th>
+            <th scope="col">Phone number</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Total Amount</th>
+        </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>ORD0000001</td>
+                <td>
+                    <img style="width: 40px" th:src="@{/img/product.png}" alt="" srcset="">
+                    Pho Bo
+                </td>
+                <td>29/09/2003</td>
+                <td>Johnson Nob</td>
+                <td>Jake Jason</td>
+                <td>TP.HCM</td>
+                <td>0356779197</td>
+                <td>3</td>
+                <td>100.000$</td>
+
+            </tr>
+
+            <tr>
+                <th scope="row">1</th>
+                <td>ORD0000001</td>
+                <td>
+                    <img style="width: 40px" th:src="@{/img/product.png}" alt="" srcset="">
+                    Pho Bo
+                </td>
+                <td>29/09/2003</td>
+                <td>Johnson Nob</td>
+                <td>Jake Jason</td>
+                <td>TP.HCM</td>
+                <td>0356779197</td>
+                <td>3</td>
+                <td>100.000$</td>
+
+            </tr>
+
+            <tr>
+                <th scope="row">1</th>
+                <td>ORD0000001</td>
+                <td>
+                    <img style="width: 40px" th:src="@{/img/product.png}" alt="" srcset="">
+                    Pho Bo
+                </td>
+                <td>29/09/2003</td>
+                <td>Johnson Nob</td>
+                <td>Jake Jason</td>
+                <td>TP.HCM</td>
+                <td>0356779197</td>
+                <td>3</td>
+                <td>100.000$</td>
+
+            </tr>
+        </tbody>
+    </table>
+
+</div>

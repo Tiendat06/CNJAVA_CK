@@ -1,17 +1,31 @@
 
 function showModelInUser(){
-    document.addEventListener('DOMContentLoaded', function () {
-        var openModalButton = document.querySelector('#edit-btn');
-        var userIdInput = document.getElementById('userId');
+    // alert(btn_id);
+    $(document).ready(function(){
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     var openModalButton = document.getElementById('#'+btn_id);
+        //     var userIdInput = document.getElementById('userIdEdit');
+        //
+        //     alert(userIdInput)
+        //     alert(openModalButton)
+        //
+        //     openModalButton.addEventListener('click', function () {
+        //         var userId = this.getAttribute('data-id');
+        //         userIdInput.value = userId;
+        //     });
+        // });
+        $('#edit-user').on('show.bs.modal', function (e){
+            var button = $(e.relatedTarget)
 
-        openModalButton.addEventListener('click', function () {
-            var userId = this.getAttribute('data-id');
-            userIdInput.value = userId;
-        });
-    });
+            $('#userIdEdit').attr('value', button);
+        })
+    })
+}
 
+function showModalInUserDelete(btn_id){
     document.addEventListener('DOMContentLoaded', function () {
-        var openModalButton = document.querySelector('#delete-btn');
+
+        var openModalButton = document.querySelector('#'+btn_id);
         var userIdInput = document.getElementById('userId-delete');
 
         openModalButton.addEventListener('click', function () {

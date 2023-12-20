@@ -20,6 +20,10 @@ html{
     /* overflow-x: auto; */
 }
 
+.bg-success-new{
+    background-color: #2ecc71;
+}
+
 body{
     margin: 0;
 }

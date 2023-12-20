@@ -1,4 +1,5 @@
 <div th:fragment="user">
+
     <div class="main-content-user">
         <p style="font-size: 1.6rem">User Management</p>
     </div>
@@ -34,61 +35,38 @@
                     </thead>
 
                     <tbody>
+                    <th:block th:each="u, itemStat: ${userList}">
                         <tr>
-                            <th scope="row">1</th>
+                            <th scope="row" >[[${itemStat.index + 1}]]</th>
                             <td>
                                 <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">
-                                Jake Jason
+                                [[${u.first_name}]] [[${u.last_name}]]
                             </td>
-                            <td>0123456789</td>
-                            <td>jake@gmail.com</td>
-                            <td>Male</td>
-                            <td>TP.HCM</td>
-                            <td>29/09/2003</td>
+                            <td>[[${u.phone_number}]]</td>
+                            <td>[[${u.email}]]</td>
+                            <td>[[${u.gender}]]</td>
+                            <td>[[${u.address}]]</td>
+                            <td>[[${u.birthday}]]</td>
                             <td class="text-center">
-                                <a data-toggle="modal" id="edit-btn" data-id="123" data-target="#edit-user">
-                                    <i style="cursor: pointer" class="p-2 text-primary fa-solid fa-pen-to-square"></i>
+                                <a  target="_self" class="btn btn-show-details" data-toggle="modal" data-target="#edit-user"
+                                    th:data-id_member="${u.user_id}"
+                                    th:data-first_name="${u.first_name}"
+                                    th:data-last_name="${u.last_name}"
+                                    th:data-phone="${u.phone_number}"
+                                    th:data-email="${u.email}"
+                                    th:data-gender="${u.gender}"
+                                    th:data-address="${u.address}"
+                                    th:data-birthday="${u.birthday}">
+                                    <i class="p-2 text-primary fa-solid fa-pen-to-square"></i>
                                 </a>
 
-                                <a data-toggle="modal" id="delete-btn" data-id="456" data-target="#delete-user">
+                                <a target="_self" data-toggle="modal" th:data-id_member="${u.user_id}" data-target="#delete-user">
                                     <i style="cursor: pointer" class="p-2 text-danger fa-solid fa-trash"></i>
                                 </a>
                             </td>
                         </tr>
+                    </th:block>
 
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>
-                                <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">
-                                Jake Jason
-                            </td>
-                            <td>0123456789</td>
-                            <td>jake@gmail.com</td>
-                            <td>Male</td>
-                            <td>TP.HCM</td>
-                            <td>29/09/2003</td>
-                            <td class="text-center">
-                                <i style="cursor: pointer" class="p-2 text-primary fa-solid fa-pen-to-square"></i>
-                                <i style="cursor: pointer" class="p-2 text-danger fa-solid fa-trash"></i>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th scope="row">3</th>
-                            <td class="">
-                                <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">
-                                Jake Jason
-                            </td>
-                            <td>0123456789</td>
-                            <td>jake@gmail.com</td>
-                            <td>Male</td>
-                            <td>TP.HCM</td>
-                            <td>29/09/2003</td>
-                            <td class="text-center">
-                                <i style="cursor: pointer" class="p-2 text-primary fa-solid fa-pen-to-square"></i>
-                                <i style="cursor: pointer" class="p-2 text-danger fa-solid fa-trash"></i>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -156,10 +134,11 @@
         </div>
     </div>
 <!--    edit modal -->
-    <div class="modal fade" tabindex="-1"  id="edit-user">
+    <div class="modal fade" id="edit-user" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="/user/edit" method="post">
+                <form action="" method="post">
 
                     <!-- Modal Header -->
                     <div class="modal-header">
@@ -171,7 +150,7 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <!-- ID item đc click gắn ở đây, kéo lên mục edit chỉnh lại data-id -->
-                            <input type="hidden" name="userIdEdit" id="userId" value="">
+                            <input type="hidden" name="userIdEdit" id="userIdEdit" value="">
 
                             <div class="form-group login-form--info">
                                 <label class="login-form__label" for="firstname_edit">First name</label>
@@ -223,7 +202,7 @@
     <div class="modal fade" tabindex="-1"  id="delete-user">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="/user/delete" method="post">
+                <form action="" method="post">
 
                     <!-- Modal Header -->
                     <div class="modal-header">
@@ -252,7 +231,43 @@
         </div>
     </div>
 
+<!--    th:data-id_member="${u.user_id}"
+                                    th:data-first_name="${u.first_name}"
+                                    th:data-last_name="${u.last_name}"
+                                    th:phone="${u.phone_number}"
+                                    th:email="${u.email}"
+                                    th:gender="${u.gender}"
+                                    th:address="${u.address}"
+                                    th:birthday="${u.birthday}">
+                                    <i class="p-2 text-primary fa-solid fa-pen-to-square"></i>
+                                -->
+
     <script>
-        showModelInUser();
+        $(document).ready(function() {
+            $('.btn-show-details').on('click', function() {
+                var userId = $(this).data('id_member');
+                var firstname = $(this).data('first_name')
+                var lastname = $(this).data('last_name')
+                var email = $(this).data('email')
+                var gender = $(this).data('gender')
+                var address = $(this).data('address')
+                var dob = $(this).data('birthday')
+
+                // alert(userId)
+                $('#userIdEdit').attr('value', userId);
+                $('#firstname_edit').attr('value', firstname);
+                $('#lastname_edit').attr('value', lastname);
+                $('#email_edit').attr('value', email);
+                $('#address_edit').attr('value', address);
+                $('#date_edit').val(dob);
+                $('#gender_edit').val(gender);
+
+            });
+        });
+
+
     </script>
 </div>
+
+
+

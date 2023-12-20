@@ -3,6 +3,7 @@ package com.java.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Entity(name = "user")
@@ -32,7 +33,7 @@ public class User {
     @Column(name = "ACCOUNT_ID")
     private String account_id;
     @Column(name = "BIRTHDAY")
-    private Timestamp birthday;
+    private Date birthday;
     @Column(name = "GENDER")
     private String gender;
 }
