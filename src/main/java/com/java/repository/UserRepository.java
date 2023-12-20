@@ -1,12 +1,11 @@
 package com.java.repository;
 
 import com.java.models.User;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface UserRepository extends CrudRepository<User, String> {
+public interface UserRepository extends JpaRepository<User, String> {
+    User findByEmail(String email);
 }

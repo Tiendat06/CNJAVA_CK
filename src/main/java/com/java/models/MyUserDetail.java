@@ -6,11 +6,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 public class MyUserDetail implements UserDetails {
-    private String userName;
-    public MyUserDetail(String userName) {
-        this.userName = userName;
+    private CombinedUser combinedUser;
+    public MyUserDetail(CombinedUser combinedUser) {
+        this.combinedUser = combinedUser;
     }
 
     public MyUserDetail() {
@@ -18,17 +19,17 @@ public class MyUserDetail implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+        return Collections.singleton(new SimpleGrantedAuthority(combinedUser.getRole().getRole_name()));
     }
 
     @Override
     public String getPassword() {
-        return "$2y$10$XdlXGQXpngCigoYGVRNU..Iein8EsCdhQGUl2AUe/.QbrI1XoST/q";
+        return combinedUser.getAccount().getPassword() ;
     }
 
     @Override
     public String getUsername() {
-        return userName;
+        return combinedUser.getUser().getEmail();
     }
 
     @Override
@@ -48,6 +49,6 @@ public class MyUserDetail implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return combinedUser.getAccount().isStatus();
     }
 }

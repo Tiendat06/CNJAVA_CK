@@ -32,15 +32,16 @@ public class ApplicationSecurity {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http
-                .formLogin(form -> form.loginPage("/log/login").permitAll())
                 .authorizeHttpRequests(auth -> auth.
                         requestMatchers("/css/**","/font/**","/img/**","/js/**").permitAll()
                         .anyRequest().authenticated())
+                .formLogin(form -> form.loginPage("/log/login").permitAll())
                 .logout(logout -> logout
-                        .logoutUrl("/log/logout") // Specify the logout URL
-                        .logoutSuccessUrl("/")     // Redirect to the home page after logout
-                        .invalidateHttpSession(true) // Invalidate the HTTP session
-                        .deleteCookies("JSESSIONID").permitAll()    ) // Remove the session cookie
+                        .logoutUrl("/log/logout")
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll())
                 .build();
 
     }
