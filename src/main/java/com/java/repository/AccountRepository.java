@@ -15,4 +15,8 @@ public interface AccountRepository extends JpaRepository<Account, String> {
 //    @Query("select r.role_name, a.account_id, a.status from account a join role r join user u where a.role_id = r.role_id and a.account_id = u.account_id")
 //    List<Object[]> getRoleAndAccId();
     List<Account> findAll();
+    @Query("SELECT a FROM account a WHERE a.account_id = :accountId")
+    Account findByAccountId(@Param("accountId") String accountId);
 }
+
+
