@@ -30,12 +30,12 @@ public class Product {
     @Column(name = "CATEGORY_ID")
     private int category_id;
     @Column(name = "IMAGE")
-    @Lob
-    private byte[] product_img;
+    private String product_img;
     @Column(name = "RETAIL_PRICE")
     private float retail_price;
     @Column(name = "DATE_CREATED")
     private Timestamp date_created;
-
+    @Column(name = "barcode")
+    private String barcode;
 
 }

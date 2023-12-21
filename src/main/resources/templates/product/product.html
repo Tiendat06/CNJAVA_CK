@@ -36,80 +36,60 @@
                     </thead>
 
                     <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>
-                            <img style="width: 40px" th:src="@{/img/product.png}" alt="" srcset="">
-                            Pho Bo
-                        </td>
-                        <td>20.00$</td>
-                        <td>24.00$</td>
-                        <td>Food</td>
-                        <td>50</td>
-                        <td>29/09/2003</td>
-                        <td>This is Pho from Vietnam</td>
-                        <td></td>
-                        <td class="text-center">
-                            <a data-toggle="modal" id="edit-btn" data-id="123" data-target="#edit-product">
-                                <i style="cursor: pointer" class="p-2 text-primary fa-solid fa-pen-to-square"></i>
-                            </a>
+                    <th:block th:each="p, itemStat: ${productList}">
+                        <tr>
+                            <th scope="row">[[${itemStat.index + 1}]]</th>
+                            <td>
+                                <img style="width: 40px; height: 40px; border-radius: 50%" th:src="@{/img/{product_id}(product_id=${p.product_img})}" alt="" srcset="">
+                                [[${p.product_name}]]
+                            </td>
+                            <td>[[${p.product_price}]]$</td>
+                            <td>[[${p.retail_price}]]$</td>
+                            <td>[[${categoryList.getCategory(p.category_id)}]]</td>
+                            <td>[[${p.quantity_stock}]]</td>
+                            <td>[[${p.date_created}]]</td>
+                            <td>[[${p.description}]]</td>
+                            <td>
+                                [[${p.product_id}]]
+                            </td>
+                            <td class="text-center">
+                                <a data-toggle="modal" class="btn-show-details" id="edit-btn" data-target="#edit-product"
+                                   th:data-id="${p.product_id}"
+                                   th:data-name="${p.product_name}"
+                                   th:data-import="${p.product_price}"
+                                   th:data-retail="${p.retail_price}"
+                                    th:data-category="${categoryList.getCategory(p.category_id)}"
+                                    th:data-quan="${p.quantity_stock}"
+                                    th:data-date="${p.date_created}"
+                                    th:data-des="${p.description}">
+                                    <i style="cursor: pointer" class="p-2 text-primary fa-solid fa-pen-to-square"></i>
+                                </a>
 
-                            <a data-toggle="modal" id="delete-btn" data-id="456" data-target="#delete-product">
-                                <i style="cursor: pointer" class="p-2 text-danger fa-solid fa-trash"></i>
-                            </a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>
-                            <img style="width: 40px" th:src="@{/img/product.png}" alt="" srcset="">
-                            Pho Bo
-                        </td>
-                        <td>20.00$</td>
-                        <td>24.00$</td>
-                        <td>Food</td>
-                        <td>50</td>
-                        <td>29/09/2003</td>
-                        <td>This is Pho from Vietnam</td>
-                        <td></td>
-                        <td class="text-center">
-                            <a data-toggle="modal" data-id="123" data-target="#edit-user">
-                                <i style="cursor: pointer" class="p-2 text-primary fa-solid fa-pen-to-square"></i>
-                            </a>
-
-                            <a data-toggle="modal" data-id="456" data-target="#delete-user">
-                                <i style="cursor: pointer" class="p-2 text-danger fa-solid fa-trash"></i>
-                            </a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>
-                            <img style="width: 40px" th:src="@{/img/product.png}" alt="" srcset="">
-                            Pho Bo
-                        </td>
-                        <td>20.00$</td>
-                        <td>24.00$</td>
-                        <td>Food</td>
-                        <td>50</td>
-                        <td>29/09/2003</td>
-                        <td>This is Pho from Vietnam</td>
-                        <td></td>
-                        <td class="text-center">
-                            <a data-toggle="modal" data-id="123" data-target="#edit-user">
-                                <i style="cursor: pointer" class="p-2 text-primary fa-solid fa-pen-to-square"></i>
-                            </a>
-
-                            <a data-toggle="modal" data-id="456" data-target="#delete-user">
-                                <i style="cursor: pointer" class="p-2 text-danger fa-solid fa-trash"></i>
-                            </a>
-                        </td>
-                    </tr>
+                                <a data-toggle="modal" id="delete-btn" class="btn-show-details-delete" th:data-id="${p.product_id}" data-target="#delete-product">
+                                    <i style="cursor: pointer" class="p-2 text-danger fa-solid fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </th:block>
 
                     </tbody>
                 </table>
+
+                <ul style="float: right" th:if="${productList.totalPages > 1}" class="pagination">
+                    <li class="page-item">
+                        <a th:if="${productList.hasPrevious()}" th:href="@{'/product/' + ${productList.previousPageable().pageNumber + 1}}" class="page-link">Previous</a>
+                    </li>
+                    <li th:each="pageNumber : ${#numbers.sequence(0, productList.totalPages - 1)}" class="page-item">
+                        <a th:href="@{'/product/' + ${pageNumber + 1}}"
+                           th:text="${pageNumber + 1}"
+                           th:class="${pageNumber + 1 == productList.number ? 'active page-link' : 'page-link'}">
+                        </a>
+                    </li>
+
+                    <li class="page-item">
+                        <a th:if="${productList.hasNext()}" th:href="@{'/product/' + ${productList.nextPageable().pageNumber + 1}}" class="page-link">Next</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
@@ -118,7 +98,7 @@
     <div class="modal fade" id="add-product">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="" enctype="multipart/form-data" method="post">
+                <form th:action="@{/product/add}" enctype="multipart/form-data" method="post">
 
                     <!-- Modal Header -->
                     <div class="modal-header">
@@ -138,14 +118,15 @@
                                 <label class="login-form__label" for="type">Category</label>
                                 <select name="type" class="form-control" id="type">
                                     <option value="none">--Choose type--</option>
-                                    <option value="Male">Electronics</option>
-                                    <option value="Female">Food</option>
+                                    <th:block th:each="c: ${categoryListModal}">
+                                        <option th:value="${c.category_id}">[[${c.name}]]</option>
+                                    </th:block>
                                 </select>
                             </div>
 
                             <div class="form-group login-form--info">
                                 <label class="login-form__label" for="img-add">Image</label>
-                                <input class="form-control login-form__input" type="file" name="img-add" id="img-add" required>
+                                <input class="form-control login-form__input" maxlength="100MB" type="file" name="img-add" id="img-add" required>
                             </div>
 
                             <div class="form-group login-form--info">
@@ -184,7 +165,7 @@
     <div class="modal fade" tabindex="-1"  id="edit-product">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="" method="post">
+                <form th:action="@{/product/edit}" method="post">
 
                     <!-- Modal Header -->
                     <div class="modal-header">
@@ -195,8 +176,8 @@
                     <!-- Modal body -->
                     <div class="modal-body">
                         <div class="form-group">
-                            <!-- ID item đc click gắn ở đây, kéo lên mục edit chỉnh lại data-id -->
-                            <input type="hidden" name="userIdEdit" id="userId" value="">
+
+                            <input type="hidden" name="productIdEdit" id="productIdEdit" value="">
 
                             <div class="form-group login-form--info">
                                 <label class="login-form__label" for="name-edit">Product name</label>
@@ -207,8 +188,9 @@
                                 <label class="login-form__label" for="type-edit">Category</label>
                                 <select name="type-edit" class="form-control" id="type-edit">
                                     <option value="none">--Choose type--</option>
-                                    <option value="Male">Electronics</option>
-                                    <option value="Female">Food</option>
+                                    <th:block th:each="c: ${categoryListModal}">
+                                        <option th:value="${c.category_id}">[[${c.name}]]</option>
+                                    </th:block>
                                 </select>
                             </div>
 
@@ -253,7 +235,7 @@
     <div class="modal fade" tabindex="-1"  id="delete-product">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="" method="post">
+                <form th:action="@{/product/delete}" method="post">
 
                     <!-- Modal Header -->
                     <div class="modal-header">
@@ -265,9 +247,9 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <!-- ID item đc click gắn ở đây, kéo lên mục delete chỉnh lại data-id -->
-                            <input type="hidden" name="userIdDelete" id="userId-delete" value="">
+                            <input type="hidden" name="productIdDelete" id="productIdDelete" value="">
 
-                            <p>Are you sure to delete product ___ ?</p>
+                            <p id="delete-modal-para">Are you sure to delete product ___ ?</p>
 
                         </div>
                     </div>
@@ -282,7 +264,48 @@
         </div>
     </div>
 
+
+<!--                               th:data-id="${p.product_id}"
+                                   th:data-name="${p.product_name}"
+                                   th:data-import="${p.product_price}"
+                                   th:data-retail="${p.retail_price}"
+                                   th:data-category="${categoryList.getCategory(p.category_id)}"
+                                   th:data-quan="${p.quantity_stock}"
+                                   th:data-date="${p.date_created}"
+                                   th:data-des="${p.description}"
+                                    -->
     <script>
-        // showEditModel();
+        $(document).ready(function() {
+            $('.btn-show-details').on('click', function() {
+                var id = $(this).data('id');
+                var name = $(this).data('name')
+                var import_price = $(this).data('import')
+                var retail = $(this).data('retail')
+                var category = $(this).data('category')
+                var quan = $(this).data('quan')
+                var date = $(this).data('date')
+                var des = $(this).data('des')
+
+                $('#productIdEdit').attr('value', id);
+                $('#name-edit').attr('value', name);
+                $('#Iprice-edit').attr('value', import_price);
+                $('#Rprice-edit').attr('value', retail);
+                // $("#type-edit").val(category);
+                $('#quan-edit').val(quan);
+                $('#des-edit').val(des);
+            });
+        });
+
+        $(document).ready(function() {
+            $('.btn-show-details-delete').on('click', function() {
+                var id = $(this).data('id');
+                // alert(id)
+
+                $('#productIdDelete').attr('value', id);
+                $('#delete-modal-para').html("Are you sure to delete "+ id+" ?");
+
+            });
+        });
+
     </script>
 </div>

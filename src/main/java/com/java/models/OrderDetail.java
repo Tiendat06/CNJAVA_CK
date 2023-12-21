@@ -13,6 +13,8 @@ import lombok.*;
 @NoArgsConstructor
 public class OrderDetail {
     @Id
+    @Column(name = "ORDER_DETAILS_ID")
+    private String order_details_id;
     @Column(name = "ORDER_ID")
     private String order_id;
     @Column(name = "PRODUCT_ID")

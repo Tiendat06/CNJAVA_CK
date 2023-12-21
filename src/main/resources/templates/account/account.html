@@ -63,67 +63,24 @@
                         </tr>
                     </th:block>
 
-
-<!--                    <tr>-->
-<!--                        <th scope="row">2</th>-->
-<!--                        <td>-->
-<!--                            <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">-->
-<!--                            Jake Jason-->
-<!--                        </td>-->
-<!--                        <td class="text-center">-->
-<!--                            <a href="" class="btn btn-outline-secondary main-content-account__role-action">-->
-<!--                                <i class="fa-solid fa-user-tie"></i>-->
-<!--                            </a>-->
-<!--                        </td>-->
-<!--                        <td class="text-center">-->
-<!--                            <a href="" style="width: 45px; height: 42px" class="btn btn-outline-secondary main-content-account__role-action">-->
-<!--                                <i class="fa-solid fa-users"></i>-->
-<!--                            </a>-->
-<!--                        </td>-->
-<!--                        <td class="text-center">-->
-<!--                            <a href="" class="btn btn-outline-secondary main-content-account__role-action">-->
-<!--                                <i class="fa-solid fa-lock"></i>-->
-<!--                            </a>-->
-<!--                        </td>-->
-<!--                        <td class="text-center">-->
-<!--                            <a href="" class="btn btn-outline-secondary main-content-account__role-action">-->
-<!--                                <i class="fa-solid fa-envelope"></i>-->
-<!--                            </a>-->
-<!--                        </td>-->
-
-<!--                    </tr>-->
-
-<!--                    <tr>-->
-<!--                        <th scope="row">3</th>-->
-<!--                        <td>-->
-<!--                            <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">-->
-<!--                            Jake Jason-->
-<!--                        </td>-->
-<!--                        <td class="text-center">-->
-<!--                            <a href="" class="btn btn-outline-secondary main-content-account__role-action">-->
-<!--                                <i class="fa-solid fa-user-tie"></i>-->
-<!--                            </a>-->
-<!--                        </td>-->
-<!--                        <td class="text-center">-->
-<!--                            <a href="" style="width: 45px; height: 42px" class="btn btn-outline-secondary main-content-account__role-action">-->
-<!--                                <i class="fa-solid fa-users"></i>-->
-<!--                            </a>-->
-<!--                        </td>-->
-<!--                        <td class="text-center">-->
-<!--                            <a href="" class="btn btn-outline-secondary main-content-account__role-action">-->
-<!--                                <i class="fa-solid fa-lock"></i>-->
-<!--                            </a>-->
-<!--                        </td>-->
-<!--                        <td class="text-center">-->
-<!--                            <a href="" class="btn btn-outline-secondary main-content-account__role-action">-->
-<!--                                <i class="fa-solid fa-envelope"></i>-->
-<!--                            </a>-->
-<!--                        </td>-->
-
-<!--                    </tr>-->
-
                     </tbody>
                 </table>
+
+                <ul style="float: right" th:if="${accList.totalPages > 1}" class="pagination">
+                    <li class="page-item">
+                        <a th:if="${accList.hasPrevious()}" th:href="@{'/account/' + ${accList.previousPageable().pageNumber + 1}}" class="page-link">Previous</a>
+                    </li>
+                    <li th:each="pageNumber : ${#numbers.sequence(0, accList.totalPages - 1)}" class="page-item">
+                        <a th:href="@{'/account/' + ${pageNumber + 1}}"
+                           th:text="${pageNumber + 1}"
+                           th:class="${pageNumber + 1 == accList.number ? 'active page-link' : 'page-link'}">
+                        </a>
+                    </li>
+
+                    <li class="page-item">
+                        <a th:if="${accList.hasNext()}" th:href="@{'/account/' + ${accList.nextPageable().pageNumber + 1}}" class="page-link">Next</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

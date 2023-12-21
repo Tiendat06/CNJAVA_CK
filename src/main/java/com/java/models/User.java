@@ -28,8 +28,7 @@ public class User {
     @Column(name = "ADDRESS")
     private String address;
     @Column(name = "IMAGE")
-    @Lob
-    private byte[] image;
+    private String image;
     @Column(name = "ACCOUNT_ID")
     private String account_id;
     @Column(name = "BIRTHDAY")

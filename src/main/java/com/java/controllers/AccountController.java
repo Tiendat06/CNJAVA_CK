@@ -1,15 +1,18 @@
 package com.java.controllers;
 
 import com.java.models.Account;
+import com.java.models.User;
 import com.java.service.AccountService;
 import com.java.service.RoleService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,9 +31,16 @@ public class AccountController {
     public String index(Model model){
         model.addAttribute("content", "account");
 
-        List<Object[]> accList = accountService.getRoleAndAccId();
+        return "index";
+    }
+
+    @GetMapping("/{pageNo}")
+    public String accountPagination(@PathVariable int pageNo,
+                                    @RequestParam(defaultValue = "10") int pageSize, Model model){
+        model.addAttribute("content", "account");
+        Page<Object[]> accList = accountService.getAccPagination(pageNo - 1, pageSize);
         model.addAttribute("accList", accList);
-//        model.addAttribute();
+
         return "index";
     }
 
@@ -39,7 +49,7 @@ public class AccountController {
         int roleId = roleService.getRoleByRoleName(roleName).getRole_id();
 
         accountService.updateRoleByAccId(accID, roleId);
-        resp.sendRedirect("/account");
+        resp.sendRedirect("/account/1");
 
     }
 
@@ -48,9 +58,9 @@ public class AccountController {
         boolean newStatus = true;
         if (status) newStatus = false;
 
-        System.out.println("hiii");
+//        System.out.println("hiii");
         accountService.updateStatusByAccId(accID, newStatus);
-        resp.sendRedirect("/account");
+        resp.sendRedirect("/account/1");
 
     }
 

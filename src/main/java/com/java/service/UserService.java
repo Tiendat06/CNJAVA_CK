@@ -23,7 +23,7 @@ public class UserService {
     }
 
     public String getAccIDByUserID(String id){
-        return userRepository.accID(id);
+        return userRepository.accID(id).getAccount_id();
     }
 
     public void deleteByID(String id){

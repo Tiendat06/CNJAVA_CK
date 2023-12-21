@@ -1,9 +1,13 @@
 package com.java.service;
 
 import com.java.models.Account;
+import com.java.models.User;
 import com.java.repository.AccountRepository;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +18,13 @@ public class AccountService {
     @Autowired
     public AccountRepository accountRepository;
 
-    public List<Object[]> getRoleAndAccId(){
-        return accountRepository.getRoleAndAccId();
+//    public List<Object[]> getRoleAndAccId(){
+//        return accountRepository.getRoleAndAccId();
+//    }
+
+    public Page<Object[]> getAccPagination(int pageNo, int pageSize){
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        return accountRepository.getRoleAndAccId(pageable);
     }
 
     public void updateStatusByAccId(String accId, boolean status){

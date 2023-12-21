@@ -60,7 +60,7 @@
                                     <i class="p-2 text-primary fa-solid fa-pen-to-square"></i>
                                 </a>
 
-                                <a target="_self" data-toggle="modal" th:data-id_member="${u.user_id}" data-target="#delete-user">
+                                <a target="_self" class="btn-show-details-delete" data-toggle="modal" th:data-id_member="${u.user_id}" data-target="#delete-user">
                                     <i style="cursor: pointer" class="p-2 text-danger fa-solid fa-trash"></i>
                                 </a>
                             </td>
@@ -70,17 +70,21 @@
                     </tbody>
                 </table>
 
-                <div th:if="${userList.totalPages > 1}">
-                    <div>
-                        <span>Page </span>
-                        <span th:each="pageNumber : ${#numbers.sequence(0, userList.totalPages - 1)}">
-                            <a th:href="@{'/user/' + ${pageNumber + 1}}"
-                               th:text="${pageNumber + 1}"
-                               th:class="${pageNumber + 1 == userList.number ? 'active' : ''}">
-                            </a>
-                        </span>
-                    </div>
-                </div>
+                <ul style="float: right" th:if="${userList.totalPages > 1}" class="pagination">
+                    <li class="page-item">
+                        <a th:if="${userList.hasPrevious()}" th:href="@{'/user/' + ${userList.previousPageable().pageNumber + 1}}" class="page-link">Previous</a>
+                    </li>
+                    <li th:each="pageNumber : ${#numbers.sequence(0, userList.totalPages - 1)}" class="page-item">
+                        <a th:href="@{'/user/' + ${pageNumber + 1}}"
+                           th:text="${pageNumber + 1}"
+                           th:class="${pageNumber + 1 == userList.number ? 'active page-link' : 'page-link'}">
+                        </a>
+                    </li>
+
+                    <li class="page-item">
+                        <a th:if="${userList.hasNext()}" th:href="@{'/user/' + ${userList.nextPageable().pageNumber + 1}}" class="page-link">Next</a>
+                    </li>
+                </ul>
 
             </div>
         </div>
@@ -90,7 +94,7 @@
     <div class="modal fade" id="add-user">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="/user/add" method="post">
+                <form th:action="@{/user/add}" method="post">
 
                     <!-- Modal Header -->
                     <div class="modal-header">
@@ -156,7 +160,7 @@
          aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="/user/edit" method="post">
+                <form th:action="@{/user/edit}" method="post">
 
                     <!-- Modal Header -->
                     <div class="modal-header">
@@ -225,7 +229,7 @@
     <div class="modal fade" tabindex="-1"  id="delete-user">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="/user/delete" method="post">
+                <form th:action="@{/user/delete}" method="post">
 
                     <!-- Modal Header -->
                     <div class="modal-header">
@@ -239,7 +243,7 @@
                             <!-- ID item đc click gắn ở đây, kéo lên mục delete chỉnh lại data-id -->
                             <input type="hidden" name="userIdDelete" id="userIdDelete" value="">
 
-                            <p id="userIdDelete-para">Are you sure to delete user ___ ?</p>
+                            <p id="userIdDelete-para"></p>
 
                         </div>
                     </div>
@@ -286,6 +290,17 @@
                 $('#phone_edit').val(phone);
                 $('#date_edit').val(dob);
                 $('#gender_edit').val(gender);
+
+            });
+        });
+
+        $(document).ready(function() {
+            $('.btn-show-details-delete').on('click', function() {
+                var id = $(this).data('id_member');
+
+                $('#userIdDelete').attr('value', id);
+
+                $('#userIdDelete-para').html('Are you sure to delete '+ id + ' ?');
 
             });
         });

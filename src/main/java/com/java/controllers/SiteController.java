@@ -9,6 +9,7 @@ import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
@@ -26,6 +27,12 @@ public class SiteController implements ErrorController {
 ////            dispatcher.forward(req, resp);
 //            resp.sendRedirect("/log/login");
 //        }
+        return "index";
+    }
+
+    @GetMapping("/home/{id}")
+    public String getProductCategory(@PathVariable int id, Model model){
+        model.addAttribute("content", "home");
         return "index";
     }
 

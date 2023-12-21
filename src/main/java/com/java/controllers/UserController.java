@@ -34,7 +34,7 @@ public class UserController {
 
     @GetMapping("/{pageNo}")
     public String getUserPagination(@PathVariable int pageNo,
-                              @RequestParam(defaultValue = "5") int pageSize, Model model){
+                              @RequestParam(defaultValue = "10") int pageSize, Model model){
         Page<User> userList = userService.getUserPagination(pageNo - 1, pageSize);
         model.addAttribute("content", "user");
         model.addAttribute("userList", userList);
@@ -60,10 +60,11 @@ public class UserController {
         Date date = Date.valueOf(req.getParameter("date"));
         String gender = req.getParameter("gender");
 
-        userService.userRepository.save(new User(maxID, firstname, lastname, email, phone, address, null, "ACC0000001", date, gender));
+        userService.userRepository.save(new User(maxID, firstname, lastname, email, phone, address, "user_profile.png", acc_id, date, gender));
 
         String[] check = email.split("@");
         String pwd = check[0];
+        System.out.println(pwd);
         accountService.accountRepository.save(new Account(acc_id, false, false, false, 2, pwd));
         resp.sendRedirect("/user/1");
     }
@@ -80,7 +81,9 @@ public class UserController {
         Date date = Date.valueOf(req.getParameter("date_edit"));
         String gender = req.getParameter("gender_edit");
 
-        userService.updateUser(user_id, new User(user_id, firstname, lastname, email, phone, address, null, "ACC0000001", date, gender));
+        String maxAccId = accountService.accountRepository.maxID();
+
+        userService.updateUser(user_id, new User(user_id, firstname, lastname, email, phone, address, "user_profile.png", maxAccId, date, gender));
         resp.sendRedirect("/user/1");
     }
 
