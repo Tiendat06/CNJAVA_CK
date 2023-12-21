@@ -14,7 +14,7 @@ import java.util.List;
 public interface AccountRepository extends JpaRepository<Account, String> {
     @Query("select max(account_id) from account ")
     String maxID();
-    @Query("SELECT a.status, r.role_name, u.first_name, u.last_name, u.image, a.account_id " +
+    @Query("SELECT a.status, r.role_name, u.first_name, u.last_name, u.image, a.account_id, a.verify " +
             "FROM account a JOIN role r ON a.role_id = r.role_id JOIN user u ON a.account_id = u.account_id")
     Page<Object[]> getRoleAndAccId(Pageable pageable);
     List<Account> findAll();

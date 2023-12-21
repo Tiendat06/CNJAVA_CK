@@ -27,6 +27,7 @@
                         <th scope="col">Manager</th>
                         <th scope="col">Sales</th>
                         <th scope="col">Lock</th>
+                        <th scope="col">Verified</th>
                         <th scope="col">Resend Mail</th>
                     </tr>
                     </thead>
@@ -53,6 +54,11 @@
                             <td class="text-center">
                                 <a th:href="@{/account/lock/{accID}/{lock}(accID=${a[5]},lock=${a[0]})}" th:class="${not a[0]} ? 'bg-danger text-light btn btn-outline-secondary main-content-account--role-action': 'btn btn-outline-secondary main-content-account--role-action'">
                                     <i class="fa-solid fa-lock"></i>
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a href="" th:class="${not a[6]} ? 'bg-danger text-light btn btn-outline-secondary main-content-account--role-action': 'bg-success-new text-light btn btn-outline-secondary main-content-account--role-action'">
+                                    <i class="fa-solid fa-key"></i>
                                 </a>
                             </td>
                             <td class="text-center">
