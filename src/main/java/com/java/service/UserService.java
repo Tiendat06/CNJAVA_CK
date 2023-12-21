@@ -22,8 +22,8 @@ public class UserService {
         userRepository.updateUser(id, user);
     }
 
-    public String getAccIDByUserID(String id){
-        return userRepository.accID(id).getAccount_id();
+    public User getAccIDByUserID(String id){
+        return userRepository.findUserByID(id);
     }
 
     public void deleteByID(String id){

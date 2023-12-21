@@ -60,12 +60,12 @@ public class UserController {
         Date date = Date.valueOf(req.getParameter("date"));
         String gender = req.getParameter("gender");
 
-        userService.userRepository.save(new User(maxID, firstname, lastname, email, phone, address, "user_profile.png", acc_id, date, gender));
 
         String[] check = email.split("@");
         String pwd = check[0];
         System.out.println(pwd);
         accountService.accountRepository.save(new Account(acc_id, false, false, false, 2, pwd));
+        userService.userRepository.save(new User(maxID, firstname, lastname, email, phone, address, "user_profile.png", acc_id, date, gender));
         resp.sendRedirect("/user/1");
     }
 
@@ -90,10 +90,12 @@ public class UserController {
     @PostMapping("/delete")
     public void deleteUser_POST(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String user_id = req.getParameter("userIdDelete");
-        userService.deleteByID(user_id);
+        User user = userService.getAccIDByUserID(user_id);
 
-        String acc_id = userService.getAccIDByUserID(user_id);
-        accountService.deleteByID(acc_id);
+        userService.deleteByID(user_id);
+//        System.out.println(user_id);
+//        System.out.println(acc_id);
+        accountService.deleteByID(user.getAccount_id());
         resp.sendRedirect("/user/1");
     }
 }
