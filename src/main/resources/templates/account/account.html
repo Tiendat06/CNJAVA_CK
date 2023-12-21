@@ -26,7 +26,7 @@
                         <th scope="col">Full name</th>
                         <th scope="col">Manager</th>
                         <th scope="col">Sales</th>
-                        <th scope="col">Lock account</th>
+                        <th scope="col">Lock</th>
                         <th scope="col">Resend Mail</th>
                     </tr>
                     </thead>
@@ -37,25 +37,26 @@
                             <th scope="row">[[${itemStat.index + 1}]]</th>
                             <td>
                                 <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">
-                                [[${a.}]]
+                                [[${a[2]}]] [[${a[3]}]]
                             </td>
                             <td class="text-center">
-                                <a href="" class="btn btn-outline-secondary main-content-account__role-action">
+<!--                                 btn btn-outline-secondary main-content-account__role-action -->
+                                <a th:href="@{/account/{accID}/Admin(accID=${a[5]})}" th:class="${a[1] == 'Admin' and a[0] == true} ? 'bg-primary-new text-light btn btn-outline-secondary main-content-account--role-action': 'btn btn-outline-secondary main-content-account--role-action' ">
                                     <i class="fa-solid fa-user-tie"></i>
                                 </a>
                             </td>
                             <td class="text-center">
-                                <a href="" style="width: 45px; height: 42px" class="btn btn-outline-secondary main-content-account__role-action">
+                                <a th:href="@{/account/{accID}/Staff(accID=${a[5]})}" style="width: 45px; height: 42px" th:class="${a[1] == 'Staff' and a[0] == true} ? 'bg-primary-new text-light btn btn-outline-secondary main-content-account--role-action': 'btn btn-outline-secondary main-content-account--role-action'">
                                     <i class="fa-solid fa-users"></i>
                                 </a>
                             </td>
                             <td class="text-center">
-                                <a href="" class="btn btn-outline-secondary main-content-account__role-action">
+                                <a th:href="@{/account/lock/{accID}/{lock}(accID=${a[5]},lock=${a[0]})}" th:class="${not a[0]} ? 'bg-danger text-light btn btn-outline-secondary main-content-account--role-action': 'btn btn-outline-secondary main-content-account--role-action'">
                                     <i class="fa-solid fa-lock"></i>
                                 </a>
                             </td>
                             <td class="text-center">
-                                <a href="" class="btn btn-outline-secondary main-content-account__role-action">
+                                <a style="width: 43px; height: 41px" href="" class="btn btn-outline-secondary main-content-account--role-action">
                                     <i class="fa-solid fa-envelope"></i>
                                 </a>
                             </td>
@@ -63,63 +64,63 @@
                     </th:block>
 
 
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>
-                            <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">
-                            Jake Jason
-                        </td>
-                        <td class="text-center">
-                            <a href="" class="btn btn-outline-secondary main-content-account__role-action">
-                                <i class="fa-solid fa-user-tie"></i>
-                            </a>
-                        </td>
-                        <td class="text-center">
-                            <a href="" style="width: 45px; height: 42px" class="btn btn-outline-secondary main-content-account__role-action">
-                                <i class="fa-solid fa-users"></i>
-                            </a>
-                        </td>
-                        <td class="text-center">
-                            <a href="" class="btn btn-outline-secondary main-content-account__role-action">
-                                <i class="fa-solid fa-lock"></i>
-                            </a>
-                        </td>
-                        <td class="text-center">
-                            <a href="" class="btn btn-outline-secondary main-content-account__role-action">
-                                <i class="fa-solid fa-envelope"></i>
-                            </a>
-                        </td>
+<!--                    <tr>-->
+<!--                        <th scope="row">2</th>-->
+<!--                        <td>-->
+<!--                            <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">-->
+<!--                            Jake Jason-->
+<!--                        </td>-->
+<!--                        <td class="text-center">-->
+<!--                            <a href="" class="btn btn-outline-secondary main-content-account__role-action">-->
+<!--                                <i class="fa-solid fa-user-tie"></i>-->
+<!--                            </a>-->
+<!--                        </td>-->
+<!--                        <td class="text-center">-->
+<!--                            <a href="" style="width: 45px; height: 42px" class="btn btn-outline-secondary main-content-account__role-action">-->
+<!--                                <i class="fa-solid fa-users"></i>-->
+<!--                            </a>-->
+<!--                        </td>-->
+<!--                        <td class="text-center">-->
+<!--                            <a href="" class="btn btn-outline-secondary main-content-account__role-action">-->
+<!--                                <i class="fa-solid fa-lock"></i>-->
+<!--                            </a>-->
+<!--                        </td>-->
+<!--                        <td class="text-center">-->
+<!--                            <a href="" class="btn btn-outline-secondary main-content-account__role-action">-->
+<!--                                <i class="fa-solid fa-envelope"></i>-->
+<!--                            </a>-->
+<!--                        </td>-->
 
-                    </tr>
+<!--                    </tr>-->
 
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>
-                            <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">
-                            Jake Jason
-                        </td>
-                        <td class="text-center">
-                            <a href="" class="btn btn-outline-secondary main-content-account__role-action">
-                                <i class="fa-solid fa-user-tie"></i>
-                            </a>
-                        </td>
-                        <td class="text-center">
-                            <a href="" style="width: 45px; height: 42px" class="btn btn-outline-secondary main-content-account__role-action">
-                                <i class="fa-solid fa-users"></i>
-                            </a>
-                        </td>
-                        <td class="text-center">
-                            <a href="" class="btn btn-outline-secondary main-content-account__role-action">
-                                <i class="fa-solid fa-lock"></i>
-                            </a>
-                        </td>
-                        <td class="text-center">
-                            <a href="" class="btn btn-outline-secondary main-content-account__role-action">
-                                <i class="fa-solid fa-envelope"></i>
-                            </a>
-                        </td>
+<!--                    <tr>-->
+<!--                        <th scope="row">3</th>-->
+<!--                        <td>-->
+<!--                            <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">-->
+<!--                            Jake Jason-->
+<!--                        </td>-->
+<!--                        <td class="text-center">-->
+<!--                            <a href="" class="btn btn-outline-secondary main-content-account__role-action">-->
+<!--                                <i class="fa-solid fa-user-tie"></i>-->
+<!--                            </a>-->
+<!--                        </td>-->
+<!--                        <td class="text-center">-->
+<!--                            <a href="" style="width: 45px; height: 42px" class="btn btn-outline-secondary main-content-account__role-action">-->
+<!--                                <i class="fa-solid fa-users"></i>-->
+<!--                            </a>-->
+<!--                        </td>-->
+<!--                        <td class="text-center">-->
+<!--                            <a href="" class="btn btn-outline-secondary main-content-account__role-action">-->
+<!--                                <i class="fa-solid fa-lock"></i>-->
+<!--                            </a>-->
+<!--                        </td>-->
+<!--                        <td class="text-center">-->
+<!--                            <a href="" class="btn btn-outline-secondary main-content-account__role-action">-->
+<!--                                <i class="fa-solid fa-envelope"></i>-->
+<!--                            </a>-->
+<!--                        </td>-->
 
-                    </tr>
+<!--                    </tr>-->
 
                     </tbody>
                 </table>

@@ -14,9 +14,17 @@ public class AccountService {
     @Autowired
     public AccountRepository accountRepository;
 
-//    public List<Object[]> getRoleAndAccId(){
-//        return accountRepository.getRoleAndAccId();
-//    }
+    public List<Object[]> getRoleAndAccId(){
+        return accountRepository.getRoleAndAccId();
+    }
+
+    public void updateStatusByAccId(String accId, boolean status){
+        accountRepository.updateStatusByAccID(accId, status);
+    }
+
+    public void updateRoleByAccId(String id, int roleId){
+        accountRepository.updateRoleByAccID(id, roleId);
+    }
 
     public List<Account> getAllAccount(){
         return accountRepository.findAll();

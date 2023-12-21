@@ -12,11 +12,29 @@ import java.util.List;
 public interface AccountRepository extends JpaRepository<Account, String> {
     @Query("select max(account_id) from account ")
     String maxID();
-//    @Query("select r.role_name, a.account_id, a.status from account a join role r join user u where a.role_id = r.role_id and a.account_id = u.account_id")
-//    List<Object[]> getRoleAndAccId();
+    @Query("SELECT a.status, r.role_name, u.first_name, u.last_name, u.image, a.account_id " +
+            "FROM account a JOIN role r ON a.role_id = r.role_id JOIN user u ON a.account_id = u.account_id")
+    List<Object[]> getRoleAndAccId();
     List<Account> findAll();
+
+    default void updateRoleByAccID(String id, int roleId){
+        findById(id).ifPresent(a -> {
+            a.setRole_id(roleId);
+            a.setStatus(true);
+            save(a);
+        });
+    }
+
+    default void updateStatusByAccID(String id, boolean status){
+        findById(id).ifPresent(a -> {
+            a.setStatus(status);
+            save(a);
+        });
+    }
+
     @Query("SELECT a FROM account a WHERE a.account_id = :accountId")
     Account findByAccountId(@Param("accountId") String accountId);
+
 }
 
 

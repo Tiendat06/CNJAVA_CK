@@ -3,6 +3,7 @@
     --text-link: #939393;
     --header-height: 90px;
     --side-bar-width: 80px;
+    --table-heading: #3498db;
 }
 
 *{
@@ -16,12 +17,15 @@ html{
     /* line-height: 1.6rem; */
     font-family: 'Roboto', sans-serif;
     box-sizing: border-box;
-    --table-heading: #3498db;
     /* overflow-x: auto; */
 }
 
 .bg-success-new{
     background-color: #2ecc71;
+}
+
+.bg-primary-new{
+    background-color: var(--table-heading);
 }
 
 body{

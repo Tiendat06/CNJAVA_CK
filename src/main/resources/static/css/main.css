@@ -109,7 +109,7 @@
     overflow: scroll;
 }
 
-.main-content-account__role-action{
+.main-content-account--role-action{
     width: 40px;
     height: 40px;
     border-radius: 50%;

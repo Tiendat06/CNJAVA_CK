@@ -11,4 +11,7 @@ public interface RoleRepository extends JpaRepository<Role, Integer> {
 
     @Query("SELECT r FROM role r WHERE r.role_id = :roleId")
     Role findByRoleId(@Param("roleId") int roleId);
+
+    @Query("SELECT r FROM role r WHERE r.role_name = :roleName")
+    Role findRoleByRole_name(@Param("roleName") String roleName);
 }
