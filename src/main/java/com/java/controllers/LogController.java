@@ -1,9 +1,13 @@
 package com.java.controllers;
 
 
+import com.java.models.Account;
+import com.java.repository.AccountRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -12,12 +16,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
 
 @Controller
 @RequestMapping("/log")
 public class LogController {
+    @Autowired
+    private AccountRepository accountRepository;
 
     @GetMapping("/login")
     public String login_GET() {
@@ -56,6 +63,24 @@ public class LogController {
         }
         return "redirect:/";
         }
+
+    @GetMapping("/verify")
+    @ResponseBody
+    public String verifyAccount(@Param("code") String code, Model m) {
+        Account account = accountRepository.findByVerifyCode(code);
+        if (account==null)
+            return "Not found";
+
+//        if (f) {
+//            m.addAttribute("msg", "Sucessfully your account is verified");
+//        } else {
+//            m.addAttribute("msg", "May be your vefication code is incorrect or already veified ");
+//        }
+
+//        return "message";
+        accountRepository.updateStatusAndVerifyCode(account.getAccount_id());
+        return "Verify successful" + account.toString();
+    }
 
 
 }

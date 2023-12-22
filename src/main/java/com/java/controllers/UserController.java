@@ -7,7 +7,9 @@ import com.java.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/user")
@@ -25,6 +28,10 @@ public class UserController {
     @Autowired
     public AccountService accountService;
 
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     @GetMapping("")
     public String index(Model model){
         model.addAttribute("content", "user");
@@ -34,7 +41,7 @@ public class UserController {
 
     @GetMapping("/{pageNo}")
     public String getUserPagination(@PathVariable int pageNo,
-                              @RequestParam(defaultValue = "10") int pageSize, Model model){
+                                    @RequestParam(defaultValue = "10") int pageSize, Model model){
         Page<User> userList = userService.getUserPagination(pageNo - 1, pageSize);
         model.addAttribute("content", "user");
         model.addAttribute("userList", userList);
@@ -60,12 +67,18 @@ public class UserController {
         Date date = Date.valueOf(req.getParameter("date"));
         String gender = req.getParameter("gender");
 
-
         String[] check = email.split("@");
-        String pwd = check[0];
+        String pwd = bCryptPasswordEncoder().encode(check[0]);
         System.out.println(pwd);
-        accountService.accountRepository.save(new Account(acc_id, false, false, false, 2, pwd));
-        userService.userRepository.save(new User(maxID, firstname, lastname, email, phone, address, "user_profile.png", acc_id, date, gender));
+        accountService.accountRepository.save(new Account(acc_id, false, false, false, 2, pwd, UUID.randomUUID().toString()));
+
+        User user = new User(maxID, firstname, lastname, email, phone, address, "user_profile.png", acc_id, date, gender);
+        userService.userRepository.save(user);
+
+        String url = req.getRequestURL().toString();
+        url = url.replace(req.getServletPath(), "");
+        userService.sendEmail(user, url);
+
         resp.sendRedirect("/user/1");
     }
 

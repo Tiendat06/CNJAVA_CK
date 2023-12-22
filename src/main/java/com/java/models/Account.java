@@ -27,4 +27,6 @@ public class Account {
     private int role_id;
     @Column(name = "PASSWORD")
     private String password;
+    @Column(name = "VERIFY_CODE")
+    private String verify_code;
 }

@@ -33,7 +33,7 @@ public class ApplicationSecurity {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http
                 .authorizeHttpRequests(auth -> auth.
-                        requestMatchers("/css/**","/font/**","/img/**","/js/**").permitAll()
+                        requestMatchers("/css/**","/font/**","/img/**","/js/**","/log/verify").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form.loginPage("/log/login").permitAll())
                 .logout(logout -> logout
