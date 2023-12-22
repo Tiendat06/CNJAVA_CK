@@ -44,4 +44,10 @@ public class SiteController implements ErrorController {
 
         return "/error/error";
     }
+
+    @GetMapping("/verified")
+    public String verified(){
+
+        return "/log/verified";
+    }
 }

@@ -33,26 +33,47 @@
                     </thead>
 
                     <tbody>
+                    <th:block th:each="c, itemStat: ${customerList}">
                         <tr>
-                            <th scope="row">1</th>
+                            <th scope="row">[[${itemStat.index + 1}]]</th>
                             <td>
                                 <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">
-                                Jake Jason
+                                [[${c.customer_name}]]
                             </td>
-                            <td>0123456789</td>
-                            <td>jake@gmail.com</td>
-                            <td>TP.HCM</td>
-                            <td>29/09/2003</td>
+                            <td>[[${c.customer_phone}]]</td>
+                            <td>[[${c.customer_email}]]</td>
+                            <td>[[${c.customer_address}]]</td>
+                            <td>[[${c.date_created}]]</td>
                             <td class="text-center">
-                                <a data-toggle="modal" id="customer" data-id="123" data-target="#purchase-history">
+                                <a data-toggle="modal" th:data-id="${c.customer_id}" class="btn btn-show-details" data-target="#purchase-history">
                                     <i style="cursor: pointer" class="p-2 text-primary fa-solid fa-eye"></i>
                                 </a>
-
+<!--                                <a data-toggle="modal" th:data-id="${c.customer_id}" class="btn btn-show-details-history" data-target="#order-detail">-->
+<!--                                    <i style="cursor: pointer" class="p-2 text-primary fa-solid fa-eye"></i>-->
+<!--                                </a>-->
                             </td>
                         </tr>
+                    </th:block>
 
                     </tbody>
                 </table>
+
+                <ul style="float: right" th:if="${customerList.totalPages > 1}" class="pagination">
+                    <li class="page-item">
+                        <a th:if="${customerList.hasPrevious()}" th:href="@{'/user/' + ${customerList.previousPageable().pageNumber + 1}}" class="page-link">Previous</a>
+                    </li>
+                    <li th:each="pageNumber : ${#numbers.sequence(0, customerList.totalPages - 1)}" class="page-item">
+                        <a th:href="@{'/customer/' + ${pageNumber + 1}}"
+                           th:text="${pageNumber + 1}"
+                           th:class="${pageNumber + 1 == customerList.number ? 'active page-link' : 'page-link'}">
+                        </a>
+                    </li>
+
+                    <li class="page-item">
+                        <a th:if="${customerList.hasNext()}" th:href="@{'/user/' + ${customerList.nextPageable().pageNumber + 1}}" class="page-link">Next</a>
+                    </li>
+                </ul>
+
             </div>
 
         </div>
@@ -69,6 +90,7 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
 
+<!--                <input type="hidden" id="purchaseCusId" name="">-->
                     <!-- Modal body -->
                     <div class="modal-body" style="overflow-y: scroll">
                         <div class="form-group">
@@ -85,22 +107,24 @@
                                 </tr>
                                 </thead>
 
-                                <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>29/09/2003</td>
-                                    <td>100$</td>
-                                    <td>150$</td>
-                                    <td>50$</td>
-                                    <td>3</td>
-                                    <td class="text-center">
-                                        <a data-toggle="modal" id="" data-id="123" data-target="#order-detail">
-                                            <i style="cursor: pointer" class="p-2 text-primary fa-solid fa-eye"></i>
-                                        </a>
+                                <tbody id="tbody">
 
-                                    </td>
-                                </tr>
+<!--                                <th:block th:each="c: ${purchaseList.getPurchaseHistory('')}">-->
+<!--                                    <tr>-->
+<!--                                        <th scope="row">1</th>-->
+<!--                                        <td>29/09/2003</td>-->
+<!--                                        <td>100$</td>-->
+<!--                                        <td>150$</td>-->
+<!--                                        <td>50$</td>-->
+<!--                                        <td>3</td>-->
+<!--                                        <td class="text-center">-->
+<!--                                            <a data-toggle="modal" id="" data-id="123" data-target="#order-detail">-->
+<!--                                                <i style="cursor: pointer" class="p-2 text-primary fa-solid fa-eye"></i>-->
+<!--                                            </a>-->
 
+<!--                                        </td>-->
+<!--                                    </tr>-->
+<!--                                </th:block>-->
                                 </tbody>
                             </table>
                         </div>
@@ -130,39 +154,48 @@
                         <div class="form-group">
                             <input type="hidden" id="order-id" name="" value="">
                             <table class="main-content-user__table table table-striped table-bordered table-hover">
-                                <tbody>
+                                <thead class="main-content-user__thead text-white text-center">
                                 <tr>
-                                    <th scope="row">1</th>
-                                    <td>
-                                        <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">
-                                        Pho Bo
-                                    </td>
-                                    <td>x3</td>
-                                    <td>100$</td>
-                                    <td>This is Pho from VietNam</td>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Product name</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Total Amount</th>
+                                    <th scope="col">Description</th>
                                 </tr>
+                                </thead>
+                                <tbody id="tbody-details">
+<!--                                <tr>-->
+<!--                                    <th scope="row">1</th>-->
+<!--                                    <td>-->
+<!--                                        <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">-->
+<!--                                        Pho Bo-->
+<!--                                    </td>-->
+<!--                                    <td>x3</td>-->
+<!--                                    <td>100$</td>-->
+<!--                                    <td>This is Pho from VietNam</td>-->
+<!--                                </tr>-->
 
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>
-                                        <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">
-                                        Pho Bo
-                                    </td>
-                                    <td>x3</td>
-                                    <td>100$</td>
-                                    <td>This is Pho from VietNam</td>
-                                </tr>
+<!--                                <tr>-->
+<!--                                    <th scope="row">2</th>-->
+<!--                                    <td>-->
+<!--                                        <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">-->
+<!--                                        Pho Bo-->
+<!--                                    </td>-->
+<!--                                    <td>x3</td>-->
+<!--                                    <td>100$</td>-->
+<!--                                    <td>This is Pho from VietNam</td>-->
+<!--                                </tr>-->
 
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>
-                                        <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">
-                                        Pho Bo
-                                    </td>
-                                    <td>x3</td>
-                                    <td>100$</td>
-                                    <td>This is Pho from VietNam</td>
-                                </tr>
+<!--                                <tr>-->
+<!--                                    <th scope="row">3</th>-->
+<!--                                    <td>-->
+<!--                                        <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">-->
+<!--                                        Pho Bo-->
+<!--                                    </td>-->
+<!--                                    <td>x3</td>-->
+<!--                                    <td>100$</td>-->
+<!--                                    <td>This is Pho from VietNam</td>-->
+<!--                                </tr>-->
 
 
                                 </tbody>
@@ -180,6 +213,47 @@
     </div>
 
     <script>
-        showModalInCustomer();
+        // showModalInCustomer();
+        $(document).ready(function() {
+            var cusId = null;
+            $('.btn-show-details').on('click', function() {
+                cusId = $(this).data('id');
+                // console.log(cusId)
+
+                // $("#purchaseCusId").attr('value', cusId)
+                $.ajax({
+                    type: 'GET',
+                    url: '/customer/purchase-history/' + cusId,
+                    success: function(response) {
+
+                        $('#tbody').html(response);
+                        $('.btn-show-details-history').on('click', function() {
+                            cusId = $(this).data('id');
+                            console.log(cusId)
+                            console.log("hiii")
+
+                            $("#order-id").attr('value', cusId)
+                            $.ajax({
+                                type: 'GET',
+                                url: '/customer/order_details/' + cusId,
+                                success: function(response) {
+
+                                    $('#tbody-details').html(response);
+                                    // $('#customerModal').modal('show');
+                                },
+                                error: function(error) {
+                                    console.error('Error:', error);
+                                }
+                            });
+                        });
+                        // $('#customerModal').modal('show');
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+        });
+
     </script>
 </div>

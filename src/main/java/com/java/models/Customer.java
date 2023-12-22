@@ -26,5 +26,5 @@ public class Customer {
     @Column(name = "EMAIL")
     private String customer_email;
     @Column(name = "date_created")
-    private Timestamp datae_created;
+    private Timestamp date_created;
 }

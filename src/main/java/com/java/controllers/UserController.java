@@ -6,9 +6,12 @@ import com.java.service.AccountService;
 import com.java.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,7 +41,7 @@ public class UserController {
     public String index(Model model){
         model.addAttribute("content", "user");
 
-        return "index";
+        return "redirect:/user/1";
     }
 
     @GetMapping("/{pageNo}")
@@ -53,7 +56,18 @@ public class UserController {
     @GetMapping("/profile")
     public String user_profile_GET(Model model){
         model.addAttribute("content", "profile");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        auth.getAuthorities();
+        List<Object[]> user = userService.getUserProfile("USE0000001");
+//        System.out.println(user.toString());
+        model.addAttribute("userInfo", user);
+
         return "index";
+    }
+
+    @GetMapping("/profile/update")
+    public void user_profile_update_GET(Model model){
+
     }
 
     @PostMapping("/add")

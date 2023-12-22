@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head lang="en" th:include="fragments/header :: header">
+</head>
+<body class="bg-light m-auto" style="height:100vh">
+    <div class="container verified h-100 d-flex justify-content-center align-items-center">
+        <div class="row flex-wrap p-5 w-50" style="background-color: white; border-radius: 10px">
+            <div style="width: 40px; height: 40px; border-radius: 50%" class="text-light bg-success-new d-flex justify-content-center align-items-center p-5 text-center m-auto">
+                <i style="font-size: 3rem;" class="fa-regular fa-thumbs-up"></i>
+            </div>
+
+            <div class="verified-title col-lg-12 text-center mt-2">
+                <h4 style="text-transform: uppercase" class="">Verification Success</h4>
+            </div>
+
+            <div class="text-secondary verified-para col-lg-12 text-center">
+                <p>Thank you for your support, we have successfully verified your email address</p>
+                <p>You can now proceed to the home page</p>
+            </div>
+
+            <div class="verified-link col-lg-12 text-center">
+                <a class="text-dark" href="">
+                    <i class="fa-solid fa-house"></i>
+                    TAKE ME HOME</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

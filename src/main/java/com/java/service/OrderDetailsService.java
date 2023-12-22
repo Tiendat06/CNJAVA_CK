@@ -13,6 +13,15 @@ public class OrderDetailsService {
     public OrderDetailsRepository orderDetailsRepository;
 
     public List<OrderDetail> getAllOrderDetails(String id){
+
         return orderDetailsRepository.checkProduct(id);
+    }
+
+    public List<Object[]> getPurchaseHistoryDetailsByCusId(String id){
+        return orderDetailsRepository.getPurchaseHistoryDetailsByCustomerId(id);
+    }
+
+    public List<Object[]> getPurchaseHistoryListByCustomerId(String id){
+        return orderDetailsRepository.getPurchaseHistoryListByCustomerId(id);
     }
 }

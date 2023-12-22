@@ -8,7 +8,7 @@ import lombok.*;
 import java.sql.Timestamp;
 import java.util.Date;
 
-@Entity(name = "order")
+@Entity(name = "orders")
 @Getter
 @Setter
 @ToString

@@ -40,7 +40,7 @@ public class ProductController {
     @GetMapping("")
     public String index(Model model){
         model.addAttribute("content", "product");
-        return "index";
+        return "redirect:/product/1";
     }
 
     @PostMapping("/add")

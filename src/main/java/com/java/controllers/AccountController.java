@@ -30,7 +30,7 @@ public class AccountController {
     @GetMapping("")
     public String index(Model model){
         model.addAttribute("content", "account");
-        return "index";
+        return "redirect:/account/1";
     }
 
     @GetMapping("/{pageNo}")

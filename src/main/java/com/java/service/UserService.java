@@ -12,6 +12,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
     @Autowired
@@ -33,6 +35,10 @@ public class UserService {
 
     public User getAccIDByUserID(String id){
         return userRepository.findUserByID(id);
+    }
+
+    public List<Object[]> getUserProfile(String id){
+        return userRepository.findUserProfileByUserId(id);
     }
 
     public void deleteByID(String id){

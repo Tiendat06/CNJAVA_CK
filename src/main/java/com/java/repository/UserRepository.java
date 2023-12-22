@@ -23,6 +23,10 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query("select u from user u where u.user_id = :user_id")
     User findUserByID(@Param("user_id") String user_id);
 
+    @Query("select u.first_name, u.last_name, u.gender, u.birthday, u.email, u.address, u.phone_number, u.image, " +    // 7
+            "r.role_id, r.role_name, u.user_id from user u, account a, role r where u.account_id = a.account_id and a.role_id = r.role_id " +
+            "and u.user_id = :user_id")    // 9
+    List<Object[]> findUserProfileByUserId(@Param("user_id") String user_id);
     Page<User> findAll(Pageable pageable);
 
     default void updateUser(String id, User user){
@@ -37,6 +41,10 @@ public interface UserRepository extends JpaRepository<User, String> {
 
             save(u);
         });
+    }
+
+    default void updateProfile(String id, User user, Account acc){
+
     }
 
     User findByEmail(String email);
