@@ -17,11 +17,15 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
 
+
     @Query("select max(user_id) from user ")
     String maxID();
 
     @Query("select u from user u where u.user_id = :user_id")
     User findUserByID(@Param("user_id") String user_id);
+
+    @Query("select u from user u where u.account_id = :account_id")
+    User findUserByAccount_id(@Param("account_id") String account_id);
 
     @Query("select u.first_name, u.last_name, u.gender, u.birthday, u.email, u.address, u.phone_number, u.image, " +    // 7
             "r.role_id, r.role_name, u.user_id from user u, account a, role r where u.account_id = a.account_id and a.role_id = r.role_id " +

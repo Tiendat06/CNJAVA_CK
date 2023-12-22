@@ -24,14 +24,29 @@ public interface AccountRepository extends JpaRepository<Account, String> {
     @Query("SELECT a.verify_code FROM account a JOIN user u ON a.account_id = u.account_id WHERE u.user_id = :user_id")
     String findVerifyCodeByUserId(@Param("user_id") String user_id);
 
+    @Query("SELECT a.verify_code FROM account a WHERE a.verify_code = :verify_code")
+    String findVerifyAccount_id(@Param("verify_code") String verify_code);
+
 
     @Query("SELECT a FROM account a WHERE a.verify_code = :verify_code")
     Account findByVerifyCode(@Param("verify_code") String verify_code);
 
     @Modifying
     @Transactional
-    @Query("UPDATE account a SET a.status = true, a.verify_code = null WHERE a.account_id = :account_id")
+    @Query("UPDATE account a SET a.verify = true, a.verify_code = null WHERE a.account_id = :account_id")
     void updateStatusAndVerifyCode(@Param("account_id") String account_id);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE account a SET a.verify_code = :verify_code WHERE a.account_id = :account_id")
+    void updateVerifyCode(@Param("account_id") String account_id, @Param("verify_code") String verify_code);
+
+
+//    @Query("SELECT u.email FROM user u JOIN account a ON a.account_id = u.account_id WHERE a.account_id = :account_id")
+//    String findEmailByAccount_id(@Param("user_id") String account_id);
+    @Query("SELECT u.email FROM user u JOIN account a ON a.account_id = u.account_id WHERE a.account_id = :account_id")
+    String findEmailByAccount_id(@Param("account_id") String account_id);
+
 
 
     default void updateRoleByAccID(String id, int roleId){

@@ -2,11 +2,17 @@ package com.java.controllers;
 
 import com.java.models.Account;
 import com.java.models.User;
+import com.java.repository.AccountRepository;
 import com.java.service.AccountService;
 import com.java.service.RoleService;
+import com.java.service.UserService;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -26,6 +34,10 @@ public class AccountController {
 
     @Autowired
     public RoleService roleService;
+    @Autowired
+    public UserService userService;
+    @Autowired
+    public AccountRepository accountRepository;
 
     @GetMapping("")
     public String index(Model model){
@@ -62,5 +74,26 @@ public class AccountController {
         resp.sendRedirect("/account/1");
 
     }
+
+    @GetMapping("/sendEmail/{accID}")
+    public void resendEmail(@PathVariable String accID, HttpServletResponse resp, HttpServletRequest req) throws IOException {
+        User user = userService.userRepository.findUserByAccount_id(accID);
+        String url = req.getRequestURL().toString();
+        url = url.replace(req.getServletPath(), "");
+
+        String verify_code = accountRepository.findVerifyCodeByUserId(user.getUser_id());
+        String[] parts = verify_code.split("-",2);
+        String uuid = parts.length >= 2 ? parts[1] : null;
+        LocalDateTime now = LocalDateTime.now();
+        String formattedDateTime = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+
+        verify_code = formattedDateTime + "-" + uuid;
+        accountRepository.updateVerifyCode(user.getAccount_id(),verify_code);
+
+        userService.sendEmail(user,url);
+        resp.sendRedirect("/account/1");
+
+    }
+
 
 }

@@ -89,7 +89,7 @@ public class UserController {
         LocalDateTime now = LocalDateTime.now();
         String formattedDateTime = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
 
-        accountService.accountRepository.save(new Account(acc_id, false, false, false, 2, pwd, formattedDateTime + "-" + UUID.randomUUID()));
+        accountService.accountRepository.save(new Account(acc_id, false, true, true, 2, pwd, formattedDateTime + "-" + UUID.randomUUID()));
 
             User user = new User(maxID, firstname, lastname, email, phone, address, "user_profile.png", acc_id, date, gender);
         userService.userRepository.save(user);

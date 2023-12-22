@@ -28,7 +28,6 @@ public class MyUserDetailsService implements UserDetailsService {
         Role role = roleRepository.findByRoleId(account.getRole_id());
         CombinedUser combinedUser = new CombinedUser(user,account,role);
 
-
         return new MyUserDetail(combinedUser);
     }
 }

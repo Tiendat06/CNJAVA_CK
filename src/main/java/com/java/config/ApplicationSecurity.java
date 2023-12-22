@@ -19,6 +19,7 @@ public class ApplicationSecurity {
     @Autowired
     UserDetailsService userDetailsService;
 
+
     @Bean
     AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider
@@ -33,12 +34,11 @@ public class ApplicationSecurity {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http
                 .authorizeHttpRequests(auth -> auth.
-                        requestMatchers("/css/**","/font/**","/img/**","/js/**","/log/verify").permitAll()
+                        requestMatchers("/css/**","/font/**","/img/**","/js/**","/log/verify","/log/success","/log/fail").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form.loginPage("/log/login").permitAll())
                 .logout(logout -> logout
                         .logoutUrl("/log/logout")
-                        .logoutSuccessUrl("/")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                         .permitAll())

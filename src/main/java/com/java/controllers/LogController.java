@@ -8,9 +8,12 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,12 +31,20 @@ import java.time.format.DateTimeFormatter;
 public class LogController {
     @Autowired
     private AccountRepository accountRepository;
-
-
     @GetMapping("/login")
     public String login_GET() {
         return  "/log/login";
     }
+
+    @GetMapping("/success")
+    public String success_GET() {
+        return "/log/verified";
+    }
+    @GetMapping("/fail")
+    public String fail_GET() {
+        return "/log/failed";
+    }
+
 
     @PostMapping("/login")
     public String login_POST(Model model, HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -59,39 +70,39 @@ public class LogController {
 //    public void logout_GET(HttpServletResponse resp) throws IOException {
 //        resp.sendRedirect("/");
 //    }
-        @GetMapping("/logout")
-        public String logout(HttpServletRequest request, HttpServletResponse response) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null) {
-            new SecurityContextLogoutHandler().logout(request, response, auth);
-        }
-        return "redirect:/";
-        }
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    if (auth != null) {
+        new SecurityContextLogoutHandler().logout(request, response, auth);
+    }
+    return "redirect:/";
+    }
 
     @GetMapping("/verify")
-    @ResponseBody
-    public String verifyAccount(@Param("code") String code, Model m) {
+    public String verifyAccount(@Param("code") String code, Model m, HttpServletRequest request) {
         Account account = accountRepository.findByVerifyCode(code);
         if (account==null)
-            return "Not found";
+            return "redirect:/log/fail";
 
         LocalDateTime parsedDateTime = LocalDateTime.parse(code.split("-")[0], DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
         Duration duration = Duration.between(parsedDateTime, LocalDateTime.now());
         long secondsDifference = Math.abs(duration.getSeconds());
 
         if (secondsDifference > 60){
-            return "Time verify is expired";
+            return "redirect:/log/fail";
         }
-//        if (f) {
-//            m.addAttribute("msg", "Sucessfully your account is verified");
-//        } else {
-//            m.addAttribute("msg", "May be your vefication code is incorrect or already veified ");
-//        }
 
-//        return "message";
         accountRepository.updateStatusAndVerifyCode(account.getAccount_id());
-        return "Verify successful" + account.toString();
-    }
+        try {
+            String username = accountRepository.findEmailByAccount_id(account.getAccount_id());
+            String password = username.split("@")[0];
+            request.login(username, password);
+            return "redirect:/log/success";
+        } catch (Exception exception) {
+            return "redirect:/log/fail";
+        }
 
+    }
 
 }
