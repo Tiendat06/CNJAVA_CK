@@ -19,12 +19,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Controller
 @RequestMapping("/log")
 public class LogController {
     @Autowired
     private AccountRepository accountRepository;
+
 
     @GetMapping("/login")
     public String login_GET() {
@@ -71,6 +75,13 @@ public class LogController {
         if (account==null)
             return "Not found";
 
+        LocalDateTime parsedDateTime = LocalDateTime.parse(code.split("-")[0], DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        Duration duration = Duration.between(parsedDateTime, LocalDateTime.now());
+        long secondsDifference = Math.abs(duration.getSeconds());
+
+        if (secondsDifference > 60){
+            return "Time verify is expired";
+        }
 //        if (f) {
 //            m.addAttribute("msg", "Sucessfully your account is verified");
 //        } else {

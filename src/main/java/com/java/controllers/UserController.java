@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -69,10 +71,13 @@ public class UserController {
 
         String[] check = email.split("@");
         String pwd = bCryptPasswordEncoder().encode(check[0]);
-        System.out.println(pwd);
-        accountService.accountRepository.save(new Account(acc_id, false, false, false, 2, pwd, UUID.randomUUID().toString()));
 
-        User user = new User(maxID, firstname, lastname, email, phone, address, "user_profile.png", acc_id, date, gender);
+        LocalDateTime now = LocalDateTime.now();
+        String formattedDateTime = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+
+        accountService.accountRepository.save(new Account(acc_id, false, false, false, 2, pwd, formattedDateTime + "-" + UUID.randomUUID()));
+
+            User user = new User(maxID, firstname, lastname, email, phone, address, "user_profile.png", acc_id, date, gender);
         userService.userRepository.save(user);
 
         String url = req.getRequestURL().toString();
