@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
@@ -20,16 +21,16 @@ public interface OrderDetailsRepository extends JpaRepository<OrderDetail, Strin
             "where odt.order_id = ord.order_id and odt.order_id = tra.order_id and ord.order_id = tra.order_id and " +
             "odt.product_id = pro.product_id and ord.customer_id = cus.customer_id and " +
             "tra.order_id = ord.order_id and pay.transaction_id = pay.transaction_id " +
-            "and tra.payment_id = pay.payment_id and cus.customer_id = :cusid")
-    List<Object[]> getPurchaseHistoryDetailsByCustomerId(@Param("cusid") String id);
+            "and tra.payment_id = pay.payment_id and cus.customer_id = :cusid and pay.date_created = :date_created")
+    List<Object[]> getPurchaseHistoryDetailsByCustomerId(@Param("cusid") String id, @Param("date_created") Timestamp date_created);
 
-    @Query("select pay.date_created, SUM(odt.quantity), SUM(pay.total_amount), SUM(pay.change_given), (SUM(pay.total_amount) - SUM(pay.change_given)) as cus_pay, cus.customer_id " +
+    @Query("select pay.date_created, SUM(odt.quantity), round(SUM(pay.total_amount), 2), round(SUM(pay.change_given), 2), round((SUM(pay.total_amount) - SUM(pay.change_given)), 2) as cus_pay, cus.customer_id " +
             "from order_details odt " +
             ", orders ord , product pro , customers cus , transaction tra " +
             ", payment pay " +
             "where odt.order_id = ord.order_id and odt.order_id = tra.order_id and ord.order_id = tra.order_id and " +
             "odt.product_id = pro.product_id and ord.customer_id = cus.customer_id and " +
             "tra.order_id = ord.order_id and pay.transaction_id = pay.transaction_id " +
-            "and tra.payment_id = pay.payment_id and cus.customer_id = :cusid")
+            "and tra.payment_id = pay.payment_id and cus.customer_id = :cusid GROUP BY pay.date_created")
     List<Object[]> getPurchaseHistoryListByCustomerId(@Param("cusid") String id);
 }

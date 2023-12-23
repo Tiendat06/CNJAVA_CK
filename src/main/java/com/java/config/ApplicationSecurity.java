@@ -26,7 +26,7 @@ public class ApplicationSecurity {
                 = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(new BCryptPasswordEncoder());
-        return  provider;
+        return provider;
     }
 
 

@@ -3,7 +3,7 @@
         <p style="font-size: 1.6rem">Report Management</p>
     </div>
 
-    <div class="main-content-report d-flex col-lg-12">
+    <div id="total-items" class="main-content-report d-flex flex-wrap justify-content-around col-lg-12">
         <div class="col-lg-3 col-md-12 col-sm-12">
             <div class="main-content-report-item d-flex align-items-center  pt-3 pb-2 pl-2 pr-2 text-light bg-success-new">
                 <div class="col-lg-10">
@@ -24,7 +24,7 @@
                     <p>TOTAL ORDER</p>
                 </div>
 
-                <div class="col-lg-2 d-flex align-items-center" style="border-left: 0.5px solid #ccc; position: absolute; top: 0; bottom: 0; right: 0; background-color: #cf4436">
+                <div class="col-lg-2 col-md-12 col-sm-12 d-flex align-items-center" style="border-left: 0.5px solid #ccc; position: absolute; top: 0; bottom: 0; right: 0; background-color: #cf4436">
                     <i style="font-size: 1.6rem" class="fa-solid fa-cart-shopping"></i>
                 </div>
             </div>
@@ -37,8 +37,9 @@
                     <p>TOTAL PRODUCT</p>
                 </div>
 
-                <div class="col-lg-2 d-flex align-items-center bg-info" style="border-left: 0.5px solid #ccc; position: absolute; top: 0; bottom: 0; right: 0;">
-                    <i style="font-size: 1.6rem" class="fa-brands fa-product-hunt"></i>                </div>
+                <div class="col-lg-2 col-md-12 col-sm-12 d-flex align-items-center bg-info" style="border-left: 0.5px solid #ccc; position: absolute; top: 0; bottom: 0; right: 0;">
+                    <i style="font-size: 1.6rem" class="fa-brands fa-product-hunt"></i>
+                </div>
             </div>
         </div>
 
@@ -49,8 +50,9 @@
                     <p>TOTAL PROFIT</p>
                 </div>
 
-                <div class="col-lg-2 d-flex align-items-center" style="border-left: 0.5px solid #ccc; position: absolute; top: 0; bottom: 0; right: 0;background-color: #da8c10;">
-                    <i style="font-size: 1.6rem" class="fa-solid fa-credit-card"></i>                </div>
+                <div class="col-lg-2 col-md-12 col-sm-12 d-flex align-items-center" style="border-left: 0.5px solid #ccc; position: absolute; top: 0; bottom: 0; right: 0;background-color: #da8c10;">
+                    <i style="font-size: 1.6rem" class="fa-solid fa-credit-card"></i>
+                </div>
             </div>
         </div>
 
@@ -68,74 +70,188 @@
         </div>
     </div>
 
-    <table class="main-content-user__table mt-4 table table-striped table-bordered table-hover">
-        <thead class="main-content-user__thead text-white text-center">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Order ID</th>
-            <th scope="col">Product name</th>
-            <th scope="col">Date created</th>
-            <th scope="col">Customer name</th>
-            <th scope="col">User creator</th>
-            <th scope="col">Address</th>
-            <th scope="col">Phone number</th>
-            <th scope="col">Quantity</th>
-            <th scope="col">Total Amount</th>
-        </tr>
-        </thead>
+    <div class="main-content-report__btn--date">
+        <button style="float: right;" id="btn-date" class="btn btn-primary mb-3" type="submit">Find</button>
+    </div>
 
-        <tbody>
+    <div class="main-content-report main-content-user__manage w-100 p-3">
+
+        <div class="main-content-user__manage-title">
+            <h5 class="main-content-user__manage-heading">
+                Order list
+            </h5>
+        </div>
+
+        <table class="main-content-user__table mt-4 table table-striped table-bordered table-hover">
+            <thead class="main-content-user__thead text-white text-center">
             <tr>
-                <th scope="row">1</th>
-                <td>ORD0000001</td>
-                <td>
-                    <img style="width: 40px" th:src="@{/img/product.png}" alt="" srcset="">
-                    Pho Bo
-                </td>
-                <td>29/09/2003</td>
-                <td>Johnson Nob</td>
-                <td>Jake Jason</td>
-                <td>TP.HCM</td>
-                <td>0356779197</td>
-                <td>3</td>
-                <td>100.000$</td>
-
+                <th scope="col">#</th>
+                <th scope="col">Order ID</th>
+                <th scope="col">Date created</th>
+<!--                <th scope="col">Product name</th>-->
+                <th scope="col">Customer name</th>
+                <th scope="col">User creator</th>
+<!--                <th scope="col">Address</th>-->
+<!--                <th scope="col">Phone number</th>-->
+<!--                <th scope="col">Quantity</th>-->
+                <th scope="col">Status</th>
+                <th scope="col">Total amount</th>
+                <th scope="col">Actions</th>
             </tr>
+            </thead>
 
-            <tr>
-                <th scope="row">1</th>
-                <td>ORD0000001</td>
-                <td>
-                    <img style="width: 40px" th:src="@{/img/product.png}" alt="" srcset="">
-                    Pho Bo
-                </td>
-                <td>29/09/2003</td>
-                <td>Johnson Nob</td>
-                <td>Jake Jason</td>
-                <td>TP.HCM</td>
-                <td>0356779197</td>
-                <td>3</td>
-                <td>100.000$</td>
+            <tbody id="tbody">
+            <th:block th:each="ord, itemStat: ${orderList}">
+                <tr>
+                    <th scope="row">[[${itemStat.index + 1}]]</th>
+                    <td>[[${ord[0]}]]</td>
+                    <td>[[${ord[1]}]]</td>
+                    <td>[[${ord[2]}]]</td>
+                    <td>[[${ord[3]}]] [[${ord[4]}]]</td>
+                    <td>[[${ord[5]}]]</td>
+                    <td>[[${ord[6]}]]$</td>
+                    <td class="text-center">
+                        <a data-toggle="modal" class="btn btn-show-details" th:data-id="${ord[0]}" data-target="#order-details">
+                            <i style="cursor: pointer" class="p-2 text-primary fa-solid fa-eye"></i>
+                        </a>
+                    </td>
+                </tr>
+            </th:block>
 
-            </tr>
+            </tbody>
+        </table>
 
-            <tr>
-                <th scope="row">1</th>
-                <td>ORD0000001</td>
-                <td>
-                    <img style="width: 40px" th:src="@{/img/product.png}" alt="" srcset="">
-                    Pho Bo
-                </td>
-                <td>29/09/2003</td>
-                <td>Johnson Nob</td>
-                <td>Jake Jason</td>
-                <td>TP.HCM</td>
-                <td>0356779197</td>
-                <td>3</td>
-                <td>100.000$</td>
+        <ul style="float: right" th:if="${orderList.totalPages > 1}" class="pagination">
+            <li class="page-item">
+                <a th:if="${orderList.hasPrevious()}" th:href="@{'/payment/report/' + ${orderList.previousPageable().pageNumber + 1}}" class="page-link">Previous</a>
+            </li>
+            <li th:each="pageNumber : ${#numbers.sequence(0, orderList.totalPages - 1)}" class="page-item">
+                <a th:href="@{'/payment/report/' + ${pageNumber + 1}}"
+                   th:text="${pageNumber + 1}"
+                   th:class="${pageNumber + 1 == orderList.number ? 'active page-link' : 'page-link'}">
+                </a>
+            </li>
 
-            </tr>
-        </tbody>
-    </table>
+            <li class="page-item">
+                <a th:if="${orderList.hasNext()}" th:href="@{'/payment/report/' + ${orderList.nextPageable().pageNumber + 1}}" class="page-link">Next</a>
+            </li>
+        </ul>
 
+    </div>
+
+    <!--    order detail-->
+    <div class="modal fade" id="order-details">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Order Detail</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body" style="overflow-y: scroll">
+                    <div class="form-group">
+                        <input type="hidden" id="order-id" name="" value="">
+                        <table class="main-content-user__table table table-striped table-bordered table-hover">
+                            <thead class="main-content-user__thead text-white text-center">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Product name</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Change given</th>
+                                <th scope="col">Description</th>
+                            </tr>
+                            </thead>
+                            <tbody id="tbody-details">
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <!--                        <button type="submit" class="btn btn-primary">Submit</button>-->
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // showModalInCustomer();
+        $(document).ready(function() {
+            var orderId = null;
+            $('.btn-show-details').on('click', function() {
+                orderId = $(this).data('id');
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/payment/report/order-list/' + orderId,
+                    success: function(response) {
+                        $('#tbody-details').html(response);
+
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+        });
+
+        $(document).ready(function() {
+            // var orderId = null;
+            $('#btn-date').on('click', function() {
+                // orderId = $(this).data('id');
+                var date_start = $("#date-start").val();
+                var date_end = $("#date-end").val();
+                // console.log(date_start)
+                // console.log(date_end)
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/payment/report/sort-order-list/' + date_start + '/' + date_end,
+                    success: function(response) {
+                        $('#tbody').html(response);
+
+                        $.ajax({
+                            type: 'GET',
+                            url: '/payment/report/total/' + date_start + '/' + date_end,
+                            success: function(response) {
+                                $('#total-items').html(response);
+
+                            },
+                            error: function(error) {
+                                console.error('Error:', error);
+                            }
+                        });
+
+                        var orderId = null;
+                        $('.btn-show-details').on('click', function() {
+                            orderId = $(this).data('id');
+
+                            $.ajax({
+                                type: 'GET',
+                                url: '/payment/report/order-list/' + orderId,
+                                success: function(response) {
+                                    $('#tbody-details').html(response);
+
+                                },
+                                error: function(error) {
+                                    console.error('Error:', error);
+                                }
+                            });
+                        });
+
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+        });
+
+    </script>
 </div>

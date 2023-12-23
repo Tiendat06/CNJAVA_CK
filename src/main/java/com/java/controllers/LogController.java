@@ -66,10 +66,6 @@ public class LogController {
         return "/log/login";
     }
 
-//    @GetMapping("/logout")
-//    public void logout_GET(HttpServletResponse resp) throws IOException {
-//        resp.sendRedirect("/");
-//    }
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -103,6 +99,12 @@ public class LogController {
             return "redirect:/log/fail";
         }
 
+    }
+
+    @GetMapping("/change_pass")
+    public String changePass_GET(Model model){
+        model.addAttribute("content", "change_pass");
+        return "index";
     }
 
 }

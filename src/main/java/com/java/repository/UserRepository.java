@@ -47,8 +47,19 @@ public interface UserRepository extends JpaRepository<User, String> {
         });
     }
 
-    default void updateProfile(String id, User user, Account acc){
+    default void updateProfile(String id, User user){
+        findById(id).ifPresent(u -> {
+            u.setFirst_name(user.getFirst_name());
+            u.setLast_name(user.getLast_name());
+            u.setEmail(user.getEmail());
+            u.setPhone_number(user.getPhone_number());
+            u.setAddress(user.getAddress());
+            u.setBirthday(user.getBirthday());
+            u.setGender(user.getGender());
+            u.setImage(user.getImage());
 
+            save(u);
+        });
     }
 
     User findByEmail(String email);

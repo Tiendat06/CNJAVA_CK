@@ -1,5 +1,9 @@
 package com.java.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -7,11 +11,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-
+@Getter
+@Setter
 public class MyUserDetail implements UserDetails {
     private CombinedUser combinedUser;
+    private String acc_id;
+    private String user_id;
     public MyUserDetail(CombinedUser combinedUser) {
         this.combinedUser = combinedUser;
+        this.acc_id = combinedUser.getAccount().getAccount_id();
+        this.user_id = combinedUser.getUser().getUser_id();
     }
 
     public MyUserDetail() {

@@ -3,8 +3,10 @@ package com.java.service;
 import com.java.models.OrderDetail;
 import com.java.repository.OrderDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -17,11 +19,12 @@ public class OrderDetailsService {
         return orderDetailsRepository.checkProduct(id);
     }
 
-    public List<Object[]> getPurchaseHistoryDetailsByCusId(String id){
-        return orderDetailsRepository.getPurchaseHistoryDetailsByCustomerId(id);
+    public List<Object[]> getPurchaseHistoryDetailsByCusId(String id, Timestamp date){
+        return orderDetailsRepository.getPurchaseHistoryDetailsByCustomerId(id, date);
     }
 
     public List<Object[]> getPurchaseHistoryListByCustomerId(String id){
         return orderDetailsRepository.getPurchaseHistoryListByCustomerId(id);
     }
+
 }

@@ -99,8 +99,8 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Date Created</th>
-                                    <th scope="col">Total amount</th>
                                     <th scope="col">Amount paid</th>
+                                    <th scope="col">Total amount</th>
                                     <th scope="col">Change given</th>
                                     <th scope="col">Quantity</th>
                                     <th scope="col">Order details</th>
@@ -164,38 +164,6 @@
                                 </tr>
                                 </thead>
                                 <tbody id="tbody-details">
-<!--                                <tr>-->
-<!--                                    <th scope="row">1</th>-->
-<!--                                    <td>-->
-<!--                                        <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">-->
-<!--                                        Pho Bo-->
-<!--                                    </td>-->
-<!--                                    <td>x3</td>-->
-<!--                                    <td>100$</td>-->
-<!--                                    <td>This is Pho from VietNam</td>-->
-<!--                                </tr>-->
-
-<!--                                <tr>-->
-<!--                                    <th scope="row">2</th>-->
-<!--                                    <td>-->
-<!--                                        <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">-->
-<!--                                        Pho Bo-->
-<!--                                    </td>-->
-<!--                                    <td>x3</td>-->
-<!--                                    <td>100$</td>-->
-<!--                                    <td>This is Pho from VietNam</td>-->
-<!--                                </tr>-->
-
-<!--                                <tr>-->
-<!--                                    <th scope="row">3</th>-->
-<!--                                    <td>-->
-<!--                                        <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">-->
-<!--                                        Pho Bo-->
-<!--                                    </td>-->
-<!--                                    <td>x3</td>-->
-<!--                                    <td>100$</td>-->
-<!--                                    <td>This is Pho from VietNam</td>-->
-<!--                                </tr>-->
 
 
                                 </tbody>
@@ -229,13 +197,14 @@
                         $('#tbody').html(response);
                         $('.btn-show-details-history').on('click', function() {
                             cusId = $(this).data('id');
+                            var date = $(this).data('date');
                             console.log(cusId)
                             console.log("hiii")
 
                             $("#order-id").attr('value', cusId)
                             $.ajax({
                                 type: 'GET',
-                                url: '/customer/order_details/' + cusId,
+                                url: '/customer/order_details/' + cusId+"/"+date,
                                 success: function(response) {
 
                                     $('#tbody-details').html(response);

@@ -28,6 +28,11 @@ public class ProductService {
         return productRepository.findAll(pageable);
     }
 
+    public Page<Object[]> getAllProductPaginationOrderByCategory(int pageNo, int pageSize, int categoryId){
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        return productRepository.getAllProductOrderByCategory(pageable, categoryId);
+    }
+
     public String AUTO_PRO_ID(){
         String maxID = productRepository.maxID();
         if (maxID != null) {

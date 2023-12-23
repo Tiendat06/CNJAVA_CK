@@ -32,7 +32,9 @@ public class UserService {
     public void updateUser(String id, User user){
         userRepository.updateUser(id, user);
     }
-
+    public void updateProfile(String id, User user){
+        userRepository.updateProfile(id, user);
+    }
     public User getAccIDByUserID(String id){
         return userRepository.findUserByID(id);
     }

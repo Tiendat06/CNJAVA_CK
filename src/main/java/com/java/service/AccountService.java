@@ -31,6 +31,11 @@ public class AccountService {
         accountRepository.updateStatusByAccID(accId, status);
     }
 
+    public Account getAccountByEmailAndPassword(){
+
+        return new Account();
+    }
+
     public void updateRoleByAccId(String id, int roleId){
         accountRepository.updateRoleByAccID(id, roleId);
     }

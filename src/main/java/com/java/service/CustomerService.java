@@ -18,4 +18,17 @@ public class CustomerService {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         return customerRepository.findAll(pageable);
     }
+
+    public Customer findCusByPhone(String phone){
+        return customerRepository.findCusByPhone(phone);
+    }
+
+    public String AUTO_CUS_ID(){
+        String maxID = customerRepository.maxID();
+        if (maxID != null) {
+            int number = Integer.parseInt(maxID.substring(3)) + 1;
+            return String.format("CUS%07d", number);
+        }
+        return "CUS0000001";
+    }
 }

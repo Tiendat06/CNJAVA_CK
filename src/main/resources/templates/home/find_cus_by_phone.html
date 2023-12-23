@@ -1,0 +1,16 @@
+<div th:if="${cusNull == 'cusNull'}" class="d-flex main-home-payment__customer--address">
+    <p class="col-lg-12 mb-0 text-center">Customer is not existed</p>
+    <!--    <p class="col-lg-6 text-right mb-0">[[${customer.customer_address}]]</p>-->
+</div>
+
+<div th:if="${cusNull != 'cusNull'}" class="d-flex main-home-payment__customer--fullname">
+    <p class="col-lg-6 mb-2">Full name:</p>
+    <p class="col-lg-6 text-right mb-2">[[${customer.customer_name}]]</p>
+</div>
+
+<div th:if="${cusNull != 'cusNull'}" class="d-flex main-home-payment__customer--address">
+    <p class="col-lg-6 mb-0">Address:</p>
+    <p class="col-lg-6 text-right mb-0">[[${customer.customer_address}]]</p>
+</div>
+
+

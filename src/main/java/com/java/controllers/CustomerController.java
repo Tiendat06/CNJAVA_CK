@@ -3,15 +3,14 @@ package com.java.controllers;
 import com.java.models.Customer;
 import com.java.service.CustomerService;
 import com.java.service.OrderDetailsService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Controller
@@ -24,7 +23,8 @@ public class CustomerController {
     public OrderDetailsService orderDetailsService;
 
     @GetMapping("")
-    public String index(Model model){
+    public String index(Model model, HttpSession session){
+
         model.addAttribute("content", "customer");
         return "redirect:/customer/1";
     }
@@ -36,28 +36,24 @@ public class CustomerController {
         Page<Customer> customerList = customerService.getCustomersPagination(pageNo - 1, pageSize);
         model.addAttribute("customerList", customerList);
 
-        model.addAttribute("purchaseList", new CustomerUtil());
+//        model.addAttribute("purchaseList", new CustomerUtil());
 
         return "index";
     }
 
     @GetMapping("/purchase-history/{cusId}")
-    public String getPurchaseHistoryByCusId(@PathVariable String cusId, Model model){
+    public String getPurchaseHistoryByCusId_GET(@PathVariable String cusId, Model model){
         List<Object[]> purchaseList = orderDetailsService.getPurchaseHistoryListByCustomerId(cusId);
         model.addAttribute("purchaseList", purchaseList);
         return "/customer/purchase_history";
     }
 
-    @GetMapping("/order_details/{cusId}")
-    public String getPurchaseHistoryInDetailsByCusId(@PathVariable String cusId, Model model){
-        List<Object[]> purchaseList = orderDetailsService.getPurchaseHistoryDetailsByCusId(cusId);
+    @GetMapping("/order_details/{cusId}/{date}")
+    public String getPurchaseHistoryInDetailsByCusId_GET(@PathVariable String cusId, @PathVariable Timestamp date, Model model){
+        List<Object[]> purchaseList = orderDetailsService.getPurchaseHistoryDetailsByCusId(cusId, date);
         model.addAttribute("purchaseList", purchaseList);
         return "/customer/purchase_history_details";
     }
 
-    public class CustomerUtil{
-        public List<Object[]> getPurchaseHistory(String cus_id){
-            return orderDetailsService.getPurchaseHistoryDetailsByCusId(cus_id);
-        }
-    }
+
 }

@@ -1,8 +1,10 @@
 package com.java.controllers;
 
 import com.java.models.Account;
+import com.java.models.MyUserDetail;
 import com.java.models.User;
 import com.java.service.AccountService;
+import com.java.service.ImageService;
 import com.java.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -32,6 +35,8 @@ public class UserController {
     public UserService userService;
     @Autowired
     public AccountService accountService;
+    @Autowired
+    public ImageService imageService;
 
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
@@ -58,16 +63,43 @@ public class UserController {
         model.addAttribute("content", "profile");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 //        auth.getAuthorities();
-        List<Object[]> user = userService.getUserProfile("USE0000001");
+        MyUserDetail myUserDetail = (MyUserDetail) auth.getPrincipal();
+
+        List<Object[]> user = userService.getUserProfile(myUserDetail.getUser_id());
+
 //        System.out.println(user.toString());
         model.addAttribute("userInfo", user);
 
         return "index";
     }
 
-    @GetMapping("/profile/update")
-    public void user_profile_update_GET(Model model){
+    @PostMapping("/profile/update")
+    public void user_profile_update_GET(@RequestParam("fileImg") MultipartFile fileImg, HttpServletResponse resp, HttpServletRequest req) throws IOException {
+        String id = req.getParameter("user_id");
+        String firstname = req.getParameter("firstname");
+        String lastname = req.getParameter("lastname");
+        String gender = req.getParameter("gender");
+        Date birthday = Date.valueOf(req.getParameter("date"));
+        String email = req.getParameter("email");
+        String address = req.getParameter("address");
+        String phone = req.getParameter("phone");
+        User user1 = userService.getAccIDByUserID(id);
+        String imgName = "user_profile.png";
 
+        if (!user1.getImage().equals(imgName) && fileImg.isEmpty()){
+            imgName = id + ".png";
+        }
+        if (!fileImg.isEmpty()){
+            byte[] img = fileImg.getBytes();
+            imageService.saveImage(img, id+".png");
+            imgName = id+".png";
+        }
+
+        User user = userService.getAccIDByUserID(id);
+        String acc_id = user.getAccount_id();
+
+        userService.updateProfile(id, new User(id, firstname, lastname, email, phone, address, imgName, acc_id, birthday, gender));
+        resp.sendRedirect("/user/profile");
     }
 
     @PostMapping("/add")
@@ -95,7 +127,7 @@ public class UserController {
         userService.userRepository.save(user);
 
         String url = req.getRequestURL().toString();
-        url = url.replace(req.getServletPath(), "");
+        url = url.replace(req.getServletPath(), "/");
         userService.sendEmail(user, url);
 
         resp.sendRedirect("/user/1");

@@ -39,7 +39,7 @@
                         <tr>
                             <th scope="row" >[[${itemStat.index + 1}]]</th>
                             <td>
-                                <img style="width: 40px" th:src="@{/img/user_profile.png}" alt="" srcset="">
+                                <img style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover" th:src="@{/img/{image}(image=${u.image})}" alt="" srcset="">
                                 [[${u.first_name}]] [[${u.last_name}]]
                             </td>
                             <td>[[${u.phone_number}]]</td>
