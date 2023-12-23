@@ -36,7 +36,7 @@ public class ApplicationSecurity {
                 .authorizeHttpRequests(auth -> auth.
                         requestMatchers("/css/**","/font/**","/img/**","/js/**","/log/verify","/log/success","/log/fail").permitAll()
                         .anyRequest().authenticated())
-                .formLogin(form -> form.loginPage("/log/login").permitAll())
+                .formLogin(form -> form.loginPage("/log/login").defaultSuccessUrl("/",true).permitAll())
                 .logout(logout -> logout
                         .logoutUrl("/log/logout")
                         .invalidateHttpSession(true)

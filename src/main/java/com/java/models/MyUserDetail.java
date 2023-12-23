@@ -15,12 +15,8 @@ import java.util.Collections;
 @Setter
 public class MyUserDetail implements UserDetails {
     private CombinedUser combinedUser;
-    private String acc_id;
-    private String user_id;
     public MyUserDetail(CombinedUser combinedUser) {
         this.combinedUser = combinedUser;
-        this.acc_id = combinedUser.getAccount().getAccount_id();
-        this.user_id = combinedUser.getUser().getUser_id();
     }
 
     public MyUserDetail() {
