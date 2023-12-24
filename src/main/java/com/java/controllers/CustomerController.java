@@ -41,10 +41,20 @@ public class CustomerController {
         MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         List<Object[]> totalBillList = ordersService.totalBillInHome(myUserDetail.getCombinedUser().getUser().getUser_id());
-        float totalBill = (float) totalBillList.get(0)[0];
+        Object[] totalBill = totalBillList.get(0);
+        float row = Float.parseFloat(totalBill[0].toString());
 
-        float cus_given_change = totalBill - Float.parseFloat(moneyGiven);
+        try {
+            float moneyGivenValue = Float.parseFloat(moneyGiven);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        double cus_given_change = Math.round((row - Float.parseFloat(moneyGiven)) * 100.0) / 100.0;
         model.addAttribute("cus_given_change", cus_given_change);
+
+//        float cus_given_change = totalBill - Float.parseFloat(moneyGiven);
+//        model.addAttribute("cus_given_change", cus_given_change);
         return "/home/cus_given_change";
 
     }

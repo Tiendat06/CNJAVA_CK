@@ -46,7 +46,7 @@
             <div class="col-lg-12 d-flex flex-wrap" id="main-home-product__item">
                 <th:block th:each="p: ${productList}">
                     <a data-toggle="modal" th:data-id="${p.product_id}" data-target="#add-product" style="text-decoration: none; " class="main-home-product__item col-lg-4 col-md-4 col-sm-6 text-center text-dark mt-3">
-                        <div style="background-color: white;border-radius: 10px" class=" p-3">
+                        <div style="background-color: white;border-radius: 10px" class="p-3">
                             <div class="main-home-product__img">
                                 <img style="width: 80px; height: 80px; object-fit: contain" th:src="@{/img/{image}(image=${p.product_img})}" alt="" srcset="">
                             </div>
@@ -124,7 +124,7 @@
                         <p class="main-home-payment__order--para mb-0">[[${olc[0]}]]</p>
                         <p class="main-home-payment__order--para mb-0">x[[${olc[2]}]]</p>
                         <p class="main-home-payment__order--para mb-0">[[${olc[3]}]]$</p>
-                        <p data-toggle="modal" data-target="#delete-product" th:data-id="${olc[4]}" style="cursor: pointer" class="main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
+                        <p data-toggle="modal" data-target="#delete-product" th:data-id="${olc[4]}" style="cursor: pointer" class="remove-items main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
 
                     </div>
                 </th:block>
@@ -244,7 +244,7 @@
     <div class="modal fade" tabindex="-1"  id="delete-product">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="" method="post">
+                <form action="/remove/product" method="post">
 
                     <!-- Modal Header -->
                     <div class="modal-header">
@@ -258,7 +258,7 @@
                             <!-- ID item đc click gắn ở đây, kéo lên mục delete chỉnh lại data-id -->
                             <input type="hidden" name="productID" id="productID" value="">
 
-                            <p>Are you sure to remove product ___ ?</p>
+                            <p>Are you sure to remove this product ?</p>
 
                         </div>
                     </div>
@@ -280,8 +280,6 @@
             var categoryType = null;
             $('.btn-shows-category').on('click', function() {
                 categoryType = $(this).data('id');
-                // alert(categoryType)
-                // console.log(categoryType)
                 $.ajax({
                     type: 'GET',
                     url: '/home/category/' + categoryType,
@@ -290,9 +288,6 @@
                         $('#main-home-product__item').html(response);
 
                     },
-                    // error: function(error) {
-                    //     console.error('Error:', error);
-                    // }
                 });
             });
 
@@ -302,6 +297,12 @@
 
                 $('#phone_number_quan').attr('value', phone);
                 $('#product_id').attr('value', id);
+
+            });
+
+            $('.remove-items').on('click', function() {
+                var pro_Id = $(this).data('id');
+                $('#productID').attr('value', pro_Id);
 
             });
         });
@@ -318,20 +319,14 @@
                         $('#customerFindByPhone').html(response);
 
                     },
-                    // error: function(error) {
-                    //     console.error('Error:', error);
-                    // }
                 });
             });
         })
 
-
-
-
-
         $(document).ready(function() {
             $('#customer_given').on('input', function() {
-                var number = $("this").val();
+                var number = $(this).val();
+                console.log(number)
                 $.ajax({
                     type: 'GET',
                     url: '/customer/calculate_money/'+number,
@@ -340,31 +335,9 @@
                         $('#given_change').html(response);
 
                     },
-                    // error: function(error) {
-                    //     console.error('Error:', error);
-                    // }
                 });
             });
         })
-
-
-        // on input given
-        // $(document).ready(function() {
-        //     $("#customer_given").on("input", function() {
-        //         var number = $(this).val();
-        //         console.log(number)
-        //         $.ajax({
-        //             type: 'get',
-        //             url: "/customer/calculate_money/"+number.toString(),
-        //             success: function(response) {
-        //
-        //                 $('#given_change').html(response);
-        //
-        //             },
-        //         });
-        //
-        //     });
-        // });
 
     </script>
 </div>
