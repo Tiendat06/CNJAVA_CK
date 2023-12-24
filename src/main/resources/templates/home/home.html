@@ -326,14 +326,15 @@
         })
 
 
-        // on input given
+
+
+
         $(document).ready(function() {
-            $("#customer_given").on("input", function() {
-                var number = $(this).val();
-                console.log(number)
+            $('#customer_given').on('input', function() {
+                var number = $("this").val();
                 $.ajax({
-                    type: 'get',
-                    url: "/customer/calculate_money/"+number.toString(),
+                    type: 'GET',
+                    url: '/customer/calculate_money/'+number,
                     success: function(response) {
 
                         $('#given_change').html(response);
@@ -343,9 +344,27 @@
                     //     console.error('Error:', error);
                     // }
                 });
-
             });
-        });
+        })
+
+
+        // on input given
+        // $(document).ready(function() {
+        //     $("#customer_given").on("input", function() {
+        //         var number = $(this).val();
+        //         console.log(number)
+        //         $.ajax({
+        //             type: 'get',
+        //             url: "/customer/calculate_money/"+number.toString(),
+        //             success: function(response) {
+        //
+        //                 $('#given_change').html(response);
+        //
+        //             },
+        //         });
+        //
+        //     });
+        // });
 
     </script>
 </div>
