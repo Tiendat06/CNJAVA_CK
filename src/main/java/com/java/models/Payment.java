@@ -18,8 +18,8 @@ public class Payment {
     private String payment_id;
     @Column(name = "PAYMENT_METHOD_ID")
     private String payment_method_id;
-    @Column(name = "TRANSACTION_ID")
-    private String transaction_id;
+//    @Column(name = "TRANSACTION_ID")
+//    private String transaction_id;
     @Column(name = "TOTAL_AMOUNT")
     private float total_amount;
     @Column(name = "CHANGE_GIVEN")

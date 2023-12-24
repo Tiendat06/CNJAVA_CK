@@ -42,8 +42,24 @@ public class OrdersService {
         return orderRepository.totalProductOrderByDate(date_start, date_end);
     }
 
-    public List<Object[]> getQuanAndPrice(){
-        return orderRepository.getQuanAndPrice();
+    public List<Object[]> getQuanAndPrice(Date date_start, Date date_end){
+        return orderRepository.getQuanAndPrice(date_start, date_end);
     }
 
+    public List<Object[]> totalBillInHome(String userId){
+        return orderRepository.totalBill(userId);
+    }
+
+    public List<Object[]> getOrderOfCustomerInHome(String userId){
+        return orderRepository.getOrderOfCustomerInHome(userId);
+    }
+
+    public String AUTO_ORD_ID(){
+        String maxID = orderRepository.maxID();
+        if (maxID != null) {
+            int number = Integer.parseInt(maxID.substring(3)) + 1;
+            return String.format("ORD%07d", number);
+        }
+        return "ORD0000001";
+    }
 }

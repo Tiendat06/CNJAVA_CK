@@ -27,4 +27,14 @@ public class OrderDetailsService {
         return orderDetailsRepository.getPurchaseHistoryListByCustomerId(id);
     }
 
+    public String AUTO_ODT_ID(){
+        String maxID = orderDetailsRepository.maxID();
+        if (maxID != null) {
+            int number = Integer.parseInt(maxID.substring(3)) + 1;
+            return String.format("ODT%07d", number);
+        }
+        return "ODT0000001";
+    }
+
+
 }

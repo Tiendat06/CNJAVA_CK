@@ -65,7 +65,7 @@ public class UserController {
 //        auth.getAuthorities();
         MyUserDetail myUserDetail = (MyUserDetail) auth.getPrincipal();
 
-        List<Object[]> user = userService.getUserProfile(myUserDetail.getUser_id());
+        List<Object[]> user = userService.getUserProfile(myUserDetail.getCombinedUser().getUser().getUser_id());
 
 //        System.out.println(user.toString());
         model.addAttribute("userInfo", user);

@@ -99,7 +99,12 @@
                     <button id="btn-find-phone" class="btn btn-primary col-lg-3">FIND</button>
                 </div>
 
+                <div th:if="${no_input_phone != null}" class="alert alert-danger text-center m-auto">
+                    <p class="mb-0">Hello world</p>
+                </div>
+
                 <div id="customerFindByPhone" class="main-home-payment__customer alert alert-info">
+
 <!--                    <div class="d-flex main-home-payment__customer&#45;&#45;fullname">-->
 <!--                        <p class="col-lg-6 mb-2">Full name:</p>-->
 <!--                        <p class="col-lg-6 text-right mb-2">Jake Jason</p>-->
@@ -113,94 +118,16 @@
             </div>
 
             <div class="main-home-payment__order" style="height: 500px; overflow-y: scroll">
-                <div style="border-bottom: 0.5px solid #ccc" class="p-3 main-home-payment__order--item align-items-center justify-content-between col-lg-12 d-flex">
-                    <p class="main-home-payment__order--para mb-0">1</p>
-                    <p class="main-home-payment__order--para mb-0">Pho Bo VietNam</p>
-                    <p class="main-home-payment__order--para mb-0">x2</p>
-                    <p class="main-home-payment__order--para mb-0">24.00$</p>
-                    <p data-toggle="modal" data-target="#delete-product" data-id="123" id="456" onclick="showModalInHome(this.id)" style="cursor: pointer" class="main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
+                <th:block th:each="olc, itemStat: ${orderListCus}">
+                    <div style="border-bottom: 0.5px solid #ccc" class="p-3 main-home-payment__order--item align-items-center justify-content-between col-lg-12 d-flex">
+                        <p class="main-home-payment__order--para mb-0">[[${itemStat.index + 1}]]</p>
+                        <p class="main-home-payment__order--para mb-0">[[${olc[0]}]]</p>
+                        <p class="main-home-payment__order--para mb-0">x[[${olc[2]}]]</p>
+                        <p class="main-home-payment__order--para mb-0">[[${olc[3]}]]$</p>
+                        <p data-toggle="modal" data-target="#delete-product" th:data-id="${olc[4]}" style="cursor: pointer" class="main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
 
-                </div>
-
-                <div style="border-bottom: 0.5px solid #ccc" class="p-3 main-home-payment__order--item align-items-center justify-content-between col-lg-12 d-flex">
-                    <p class="main-home-payment__order--para mb-0">2</p>
-                    <p class="main-home-payment__order--para mb-0">Pho Bo VietNam</p>
-                    <p class="main-home-payment__order--para mb-0">x2</p>
-                    <p class="main-home-payment__order--para mb-0">24.00$</p>
-                    <p data-toggle="modal" data-target="#delete-product" style="cursor: pointer" class="main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
-
-                </div>
-
-                <div style="border-bottom: 0.5px solid #ccc" class="p-3 main-home-payment__order--item align-items-center justify-content-between col-lg-12 d-flex">
-                    <p class="main-home-payment__order--para mb-0">3</p>
-                    <p class="main-home-payment__order--para mb-0">Pho Bo VietNam</p>
-                    <p class="main-home-payment__order--para mb-0">x2</p>
-                    <p class="main-home-payment__order--para mb-0">24.00$</p>
-                    <p data-toggle="modal" data-target="#delete-product" style="cursor: pointer" class="main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
-
-                </div>
-                <div style="border-bottom: 0.5px solid #ccc" class="p-3 main-home-payment__order--item align-items-center justify-content-between col-lg-12 d-flex">
-                    <p class="main-home-payment__order--para mb-0">3</p>
-                    <p class="main-home-payment__order--para mb-0">Pho Bo VietNam</p>
-                    <p class="main-home-payment__order--para mb-0">x2</p>
-                    <p class="main-home-payment__order--para mb-0">24.00$</p>
-                    <p data-toggle="modal" data-target="#delete-product" style="cursor: pointer" class="main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
-
-                </div>
-
-                <div style="border-bottom: 0.5px solid #ccc" class="p-3 main-home-payment__order--item align-items-center justify-content-between col-lg-12 d-flex">
-                    <p class="main-home-payment__order--para mb-0">3</p>
-                    <p class="main-home-payment__order--para mb-0">Pho Bo VietNam</p>
-                    <p class="main-home-payment__order--para mb-0">x2</p>
-                    <p class="main-home-payment__order--para mb-0">24.00$</p>
-                    <p data-toggle="modal" data-target="#delete-product" style="cursor: pointer" class="main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
-
-                </div>
-
-                <div style="border-bottom: 0.5px solid #ccc" class="p-3 main-home-payment__order--item align-items-center justify-content-between col-lg-12 d-flex">
-                    <p class="main-home-payment__order--para mb-0">3</p>
-                    <p class="main-home-payment__order--para mb-0">Pho Bo VietNam</p>
-                    <p class="main-home-payment__order--para mb-0">x2</p>
-                    <p class="main-home-payment__order--para mb-0">24.00$</p>
-                    <p data-toggle="modal" data-target="#delete-product" style="cursor: pointer" class="main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
-
-                </div>
-
-                <div style="border-bottom: 0.5px solid #ccc" class="p-3 main-home-payment__order--item align-items-center justify-content-between col-lg-12 d-flex">
-                    <p class="main-home-payment__order--para mb-0">3</p>
-                    <p class="main-home-payment__order--para mb-0">Pho Bo VietNam</p>
-                    <p class="main-home-payment__order--para mb-0">x2</p>
-                    <p class="main-home-payment__order--para mb-0">24.00$</p>
-                    <p data-toggle="modal" data-target="#delete-product" style="cursor: pointer" class="main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
-
-                </div>
-
-                <div style="border-bottom: 0.5px solid #ccc" class="p-3 main-home-payment__order--item align-items-center justify-content-between col-lg-12 d-flex">
-                    <p class="main-home-payment__order--para mb-0">3</p>
-                    <p class="main-home-payment__order--para mb-0">Pho Bo VietNam</p>
-                    <p class="main-home-payment__order--para mb-0">x2</p>
-                    <p class="main-home-payment__order--para mb-0">24.00$</p>
-                    <p data-toggle="modal" data-target="#delete-product" style="cursor: pointer" class="main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
-
-                </div>
-
-                <div style="border-bottom: 0.5px solid #ccc" class="p-3 main-home-payment__order--item align-items-center justify-content-between col-lg-12 d-flex">
-                    <p class="main-home-payment__order--para mb-0">3</p>
-                    <p class="main-home-payment__order--para mb-0">Pho Bo VietNam</p>
-                    <p class="main-home-payment__order--para mb-0">x2</p>
-                    <p class="main-home-payment__order--para mb-0">24.00$</p>
-                    <p data-toggle="modal" data-target="#delete-product" style="cursor: pointer" class="main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
-
-                </div>
-                <div style="border-bottom: 0.5px solid #ccc" class="p-3 main-home-payment__order--item align-items-center justify-content-between col-lg-12 d-flex">
-                    <p class="main-home-payment__order--para mb-0">3</p>
-                    <p class="main-home-payment__order--para mb-0">Pho Bo VietNam</p>
-                    <p class="main-home-payment__order--para mb-0">x2</p>
-                    <p class="main-home-payment__order--para mb-0">24.00$</p>
-                    <p data-toggle="modal" data-target="#delete-product" style="cursor: pointer" class="main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
-
-                </div>
-
+                    </div>
+                </th:block>
 
             </div>
 
@@ -210,22 +137,22 @@
         <div style="" class="bg-light main-home-payment__money mt-2">
             <div class="d-flex p-2 col-lg-12 main-home-payment__money--total">
                 <p class="col-lg-9">Total bill:</p>
-                <p class="col-lg-3 text-center">72.00$</p>
+                <p class="col-lg-3 text-center">[[${totalBill[0][0]}]]$</p>
             </div>
 
             <div class="d-flex p-2 col-lg-12 main-home-payment__money--total align-items-center">
                 <p class="col-lg-9">Customer given:</p>
-                <input class="form-control col-lg-3 text-center mr-0" type="number" name="customer_given" id="">
+                <input class="form-control col-lg-3 text-center mr-0" type="text" name="customer_given" id="customer_given">
             </div>
 
             <div class="d-flex p-2 col-lg-12 main-home-payment__money--total">
                 <p class="col-lg-9">Given change:</p>
-                <p class="col-lg-3 text-center">00.00$</p>
+                <p id="given_change" class="col-lg-3 text-center">00.00$</p>
             </div>
 
             <div class="main-home-payment__process p-3 d-flex justify-content-between col-lg-12">
                 <button type="submit" class="btn btn-danger col-lg-5">Cancel</button>
-                <button type="submit" class="btn btn-success col-lg-5">Pay</button>
+                <button type="submit" id="btn-pay" class="btn btn-success col-lg-5">Pay</button>
             </div>
         </div>
     </div>
@@ -282,7 +209,7 @@
     <div class="modal fade" id="add-product">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="/add/product" method="post">
+                <form th:action="@{/add/product}" method="post">
 
                     <!-- Modal Header -->
                     <div class="modal-header">
@@ -294,9 +221,10 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <input type="hidden" name="product_id" id="product_id">
+                            <input type="hidden" name="phone_number_quan" id="phone_number_quan">
                             <div class="form-group login-form--info">
-                                <label class="login-form__label" for="quantity">Quantity</label>
-                                <input class="form-control login-form__input" type="number" name="quantity" id="quantity" placeholder="Quantity" required>
+                                <label class="login-form__label" for="quantity-ord">Quantity</label>
+                                <input class="form-control login-form__input" type="number" name="quantity-ord" id="quantity-ord" placeholder="Quantity" required>
                             </div>
 
                         </div>
@@ -346,6 +274,7 @@
     </div>
 
     <script>
+        jsInHome();
 
         $(document).ready(function(){
             var categoryType = null;
@@ -361,16 +290,19 @@
                         $('#main-home-product__item').html(response);
 
                     },
-                    error: function(error) {
-                        console.error('Error:', error);
-                    }
+                    // error: function(error) {
+                    //     console.error('Error:', error);
+                    // }
                 });
             });
 
             $('.main-home-product__item').on('click', function() {
                 var id = $(this).data('id');
+                var phone = $('#phone').val();
 
+                $('#phone_number_quan').attr('value', phone);
                 $('#product_id').attr('value', id);
+
             });
         });
 
@@ -386,13 +318,34 @@
                         $('#customerFindByPhone').html(response);
 
                     },
-                    error: function(error) {
-                        console.error('Error:', error);
-                    }
+                    // error: function(error) {
+                    //     console.error('Error:', error);
+                    // }
                 });
             });
         })
 
+
+        // on input given
+        $(document).ready(function() {
+            $("#customer_given").on("input", function() {
+                var number = $(this).val();
+                console.log(number)
+                $.ajax({
+                    type: 'get',
+                    url: "/customer/calculate_money/"+number.toString(),
+                    success: function(response) {
+
+                        $('#given_change').html(response);
+
+                    },
+                    // error: function(error) {
+                    //     console.error('Error:', error);
+                    // }
+                });
+
+            });
+        });
 
     </script>
 </div>

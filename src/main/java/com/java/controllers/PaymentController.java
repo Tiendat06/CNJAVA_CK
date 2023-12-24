@@ -1,9 +1,11 @@
 package com.java.controllers;
 
+import com.java.models.MyUserDetail;
 import com.java.service.OrdersService;
 import com.java.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -65,15 +67,18 @@ public class PaymentController {
 
         Float totalAmount = paymentService.getTotalPaymentAmount();
 
-        List<Object[]> quanNPriceList = ordersService.getQuanAndPrice();
+        List<Object[]> quanNPriceList = ordersService.getQuanAndPrice(dateStart, dateEnd);
         float sum = 0.0f;
         for (Object[] item: quanNPriceList) {
             int quan = (int) item[0];
             float price = (float) item[1];
             sum += quan * price;
         }
+        System.out.println(sum);
+        System.out.println(totalAmount);
 //        System.out.println(sum);
-        Float totalProfit = (float) (totalAmount - (Math.round(sum * 100.0) / 100.0));
+//        (Math.round(sum * 100.0) / 100.0
+        Float totalProfit = (float) ((float) Math.round((totalAmount - sum) *100.0) / 100.0);
 
         model.addAttribute("totalMoney", totalMoney);
         model.addAttribute("totalOrder", totalOrder);
@@ -82,4 +87,5 @@ public class PaymentController {
 
         return "/payment/total";
     }
+
 }

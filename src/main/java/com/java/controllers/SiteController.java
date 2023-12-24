@@ -1,10 +1,7 @@
 package com.java.controllers;
 
 import com.java.models.*;
-import com.java.service.CustomerService;
-import com.java.service.MyUserDetailsService;
-import com.java.service.OrdersService;
-import com.java.service.ProductService;
+import com.java.service.*;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.security.Security;
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("")
@@ -33,10 +32,13 @@ public class SiteController implements ErrorController {
     public OrdersService ordersService;
     @Autowired
     public CustomerService customerService;
+    @Autowired
+    public OrderDetailsService orderDetailsService;
     @GetMapping("")
     public String index(Model model, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession session = req.getSession();
         model.addAttribute("content", "home");
+        model.addAttribute("userImg");
 
         return "redirect:/1";
     }
@@ -47,7 +49,15 @@ public class SiteController implements ErrorController {
         model.addAttribute("content", "home");
         Page<Product> productList = productService.getAllProductPagination(pageNo - 1, pageSize);
 
+        MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        List<Object[]> orderListCus = ordersService.getOrderOfCustomerInHome(myUserDetail.getCombinedUser().getUser().getUser_id());
+
+        List<Object[]> totalBill = ordersService.totalBillInHome(myUserDetail.getCombinedUser().getUser().getUser_id());
+
+        model.addAttribute("orderListCus", orderListCus);
         model.addAttribute("productList", productList);
+        model.addAttribute("totalBill", totalBill);
 
         return "index";
 
@@ -67,14 +77,40 @@ public class SiteController implements ErrorController {
         return "/home/category_search";
     }
 
+//  pending, need to test
     @PostMapping("/add/product")
-    public void addProductToOrderList(HttpServletRequest req, HttpServletResponse resp){
-        String id = req.getParameter("product_id");
-        String quantity = req.getParameter("quantity");
+    public String addProductToOrderList(HttpServletRequest req, HttpServletResponse resp, Model model) throws IOException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
-        ordersService.orderRepository.save(new Order("", "USE0000001", null, "", ""));
+        MyUserDetail myUserDetail = (MyUserDetail) auth.getPrincipal();
 
+        String pro_id = req.getParameter("product_id");
+        System.out.println(pro_id);
+        int quantity = Integer.parseInt(req.getParameter("quantity-ord"));
+        String phone = req.getParameter("phone_number_quan");
+        System.out.println(phone);
+        if (phone == null){
+            model.addAttribute("no_input_phone", "Please enter customer phone number first");
+            return "redirect:/1";
+        }
+
+        String userId = myUserDetail.getCombinedUser().getUser().getUser_id();
+
+        String odt_id = orderDetailsService.AUTO_ODT_ID();
+
+        String max_ord_id = ordersService.orderRepository.maxID();
+        Optional<Order> orderOptional = ordersService.orderRepository.checkUserIdIsNull(max_ord_id);
+
+//        String user_id_max_id = ordersService.orderRepository.findById(max_ord_id).get().getUser_id();
+
+        if (orderOptional.isPresent()){
+            String ord_id = ordersService.AUTO_ORD_ID();
+            Customer customer = customerService.findCusByPhone(phone);
+            ordersService.orderRepository.save(new Order(ord_id, userId, null, null, customer.getCustomer_id()));
+        }
+
+        orderDetailsService.orderDetailsRepository.save(new OrderDetail(odt_id, orderDetailsService.orderDetailsRepository.maxOrderIdInODT(userId), pro_id, quantity));
+
+        return "redirect:/1";
     }
 
     @PostMapping("/add/customer")
@@ -91,6 +127,8 @@ public class SiteController implements ErrorController {
         resp.sendRedirect("/");
 
     }
+
+//    '/calculate_money/'+number
 
     @GetMapping("/find/{phone_number}")
     public String findCusByPhone(@PathVariable String phone_number, Model model){

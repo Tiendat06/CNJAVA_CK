@@ -11,6 +11,14 @@ import java.util.List;
 
 @Repository
 public interface OrderDetailsRepository extends JpaRepository<OrderDetail, String> {
+
+    @Query("select max (order_details_id) from order_details ")
+    String maxID();
+
+    @Query("select max(ord.order_id) from order_details odt, orders ord WHERE ord.order_id = odt.order_id " +
+            "and ord.user_id = :userId and ord.date_created is null ")
+    String maxOrderIdInODT(@Param("userId") String userId);
+
     @Query("select od from order_details od where od.product_id = :id")
     List<OrderDetail> checkProduct(@Param("id") String id);
 
@@ -20,7 +28,7 @@ public interface OrderDetailsRepository extends JpaRepository<OrderDetail, Strin
             ", payment pay " +
             "where odt.order_id = ord.order_id and odt.order_id = tra.order_id and ord.order_id = tra.order_id and " +
             "odt.product_id = pro.product_id and ord.customer_id = cus.customer_id and " +
-            "tra.order_id = ord.order_id and pay.transaction_id = pay.transaction_id " +
+            "tra.order_id = ord.order_id " +
             "and tra.payment_id = pay.payment_id and cus.customer_id = :cusid and pay.date_created = :date_created")
     List<Object[]> getPurchaseHistoryDetailsByCustomerId(@Param("cusid") String id, @Param("date_created") Timestamp date_created);
 
@@ -30,7 +38,7 @@ public interface OrderDetailsRepository extends JpaRepository<OrderDetail, Strin
             ", payment pay " +
             "where odt.order_id = ord.order_id and odt.order_id = tra.order_id and ord.order_id = tra.order_id and " +
             "odt.product_id = pro.product_id and ord.customer_id = cus.customer_id and " +
-            "tra.order_id = ord.order_id and pay.transaction_id = pay.transaction_id " +
+            "tra.order_id = ord.order_id " +
             "and tra.payment_id = pay.payment_id and cus.customer_id = :cusid GROUP BY pay.date_created")
     List<Object[]> getPurchaseHistoryListByCustomerId(@Param("cusid") String id);
 }

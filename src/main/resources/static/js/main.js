@@ -72,6 +72,33 @@ function showModalInCustomer(){
 //     });
 // }
 
+function jsInHome(){
+
+
+
+    // $(document).ready(function() {
+    //     $("#btn-pay").on("click", function() {
+    //         // var number = $(this).val();
+    //         var number = 3;
+    //         console.log(number)
+    //
+    //         $.ajax({
+    //             type: 'GET',
+    //             url: "/calculate_money/3",
+    //             success: function(response) {
+    //
+    //                 $('#given_change').html(response);
+    //
+    //             },
+    //             // error: function(error) {
+    //             //     console.error('Error:', error);
+    //             // }
+    //         });
+    //
+    //     });
+    // });
+}
+
 function handleUploadImg() {
     const fileInput = document.getElementById('fileInput');
     const img = document.getElementById('profile-img');
