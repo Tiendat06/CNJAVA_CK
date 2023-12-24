@@ -61,6 +61,8 @@ public interface UserRepository extends JpaRepository<User, String> {
             save(u);
         });
     }
+    @Query("SELECT user FROM user user WHERE LOWER(user.email) LIKE LOWER(CONCAT(:email, '%'))")
+    User findUserEmailLike(@Param("email") String email);
 
     User findByEmail(String email);
 

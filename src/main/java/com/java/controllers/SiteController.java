@@ -40,6 +40,12 @@ public class SiteController implements ErrorController {
         model.addAttribute("content", "home");
         model.addAttribute("userImg");
 
+        MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (myUserDetail.getCombinedUser().getAccount().isTemp_pass()) {
+            myUserDetail.getCombinedUser().getAccount().setStatus(false);
+            return "redirect:/log/change_pass";
+        }
         return "redirect:/1";
     }
 

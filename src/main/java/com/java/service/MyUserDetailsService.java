@@ -5,6 +5,7 @@ import com.java.repository.AccountRepository;
 import com.java.repository.RoleRepository;
 import com.java.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,10 +21,11 @@ public class MyUserDetailsService implements UserDetailsService {
     RoleRepository roleRepository;
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email);
+        User user = userRepository.findUserEmailLike(email);
         if (user==null) {
             throw new UsernameNotFoundException("User Not Found");
         }
+
         Account account = accountRepository.findByAccountId(user.getAccount_id());
         Role role = roleRepository.findByRoleId(account.getRole_id());
         CombinedUser combinedUser = new CombinedUser(user,account,role);

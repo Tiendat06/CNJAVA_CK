@@ -61,10 +61,9 @@ public class UserController {
     @GetMapping("/profile")
     public String user_profile_GET(Model model){
         model.addAttribute("content", "profile");
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        auth.getAuthorities();
-        MyUserDetail myUserDetail = (MyUserDetail) auth.getPrincipal();
+        MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+//        List<Object[]> user = userService.getUserProfile(myUserDetail.getCombinedUser().getAccount().getAccount_id());
         List<Object[]> user = userService.getUserProfile(myUserDetail.getCombinedUser().getUser().getUser_id());
 
 //        System.out.println(user.toString());
