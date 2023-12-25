@@ -1,6 +1,7 @@
 package com.java.controllers;
 
 import com.java.models.Account;
+import com.java.models.MyUserDetail;
 import com.java.models.User;
 import com.java.repository.AccountRepository;
 import com.java.service.AccountService;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,6 +51,8 @@ public class AccountController {
     public String accountPagination(@PathVariable int pageNo,
                                     @RequestParam(defaultValue = "10") int pageSize, Model model){
         model.addAttribute("content", "account");
+        MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute("userImg", myUserDetail.getCombinedUser().getUser().getImage());
         Page<Object[]> accList = accountService.getAccPagination(pageNo - 1, pageSize);
         model.addAttribute("accList", accList);
 

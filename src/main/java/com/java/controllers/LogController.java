@@ -2,6 +2,7 @@ package com.java.controllers;
 
 
 import com.java.models.Account;
+import com.java.models.MyUserDetail;
 import com.java.repository.AccountRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -104,6 +105,8 @@ public class LogController {
     @GetMapping("/change_pass")
     public String changePass_GET(Model model){
         model.addAttribute("content", "change_pass");
+        MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute("userImg", myUserDetail.getCombinedUser().getUser().getImage());
         return "index";
     }
 

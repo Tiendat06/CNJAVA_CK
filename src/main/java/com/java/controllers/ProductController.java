@@ -1,6 +1,7 @@
 package com.java.controllers;
 
 import com.java.models.Category;
+import com.java.models.MyUserDetail;
 import com.java.models.Product;
 import com.java.models.User;
 import com.java.service.CategoryService;
@@ -11,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -104,6 +106,8 @@ public class ProductController {
         model.addAttribute("content", "product");
         model.addAttribute("productList", productList);
         model.addAttribute("categoryList", new ProductUtils());
+        MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute("userImg", myUserDetail.getCombinedUser().getUser().getImage());
 
         List<Category> categoryList = categoryService.getAllCategory();
         model.addAttribute("categoryListModal", categoryList);

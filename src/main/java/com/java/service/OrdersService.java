@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrdersService {
@@ -46,7 +47,7 @@ public class OrdersService {
         return orderRepository.getQuanAndPrice(date_start, date_end);
     }
 
-    public List<Object[]> totalBillInHome(String userId){
+    public Optional<Object[]> totalBillInHome(String userId){
         return orderRepository.totalBill(userId);
     }
 

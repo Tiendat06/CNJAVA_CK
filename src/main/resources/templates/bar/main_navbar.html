@@ -24,7 +24,7 @@
             </div>
 
             <div style="width: 50px;" class="navbar__user-img ml-3 ">
-                <img class="" style="width: 50px;" th:src="@{/img/user_profile.png}" alt="" srcset="">
+                <img class="" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover" th:src="@{/img/{image}(image=${userImg})}" alt="" srcset="">
             </div>
 
             <div class="navbar__greeting p-3">

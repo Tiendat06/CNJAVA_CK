@@ -35,6 +35,8 @@ public class PaymentController {
     public String order_list_pagination(Model model, @PathVariable int pageNo,
                         @RequestParam(defaultValue = "10") int pageSize){
         model.addAttribute("content", "report");
+        MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute("userImg", myUserDetail.getCombinedUser().getUser().getImage());
         Date currentDate = new Date(System.currentTimeMillis());
         System.out.println(currentDate);
 

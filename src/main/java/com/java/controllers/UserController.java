@@ -53,6 +53,8 @@ public class UserController {
     public String getUserPagination(@PathVariable int pageNo,
                                     @RequestParam(defaultValue = "10") int pageSize, Model model){
         Page<User> userList = userService.getUserPagination(pageNo - 1, pageSize);
+        MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute("userImg", myUserDetail.getCombinedUser().getUser().getImage());
         model.addAttribute("content", "user");
         model.addAttribute("userList", userList);
         return "index";
@@ -65,7 +67,7 @@ public class UserController {
 
 //        List<Object[]> user = userService.getUserProfile(myUserDetail.getCombinedUser().getAccount().getAccount_id());
         List<Object[]> user = userService.getUserProfile(myUserDetail.getCombinedUser().getUser().getUser_id());
-
+        model.addAttribute("userImg", myUserDetail.getCombinedUser().getUser().getImage());
 //        System.out.println(user.toString());
         model.addAttribute("userInfo", user);
 
@@ -126,7 +128,7 @@ public class UserController {
         userService.userRepository.save(user);
 
         String url = req.getRequestURL().toString();
-        url = url.replace(req.getServletPath(), "/");
+        url = url.replace(req.getServletPath(), "");
         userService.sendEmail(user, url);
 
         resp.sendRedirect("/user/1");
@@ -154,11 +156,12 @@ public class UserController {
     public void deleteUser_POST(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String user_id = req.getParameter("userIdDelete");
         User user = userService.getAccIDByUserID(user_id);
+        String acc_id = user.getAccount_id();
 
         userService.deleteByID(user_id);
+        accountService.deleteByID(acc_id);
 //        System.out.println(user_id);
 //        System.out.println(acc_id);
-        accountService.deleteByID(user.getAccount_id());
         resp.sendRedirect("/user/1");
     }
 }

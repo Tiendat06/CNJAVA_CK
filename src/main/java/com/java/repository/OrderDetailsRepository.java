@@ -4,6 +4,7 @@ import com.java.models.OrderDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
@@ -15,8 +16,8 @@ public interface OrderDetailsRepository extends JpaRepository<OrderDetail, Strin
     @Query("select max (order_details_id) from order_details ")
     String maxID();
 
-    @Query("select max(ord.order_id) from order_details odt, orders ord WHERE ord.order_id = odt.order_id " +
-            "and ord.user_id = :userId and ord.date_created is null ")
+    @Query("select max(ord.order_id) from orders ord WHERE " +
+            "ord.user_id = :userId and ord.date_created is null ")
     String maxOrderIdInODT(@Param("userId") String userId);
 
     @Query("select od from order_details od where od.product_id = :id")

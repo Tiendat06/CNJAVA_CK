@@ -6,6 +6,7 @@ import com.java.models.OrderDetail;
 import com.java.service.CustomerService;
 import com.java.service.OrderDetailsService;
 import com.java.service.OrdersService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/customer")
@@ -35,37 +37,14 @@ public class CustomerController {
         return "redirect:/customer/1";
     }
 
-    @GetMapping("/calculate_money/{moneyGiven}")
-    public String calculateCustomerGivenChange(@PathVariable String moneyGiven, Model model){
-
-        MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        List<Object[]> totalBillList = ordersService.totalBillInHome(myUserDetail.getCombinedUser().getUser().getUser_id());
-        Object[] totalBill = totalBillList.get(0);
-        float row = Float.parseFloat(totalBill[0].toString());
-
-        try {
-            float moneyGivenValue = Float.parseFloat(moneyGiven);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-
-        double cus_given_change = Math.round((row - Float.parseFloat(moneyGiven)) * 100.0) / 100.0;
-        model.addAttribute("cus_given_change", cus_given_change);
-
-//        float cus_given_change = totalBill - Float.parseFloat(moneyGiven);
-//        model.addAttribute("cus_given_change", cus_given_change);
-        return "/home/cus_given_change";
-
-    }
-
     @GetMapping("/{pageNo}")
     public String getCustomerPagination(@PathVariable int pageNo,
                                         @RequestParam(defaultValue = "10") int pageSize, Model model){
         model.addAttribute("content", "customer");
         Page<Customer> customerList = customerService.getCustomersPagination(pageNo - 1, pageSize);
         model.addAttribute("customerList", customerList);
-
+        MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute("userImg", myUserDetail.getCombinedUser().getUser().getImage());
 //        model.addAttribute("purchaseList", new CustomerUtil());
 
         return "index";

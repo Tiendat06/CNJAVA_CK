@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head lang="en" th:include="fragments/header :: header">
+</head>
+<body>
+    <h2>Invoice</h2>
+    <p>Customer Name: <span></span></p>
+
+    <table class="main-content-user__table mt-4 table table-striped table-bordered table-hover">
+        <thead class="main-content-user__thead text-white text-center">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Product name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Amount</th>
+        </tr>
+        </thead>
+
+        <tbody id="tbody">
+        <th:block th:each="orl, itemStat: ${orderListCus}">
+            <tr>
+                <th scope="row">[[${itemStat.index + 1}]]</th>
+                <td>[[${orl[0]}]]</td>
+                <td>x[[${orl[2]}]]</td>
+                <td>[[${orl[3]}]]$</td>
+            </tr>
+        </th:block>
+
+        </tbody>
+    </table>
+
+    <p>Total Amount: <span>[[${totalBill.get()[0]}]]</span></p>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+    <script>
+
+        $(document).ready(function() {
+            $('#downloadBtn').on('click', function() {
+                // Lấy dữ liệu hoặc thực hiện các bước chuẩn bị trước khi tạo PDF
+                var content = "Hello, this is the content of the PDF.";
+
+                // Tạo và tải về file PDF
+                createAndDownloadPDF(content);
+            });
+
+            function createAndDownloadPDF(content) {
+                // Sử dụng jsPDF để tạo nội dung PDF
+                var pdf = new jsPDF();
+
+                // Thêm nội dung vào PDF
+                pdf.text(content, 10, 10);
+
+                // Tạo tên file PDF (có thể tùy chỉnh)
+                var fileName = 'invoice.pdf';
+
+                // Tải về file PDF
+                pdf.save(fileName);
+            }
+        });
+    </script>
+
+    <button id="downloadBtn">Download PDF</button>
+</body>
+</html>

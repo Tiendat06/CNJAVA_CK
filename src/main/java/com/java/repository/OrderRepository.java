@@ -1,6 +1,7 @@
 package com.java.repository;
 
 import com.java.models.Order;
+import com.java.models.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,6 +23,9 @@ public interface OrderRepository extends JpaRepository<Order, String> {
     @Query("SELECT ord FROM orders ord where ord.user_id = :userId and ord.date_created IS NULL")
     Optional<Order> checkUserIdIsNull(@Param("userId") String userId);
 
+    @Query("select ord.order_id from order_details odt, orders ord WHERE ord.order_id = odt.order_id " +
+            "and ord.user_id = :userId and ord.date_created is null")
+    Optional<String> checkUserIsOrder(@Param("userId") String userId);
 
     @Query("select ord.order_id, pay.date_created, cus.customer_name, use.first_name, use.last_name, tra.status, pay.total_amount " +
             "from orders ord, transaction tra, payment pay, user use, customers cus " +
@@ -71,5 +75,5 @@ public interface OrderRepository extends JpaRepository<Order, String> {
             "from orders ord, order_details odt, product pro " +
             "where ord.order_id = odt.order_id and ord.user_id = :userId "+
             "and ord.date_created is null and odt.product_id = pro.product_id")
-    List<Object[]> totalBill(@Param("userId") String userId);
+    Optional<Object[]> totalBill(@Param("userId") String userId);
 }
