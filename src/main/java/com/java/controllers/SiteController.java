@@ -190,6 +190,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -199,6 +200,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.Security;
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -223,10 +225,10 @@ public class SiteController implements ErrorController {
         model.addAttribute("content", "home");
 
         MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         session.setAttribute("temp_pass", false);
         session.setAttribute("password", null);
-
+        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>)    SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        System.out.println(authorities.toString());
         if (myUserDetail.getCombinedUser().getAccount().isTemp_pass()) {
 //            myUserDetail.getCombinedUser().getAccount().setStatus(false);
             session.setAttribute("temp_pass", myUserDetail.getCombinedUser().getAccount().isTemp_pass());

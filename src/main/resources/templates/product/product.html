@@ -58,14 +58,13 @@
                                    th:data-name="${p.product_name}"
                                    th:data-import="${p.product_price}"
                                    th:data-retail="${p.retail_price}"
-                                    th:data-category="${categoryList.getCategory(p.category_id)}"
-                                    th:data-quan="${p.quantity_stock}"
-                                    th:data-date="${p.date_created}"
-                                    th:data-des="${p.description}">
-                                    <i style="cursor: pointer" class="p-2 text-primary fa-solid fa-pen-to-square"></i>
+                                   th:data-category="${categoryList.getCategory(p.category_id)}"
+                                   th:data-quan="${p.quantity_stock}"
+                                   th:data-date="${p.date_created}"
+                                   th:data-des="${p.description}">
+                                    <i th:if="${#strings.contains(#authentication.principal.authorities,'Admin')}" style="cursor: pointer" class="p-2 text-primary fa-solid fa-pen-to-square"></i>
                                 </a>
-
-                                <a data-toggle="modal" id="delete-btn" class="btn-show-details-delete" th:data-id="${p.product_id}" data-target="#delete-product">
+                                <a th:if="${#strings.contains(#authentication.principal.authorities,'Admin')}" data-toggle="modal" id="delete-btn" class="btn-show-details-delete" th:data-id="${p.product_id}" data-target="#delete-product">
                                     <i style="cursor: pointer" class="p-2 text-danger fa-solid fa-trash"></i>
                                 </a>
                             </td>

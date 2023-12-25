@@ -46,10 +46,9 @@
                             <a class="login-form__link" href="">Forgot password?</a>
                         </div>
 
-<!--                        <div th:if="${error}" class="form-group login-form&#45;&#45;error text-center alert alert-danger">-->
-<!--                            <p th:text="${error}" class="login-form__para mb-0 text-danger">-->
-<!--                            </p>-->
-
+                        <th:block th:if="${param.error}">
+                            <p class="text-center text-danger fs-5">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+                        </th:block>
 
                         <div class="form-group login-form--signin w-100">
                             <button class="w-100 btn btn-primary login-form__btn" type="submit">
@@ -57,14 +56,6 @@
                             </button>
                         </div>
 
-<!--                        <div class="form-group login-form&#45;&#45;more">-->
-<!--                            <p class="login-form__para">-->
-<!--                                Don't have an account?-->
-<!--                                <a class="login-form__link" href="/log/register">-->
-<!--                                    Sign up-->
-<!--                                </a>-->
-<!--                            </p>-->
-<!--                        </div>-->
                     </div>
                 </div>
 
