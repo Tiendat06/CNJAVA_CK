@@ -224,8 +224,11 @@ public class SiteController implements ErrorController {
 
         MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+        session.setAttribute("temp_pass", false);
+
         if (myUserDetail.getCombinedUser().getAccount().isTemp_pass()) {
             myUserDetail.getCombinedUser().getAccount().setStatus(false);
+            session.setAttribute("temp_pass", myUserDetail.getCombinedUser().getAccount().isTemp_pass());
             return "redirect:/log/change_pass";
         }
         return "redirect:/1";
