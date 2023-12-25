@@ -48,6 +48,16 @@ public interface AccountRepository extends JpaRepository<Account, String> {
     String findEmailByAccount_id(@Param("account_id") String account_id);
 
 
+    @Modifying
+    @Transactional
+    @Query("UPDATE account a SET a.temp_pass = false WHERE a.account_id = :account_id")
+    void updateTempPass(@Param("account_id") String account_id);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE account a SET a.password = :password WHERE a.account_id = :account_id")
+    void updatePassword(@Param("account_id") String account_id, @Param("password") String password);
+
 
     default void updateRoleByAccID(String id, int roleId){
         findById(id).ifPresent(a -> {

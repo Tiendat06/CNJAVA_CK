@@ -17,10 +17,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -78,7 +75,7 @@ public class AccountController {
         resp.sendRedirect("/account/1");
 
     }
-
+    
     @GetMapping("/sendEmail/{accID}")
     public void resendEmail(@PathVariable String accID, HttpServletResponse resp, HttpServletRequest req) throws IOException {
         User user = userService.userRepository.findUserByAccount_id(accID);

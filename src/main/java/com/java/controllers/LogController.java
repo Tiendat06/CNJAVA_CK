@@ -7,11 +7,14 @@ import com.java.repository.AccountRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -108,6 +112,29 @@ public class LogController {
         MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         model.addAttribute("userImg", myUserDetail.getCombinedUser().getUser().getImage());
         return "index";
+    }
+
+    @PostMapping("/change_pass")
+    public String  changePass(HttpServletRequest req, HttpServletResponse resp, Model model) {
+        String pwd = req.getParameter("new_pass");
+        String new_pwd = req.getParameter("re_new_pass");
+        HttpSession session = req.getSession();
+        if (pwd.length()<6) {
+            session.setAttribute("password", "Password must have least 6 characters");
+        }
+        if (!pwd.equals(new_pwd)) {
+            session.setAttribute("password", "Confirm password didn't match");
+        }
+        else {
+            session.setAttribute("temp_pass", false);
+            MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            myUserDetail.getCombinedUser().getAccount().setTemp_pass(false);
+            accountRepository.updateTempPass(myUserDetail.getCombinedUser().getAccount().getAccount_id());
+            pwd = new BCryptPasswordEncoder().encode(pwd);
+            accountRepository.updatePassword(myUserDetail.getCombinedUser().getAccount().getAccount_id(),pwd);
+            session.setAttribute("password", "success");
+        }
+        return "redirect:/log/change_pass";
     }
 
 }

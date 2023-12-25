@@ -8,14 +8,21 @@
 
         <div class="col-lg-1 col-md-6 col-sm-2 pl-0" lang="en" style="min-height: 100%" th:include="bar/main_sidebar :: main_sidebar"></div>
 
-        <div th:include="home/home :: home" th:if="${content == 'home'}" style="padding: 20px;" class="main-content-user d-flex flex-wrap col-lg-11 col-md-9 col-sm-10"></div>
-        <div th:include="user/user :: user" th:if="${content == 'user'}" style="padding: 20px;" class="main-content-user col-lg-11 col-md-9 col-sm-10"></div>
-        <div th:include="account/account :: account" th:if="${content == 'account'}" style="padding: 20px;" class="main-content-user col-lg-11 col-md-9 col-sm-10"></div>
-        <div th:include="product/product :: product" th:if="${content == 'product'}" style="padding: 20px;" class="main-content-user col-lg-11 col-md-9 col-sm-10"></div>
-        <div th:include="customer/customer :: customer" th:if="${content == 'customer'}" style="padding: 20px;" class="main-content-user col-lg-11 col-md-9 col-sm-10"></div>
-        <div th:include="user/profile :: profile" th:if="${content == 'profile'}" style="padding: 20px;" class="main-content-user col-lg-11 col-md-9 col-sm-10"></div>
-        <div th:include="payment/report :: report" th:if="${content == 'report'}" style="padding: 20px;" class="main-content-user col-lg-11 col-md-9 col-sm-10"></div>
-        <div th:include="log/change_pass :: change_pass" th:if="${content == 'change_pass'}" style="padding: 20px;" class="main-content-user col-lg-11 col-md-9 col-sm-10"></div>
+        <th:block th:if="${!session.temp_pass}">
+
+            <div th:include="home/home :: home" th:if="${content == 'home'}" style="padding: 20px;" class="main-content-user d-flex flex-wrap col-lg-11 col-md-9 col-sm-10"></div>
+            <div th:include="user/user :: user" th:if="${content == 'user'}" style="padding: 20px;" class="main-content-user col-lg-11 col-md-9 col-sm-10"></div>
+            <div th:include="account/account :: account" th:if="${content == 'account'}" style="padding: 20px;" class="main-content-user col-lg-11 col-md-9 col-sm-10"></div>
+            <div th:include="product/product :: product" th:if="${content == 'product'}" style="padding: 20px;" class="main-content-user col-lg-11 col-md-9 col-sm-10"></div>
+            <div th:include="customer/customer :: customer" th:if="${content == 'customer'}" style="padding: 20px;" class="main-content-user col-lg-11 col-md-9 col-sm-10"></div>
+            <div th:include="user/profile :: profile" th:if="${content == 'profile'}" style="padding: 20px;" class="main-content-user col-lg-11 col-md-9 col-sm-10"></div>
+            <div th:include="payment/report :: report" th:if="${content == 'report'}" style="padding: 20px;" class="main-content-user col-lg-11 col-md-9 col-sm-10"></div>
+            <div th:include="log/change_pass :: change_pass" th:if="${content == 'change_pass'}" style="padding: 20px;" class="main-content-user col-lg-11 col-md-9 col-sm-10"></div>
+        </th:block>
+
+        <th:block th:if="${session.temp_pass}">
+            <div th:include="log/change_pass :: change_pass" style="padding: 20px;" class="main-content-user col-lg-11 col-md-9 col-sm-10"></div>
+        </th:block>
 
     </div>
 
