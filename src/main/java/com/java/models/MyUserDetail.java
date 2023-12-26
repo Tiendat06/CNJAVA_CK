@@ -34,7 +34,7 @@ public class MyUserDetail implements UserDetails {
 
     @Override
     public String getUsername() {
-        return combinedUser.getUser().getEmail();
+        return combinedUser.getUser().getFirst_name() + " " + combinedUser.getUser().getLast_name();
     }
 
     @Override

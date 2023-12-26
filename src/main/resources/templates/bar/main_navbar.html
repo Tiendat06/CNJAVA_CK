@@ -28,7 +28,7 @@
             </div>
 
             <div class="navbar__greeting p-3">
-                <p class="mb-0">Hi, Admin</p>
+                <p class="mb-0" th:text="'Hi, ' + ${#authentication.name}"></p>
             </div>
         </header>
     </nav>
