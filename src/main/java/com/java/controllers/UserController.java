@@ -60,6 +60,16 @@ public class UserController {
         return "index";
     }
 
+    @GetMapping("/{pageNo}/ajax")
+    public String getUserPagination_AJAX(@PathVariable int pageNo,
+                                    @RequestParam(defaultValue = "10") int pageSize, Model model){
+        Page<User> userList = userService.getUserPagination(pageNo - 1, pageSize);
+//        MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        model.addAttribute("userImg", myUserDetail.getCombinedUser().getUser().getImage());
+//        model.addAttribute("content", "user");
+        model.addAttribute("userList", userList);
+        return "/user/user_list";
+    }
     @GetMapping("/profile")
     public String user_profile_GET(Model model){
         model.addAttribute("content", "profile");

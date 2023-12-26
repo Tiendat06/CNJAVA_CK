@@ -46,6 +46,19 @@ public class PaymentController {
         return "index";
     }
 
+    @GetMapping("/report/{pageNo}/ajax")
+    public String order_list_pagination_AJAX(Model model, @PathVariable int pageNo,
+                                        @RequestParam(defaultValue = "10") int pageSize){
+
+        Date currentDate = new Date(System.currentTimeMillis());
+//        System.out.println(currentDate);
+
+        Page<Object[]> orderList = ordersService.getAllOrdersList(pageNo - 1, pageSize, currentDate);
+        model.addAttribute("orderList", orderList);
+
+        return "/payment/report_list";
+    }
+
     @GetMapping("/report/order-list/{ordId}")
     public String getOderListInDetails(@PathVariable String ordId, Model model){
         List<Object[]> odtList = ordersService.getAllOrderListDetails(ordId);
@@ -67,7 +80,7 @@ public class PaymentController {
         List<Object[]> totalOrder = ordersService.getTotalOrderOrderByDate(dateStart, dateEnd);
         List<Object[]> totalProduct = ordersService.getTotalProductOrderByDate(dateStart, dateEnd);
 
-        Float totalAmount = paymentService.getTotalPaymentAmount();
+        Float totalAmount = paymentService.getTotalPaymentAmount(dateStart, dateEnd);
 
         List<Object[]> quanNPriceList = ordersService.getQuanAndPrice(dateStart, dateEnd);
         float sum = 0.0f;
@@ -76,8 +89,8 @@ public class PaymentController {
             float price = (float) item[1];
             sum += quan * price;
         }
-        System.out.println(sum);
         System.out.println(totalAmount);
+        System.out.println(sum);
 //        System.out.println(sum);
 //        (Math.round(sum * 100.0) / 100.0
         Float totalProfit = (float) ((float) Math.round((totalAmount - sum) *100.0) / 100.0);

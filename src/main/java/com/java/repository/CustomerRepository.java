@@ -18,4 +18,7 @@ public interface CustomerRepository extends JpaRepository<Customer, String> {
 
     @Query("select c.customer_id from customers c where c.customer_phone = :phone")
     Optional<Customer> CheckCusByPhone(@Param("phone") String phone);
+
+    @Query("select c.customer_id from customers c where c.date_created is null and c.customer_id = :cusId")
+    Optional<String> checkIsFirstCustomer(@Param("cusId") String cusId);
 }

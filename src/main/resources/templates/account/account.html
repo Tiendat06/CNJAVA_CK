@@ -32,7 +32,7 @@
                     </tr>
                     </thead>
 
-                    <tbody>
+                    <tbody id="tbody-account">
                     <th:block th:each="a, itemStat: ${accList}">
                         <tr>
                             <th scope="row">[[${itemStat.index + 1}]]</th>
@@ -68,26 +68,34 @@
                             </td>
                         </tr>
                     </th:block>
-
+                    <script>
+                        // alert("hiiii")
+                    </script>
                     </tbody>
                 </table>
 
-                <ul style="float: right" th:if="${accList.totalPages > 1}" class="pagination">
+                <ul style="float: right; cursor: pointer" th:if="${accList.totalPages > 1}" class="pagination">
                     <li class="page-item">
-                        <a th:if="${accList.hasPrevious()}" th:href="@{'/account/' + ${accList.previousPageable().pageNumber + 1}}" class="page-link">Previous</a>
+                        <a th:if="${accList.hasPrevious()}" th:data-page_number="@{'/account/' + ${accList.previousPageable().pageNumber + 1}}" class="page-link">Previous</a>
                     </li>
                     <li th:each="pageNumber : ${#numbers.sequence(0, accList.totalPages - 1)}" class="page-item">
-                        <a th:href="@{'/account/' + ${pageNumber + 1}}"
+                        <a th:data-page_number="@{'/account/' + ${pageNumber + 1}}"
                            th:text="${pageNumber + 1}"
                            th:class="${pageNumber + 1 == accList.number ? 'active page-link' : 'page-link'}">
                         </a>
                     </li>
 
                     <li class="page-item">
-                        <a th:if="${accList.hasNext()}" th:href="@{'/account/' + ${accList.nextPageable().pageNumber + 1}}" class="page-link">Next</a>
+                        <a th:if="${accList.hasNext()}" th:data-page_number="@{'/account/' + ${accList.nextPageable().pageNumber + 1}}" class="page-link">Next</a>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
+
+    <script>
+        jsInAccount()
+
+    </script>
+
 </div>

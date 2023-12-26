@@ -50,6 +50,16 @@ public class CustomerController {
         return "index";
     }
 
+    @GetMapping("/{pageNo}/ajax")
+    public String getCustomerPagination_AJAX(@PathVariable int pageNo,
+                                        @RequestParam(defaultValue = "10") int pageSize, Model model){
+        Page<Customer> customerList = customerService.getCustomersPagination(pageNo - 1, pageSize);
+        model.addAttribute("customerList", customerList);
+//        model.addAttribute("purchaseList", new CustomerUtil());
+
+        return "/customer/customer_list";
+    }
+
     @GetMapping("/purchase-history/{cusId}")
     public String getPurchaseHistoryByCusId_GET(@PathVariable String cusId, Model model){
         List<Object[]> purchaseList = orderDetailsService.getPurchaseHistoryListByCustomerId(cusId);

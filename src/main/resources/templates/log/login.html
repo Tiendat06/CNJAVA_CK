@@ -46,6 +46,9 @@
                             <a class="login-form__link" href="">Forgot password?</a>
                         </div>
 
+<!--                        <div th:if="${error}" class="form-group login-form&#45;&#45;error text-center alert alert-danger">-->
+<!--                            <p th:text="${error}" class="login-form__para mb-0 text-danger">-->
+<!--                            </p> </div>-->
                         <th:block th:if="${param.error}">
                             <p class="text-center text-danger fs-5">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
                         </th:block>

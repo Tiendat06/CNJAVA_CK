@@ -32,7 +32,7 @@
                     </tr>
                     </thead>
 
-                    <tbody>
+                    <tbody id="tbody-customer">
                     <th:block th:each="c, itemStat: ${customerList}">
                         <tr>
                             <th scope="row">[[${itemStat.index + 1}]]</th>
@@ -58,19 +58,19 @@
                     </tbody>
                 </table>
 
-                <ul style="float: right" th:if="${customerList.totalPages > 1}" class="pagination">
+                <ul style="float: right; cursor: pointer" th:if="${customerList.totalPages > 1}" class="pagination">
                     <li class="page-item">
-                        <a th:if="${customerList.hasPrevious()}" th:href="@{'/user/' + ${customerList.previousPageable().pageNumber + 1}}" class="page-link">Previous</a>
+                        <a th:if="${customerList.hasPrevious()}" th:data-page_number="@{'/customer/' + ${customerList.previousPageable().pageNumber + 1}}" class="page-link">Previous</a>
                     </li>
                     <li th:each="pageNumber : ${#numbers.sequence(0, customerList.totalPages - 1)}" class="page-item">
-                        <a th:href="@{'/customer/' + ${pageNumber + 1}}"
+                        <a th:data-page_number="@{'/customer/' + ${pageNumber + 1}}"
                            th:text="${pageNumber + 1}"
                            th:class="${pageNumber + 1 == customerList.number ? 'active page-link' : 'page-link'}">
                         </a>
                     </li>
 
                     <li class="page-item">
-                        <a th:if="${customerList.hasNext()}" th:href="@{'/user/' + ${customerList.nextPageable().pageNumber + 1}}" class="page-link">Next</a>
+                        <a th:if="${customerList.hasNext()}" th:data-page_number="@{'/customer/' + ${customerList.nextPageable().pageNumber + 1}}" class="page-link">Next</a>
                     </li>
                 </ul>
 
@@ -181,48 +181,8 @@
     </div>
 
     <script>
-        // showModalInCustomer();
-        $(document).ready(function() {
-            var cusId = null;
-            $('.btn-show-details').on('click', function() {
-                cusId = $(this).data('id');
-                // console.log(cusId)
 
-                // $("#purchaseCusId").attr('value', cusId)
-                $.ajax({
-                    type: 'GET',
-                    url: '/customer/purchase-history/' + cusId,
-                    success: function(response) {
-
-                        $('#tbody').html(response);
-                        $('.btn-show-details-history').on('click', function() {
-                            cusId = $(this).data('id');
-                            var date = $(this).data('date');
-                            console.log(cusId)
-                            console.log("hiii")
-
-                            $("#order-id").attr('value', cusId)
-                            $.ajax({
-                                type: 'GET',
-                                url: '/customer/order_details/' + cusId+"/"+date,
-                                success: function(response) {
-
-                                    $('#tbody-details').html(response);
-                                    // $('#customerModal').modal('show');
-                                },
-                                error: function(error) {
-                                    console.error('Error:', error);
-                                }
-                            });
-                        });
-                        // $('#customerModal').modal('show');
-                    },
-                    error: function(error) {
-                        console.error('Error:', error);
-                    }
-                });
-            });
-        });
+        jsInCustomer()
 
     </script>
 </div>

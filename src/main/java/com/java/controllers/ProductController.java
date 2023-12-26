@@ -75,15 +75,21 @@ public class ProductController {
         String id = req.getParameter("productIdEdit");
         String name = req.getParameter("name-edit");
         int type = Integer.parseInt(req.getParameter("type-edit"));
-        byte[] img = imgFile.getBytes();
-        imageService.saveImage(img, id+".png");
+        System.out.println(type);
+        if (!imgFile.isEmpty()){
+            byte[] img = imgFile.getBytes();
+            imageService.saveImage(img, id+".png");
+        }
         float import_price = Float.parseFloat(req.getParameter("Iprice-edit"));
         float retail_price = Float.parseFloat(req.getParameter("Rprice-edit"));
         int quan = Integer.parseInt(req.getParameter("quan-edit"));
         String des = req.getParameter("des-add");
 
+        byte[] barcode = productService.convertBarCodeImgToByte(id);
+        imageService.saveImage(barcode, id+"_barcode.png");
+
         productService.updateProduct(id, new Product(id, name, des, quan,
-                import_price, type, id+".png", retail_price, null, null));
+                import_price, type, id+".png", retail_price, null, id+"_barcode.png"));
 
         resp.sendRedirect("/product/1");
     }
@@ -114,6 +120,15 @@ public class ProductController {
         model.addAttribute("imgUtil", new ProductUtils());
 
         return "index";
+    }
+
+    @GetMapping("/{pageNo}/ajax")
+    public String getUserPagination_AJAX(@PathVariable int pageNo,
+                                    @RequestParam(defaultValue = "10") int pageSize, Model model){
+        Page<Product> productList = productService.getAllProductPagination(pageNo - 1, pageSize);
+        model.addAttribute("productList", productList);
+        model.addAttribute("categoryList", new ProductUtils());
+        return "/product/product_list";
     }
 
     public class ProductUtils{

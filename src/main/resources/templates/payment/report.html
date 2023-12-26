@@ -122,19 +122,19 @@
             </tbody>
         </table>
 
-        <ul style="float: right" th:if="${orderList.totalPages > 1}" class="pagination">
+        <ul style="float: right; cursor: pointer" th:if="${orderList.totalPages > 1}" class="pagination">
             <li class="page-item">
-                <a th:if="${orderList.hasPrevious()}" th:href="@{'/payment/report/' + ${orderList.previousPageable().pageNumber + 1}}" class="page-link">Previous</a>
+                <a th:if="${orderList.hasPrevious()}" th:data-page_number="@{'/payment/report/' + ${orderList.previousPageable().pageNumber + 1}}" class="page-link">Previous</a>
             </li>
             <li th:each="pageNumber : ${#numbers.sequence(0, orderList.totalPages - 1)}" class="page-item">
-                <a th:href="@{'/payment/report/' + ${pageNumber + 1}}"
+                <a th:data-page_number="@{'/payment/report/' + ${pageNumber + 1}}"
                    th:text="${pageNumber + 1}"
                    th:class="${pageNumber + 1 == orderList.number ? 'active page-link' : 'page-link'}">
                 </a>
             </li>
 
             <li class="page-item">
-                <a th:if="${orderList.hasNext()}" th:href="@{'/payment/report/' + ${orderList.nextPageable().pageNumber + 1}}" class="page-link">Next</a>
+                <a th:if="${orderList.hasNext()}" th:data-page_number="@{'/payment/report/' + ${orderList.nextPageable().pageNumber + 1}}" class="page-link">Next</a>
             </li>
         </ul>
 
@@ -182,77 +182,8 @@
     </div>
 
     <script>
-        // showModalInCustomer();
-        $(document).ready(function() {
-            var orderId = null;
-            $('.btn-show-details').on('click', function() {
-                orderId = $(this).data('id');
 
-                $.ajax({
-                    type: 'GET',
-                    url: '/payment/report/order-list/' + orderId,
-                    success: function(response) {
-                        $('#tbody-details').html(response);
-
-                    },
-                    error: function(error) {
-                        console.error('Error:', error);
-                    }
-                });
-            });
-        });
-
-        $(document).ready(function() {
-            // var orderId = null;
-            $('#btn-date').on('click', function() {
-                // orderId = $(this).data('id');
-                var date_start = $("#date-start").val();
-                var date_end = $("#date-end").val();
-                // console.log(date_start)
-                // console.log(date_end)
-
-                $.ajax({
-                    type: 'GET',
-                    url: '/payment/report/sort-order-list/' + date_start + '/' + date_end,
-                    success: function(response) {
-                        $('#tbody').html(response);
-
-                        $.ajax({
-                            type: 'GET',
-                            url: '/payment/report/total/' + date_start + '/' + date_end,
-                            success: function(response) {
-                                $('#total-items').html(response);
-
-                            },
-                            error: function(error) {
-                                console.error('Error:', error);
-                            }
-                        });
-
-                        var orderId = null;
-                        $('.btn-show-details').on('click', function() {
-                            orderId = $(this).data('id');
-
-                            $.ajax({
-                                type: 'GET',
-                                url: '/payment/report/order-list/' + orderId,
-                                success: function(response) {
-                                    $('#tbody-details').html(response);
-
-                                },
-                                error: function(error) {
-                                    console.error('Error:', error);
-                                }
-                            });
-                        });
-
-                    },
-                    error: function(error) {
-                        console.error('Error:', error);
-                    }
-                });
-            });
-        });
+        jsInReport()
 
     </script>
 </div>

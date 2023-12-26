@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,6 +54,14 @@ public class OrdersService {
 
     public List<Object[]> getOrderOfCustomerInHome(String userId){
         return orderRepository.getOrderOfCustomerInHome(userId);
+    }
+
+    public Optional<String> getOrderToPayment(String userId){
+        return orderRepository.getOrderToPayment(userId);
+    }
+
+    public void updateOrderToPayment(String ord_id, Timestamp date, String note){
+        orderRepository.updateOrderToPayment(ord_id, date, note);
     }
 
     public String AUTO_ORD_ID(){

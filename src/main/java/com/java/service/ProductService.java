@@ -33,6 +33,11 @@ public class ProductService {
         return productRepository.getAllProductOrderByCategory(pageable, categoryId);
     }
 
+    public Page<Product> searchInHome(int pageNo, int pageSize, String character){
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        return productRepository.searchInHome(character, pageable);
+    }
+
     public String AUTO_PRO_ID(){
         String maxID = productRepository.maxID();
         if (maxID != null) {

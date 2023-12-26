@@ -4,7 +4,6 @@
             <ul style="list-style: none;" class="pl-0 main-home-list flex-wrap d-flex">
 
                 <div class="col-lg-12 d-flex justify-content-center text-center align-items-center">
-                    <!--                     th:href="@{/home/category/1}"-->
                     <a th:data-id="1" class="main-home-item btn col-lg-2 btn-shows-category">
                         <li class="main-home-item--link">Electronics</li>
                     </a>
@@ -45,8 +44,8 @@
         <div class="main-home-product mt-4">
             <div class="col-lg-12 d-flex flex-wrap" id="main-home-product__item">
                 <th:block th:each="p: ${productList}">
-                    <a data-toggle="modal" th:data-id="${p.product_id}" th:data-quan="${p.quantity_stock}" data-target="#add-product" style="text-decoration: none; " class="main-home-product__item col-lg-4 col-md-4 col-sm-6 text-center text-dark mt-3">
-                        <div style="background-color: white;border-radius: 10px" class=" p-3">
+                    <a data-toggle="modal" th:data-id="${p.product_id}" data-target="#add-product" style="text-decoration: none; " class="main-home-product__item col-lg-4 col-md-4 col-sm-6 text-center text-dark mt-3">
+                        <div style="background-color: white;border-radius: 10px" class="p-3">
                             <div class="main-home-product__img">
                                 <img style="width: 80px; height: 80px; object-fit: contain" th:src="@{/img/{image}(image=${p.product_img})}" alt="" srcset="">
                             </div>
@@ -64,19 +63,19 @@
                     </a>
                 </th:block>
 
-                <ul style="float: right;cursor: pointer" th:if="${productList.totalPages > 1}" class="pagination justify-content-end col-lg-12 col-md-12 col-sm-12 ml-auto mt-5">
+                <ul style="float: right" th:if="${productList.totalPages > 1}" class="pagination justify-content-end col-lg-12 col-md-12 col-sm-12 ml-auto mt-5">
                     <li class="page-item">
-                        <a th:if="${productList.hasPrevious()}" th:data-page_number="@{'/' + ${productList.previousPageable().pageNumber + 1}}" class="page-link">Previous</a>
+                        <a th:if="${productList.hasPrevious()}" th:href="@{'/' + ${productList.previousPageable().pageNumber + 1}}" class="page-link">Previous</a>
                     </li>
                     <li th:each="pageNumber : ${#numbers.sequence(0, productList.totalPages - 1)}" class="page-item">
-                        <a th:data-page_number="@{'/' + ${pageNumber + 1}}"
+                        <a th:href="@{'/' + ${pageNumber + 1}}"
                            th:text="${pageNumber + 1}"
                            th:class="${pageNumber + 1 == productList.number ? 'active page-link' : 'page-link'}">
                         </a>
                     </li>
 
                     <li class="page-item">
-                        <a th:if="${productList.hasNext()}" th:data-page_number="@{'/' + ${productList.nextPageable().pageNumber + 1}}" class="page-link">Next</a>
+                        <a th:if="${productList.hasNext()}" th:href="@{'/' + ${productList.nextPageable().pageNumber + 1}}" class="page-link">Next</a>
                     </li>
                 </ul>
 
@@ -84,70 +83,80 @@
         </div>
     </div>
 
-    <form th:action="@{/home/order}" method="post" class="col-lg-5 col-md-12 col-sm-12">
-            <div style="background-color: white" class="main-home-payment p-3">
-                <div style="border-bottom: 0.5px solid #ccc" class="main-home-payment__customer pb-2">
-                    <div class="w-100 main-home-payment__customer--add mb-3">
-                        <a data-toggle="modal" data-target="#add-customer" class="btn btn-primary text-light" style="text-decoration: none">
-                            <i class="fa-solid fa-user-plus"></i>
-                            Add Customer
-                        </a>
-                    </div>
-
-                    <div class="form-group d-flex flex-wrap justify-content-between">
-                        <input required th:value="${session.customer_phone}" placeholder="Phone number..." type="text" class="form-control col-lg-8 inp-phone" th:name="phone" id="phone">
-                        <a id="btn-find-phone" class="btn btn-primary col-lg-3 text-light" style="text-decoration: none">FIND</a>
-                    </div>
-
-                    <p th:if="${no_input_phone}">[[${no_input_phone}]]</p>
-
-                    <div id="customerFindByPhone" class="main-home-payment__customer alert alert-info">
-
-                    </div>
+    <div class="col-lg-5 col-md-12 col-sm-12">
+        <div style="background-color: white" class="main-home-payment p-3">
+            <div style="border-bottom: 0.5px solid #ccc" class="main-home-payment__customer pb-2">
+                <div class="w-100 main-home-payment__customer--add mb-3">
+                    <button data-toggle="modal" data-target="#add-customer" type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-user-plus"></i>
+                        Add Customer
+                    </button>
                 </div>
 
-                <div class="main-home-payment__order" style="height: 500px; overflow-y: scroll">
-                    <th:block th:each="olc, itemStat: ${orderListCus}">
-
-                        <div style="border-bottom: 0.5px solid #ccc" class="p-3 main-home-payment__order--item align-items-center justify-content-between col-lg-12 d-flex">
-                            <p class="main-home-payment__order--para mb-0">[[${itemStat.index + 1}]]</p>
-                            <p class="main-home-payment__order--para mb-0">[[${olc[0]}]]</p>
-                            <p class="main-home-payment__order--para mb-0">x[[${olc[2]}]]</p>
-                            <p class="main-home-payment__order--para mb-0">[[${olc[3]}]]$</p>
-                            <p data-toggle="modal" data-target="#delete-product" th:data-quan="${olc[2]}" th:data-pro_id="${olc[6]}" th:data-ord_id="${olc[5]}" th:data-id="${olc[4]}" style="cursor: pointer" class="remove-items main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
-                        </div>
-
-                    </th:block>
+                <div class="form-group d-flex flex-wrap justify-content-between">
+                    <input placeholder="Phone number..." type="text" class="form-control col-lg-8 inp-phone" th:name="phone" id="phone">
+                    <button id="btn-find-phone" class="btn btn-primary col-lg-3">FIND</button>
                 </div>
+
+<!--                <div th:if="${no_input_phone != null}" class="alert alert-danger text-center m-auto">-->
+<!--                    <p class="mb-0">Hello world</p>-->
+<!--                </div>-->
+
+                <div id="customerFindByPhone" class="main-home-payment__customer alert alert-info">
+
+<!--                    <div class="d-flex main-home-payment__customer&#45;&#45;fullname">-->
+<!--                        <p class="col-lg-6 mb-2">Full name:</p>-->
+<!--                        <p class="col-lg-6 text-right mb-2">Jake Jason</p>-->
+<!--                    </div>-->
+
+<!--                    <div class="d-flex main-home-payment__customer&#45;&#45;address">-->
+<!--                        <p class="col-lg-6 mb-0">Address:</p>-->
+<!--                        <p class="col-lg-6 text-right mb-0">TP.HCM</p>-->
+<!--                    </div>-->
+                </div>
+            </div>
+
+            <div class="main-home-payment__order" style="height: 500px; overflow-y: scroll">
+                <th:block th:each="olc, itemStat: ${orderListCus}">
+                    <div style="border-bottom: 0.5px solid #ccc" class="p-3 main-home-payment__order--item align-items-center justify-content-between col-lg-12 d-flex">
+                        <p class="main-home-payment__order--para mb-0">[[${itemStat.index + 1}]]</p>
+                        <p class="main-home-payment__order--para mb-0">[[${olc[0]}]]</p>
+                        <p class="main-home-payment__order--para mb-0">x[[${olc[2]}]]</p>
+                        <p class="main-home-payment__order--para mb-0">[[${olc[3]}]]$</p>
+                        <p data-toggle="modal" data-target="#delete-product" th:data-id="${olc[4]}" style="cursor: pointer" class="remove-items main-home-payment__order--para mb-0"><i class="fa-regular fa-circle-xmark"></i></p>
+
+                    </div>
+                </th:block>
 
             </div>
 
-            <!--        position: fixed; bottom: 0; right: 0; width: 38%-->
-            <div style="" class="bg-light main-home-payment__money mt-2">
-                <div class="d-flex p-2 col-lg-12 main-home-payment__money--total">
-                    <p class="col-lg-9">Total bill:</p>
-                    <p class="col-lg-3 text-center">[[${totalBill.get()[0]}]]$</p>
-                </div>
+        </div>
 
-                <div class="d-flex p-2 col-lg-12 main-home-payment__money--total align-items-center">
-                    <p class="col-lg-9">Customer given:</p>
-                    <input required class="form-control col-lg-3 text-center mr-0" type="text" name="customer_given" id="customer_given">
-                </div>
-                <input type="hidden" name="total_amount" id="total_amount">
-                <div class="d-flex p-2 col-lg-12 main-home-payment__money--total">
-                    <p class="col-lg-9">Given change:</p>
-                    <p id="given_change" class="col-lg-3 text-center">00.00$</p>
-                </div>
-
-                <div class="main-home-payment__process p-3 d-flex justify-content-between col-lg-12">
-                    <a data-toggle="modal" data-target="#cancel-payment" type="submit" class="btn btn-danger cancel-btn col-lg-5">Cancel</a>
-                    <button type="submit" class="btn btn-success col-lg-5">Pay</button>
-                </div>
+<!--        position: fixed; bottom: 0; right: 0; width: 38%-->
+        <div style="" class="bg-light main-home-payment__money mt-2">
+            <div class="d-flex p-2 col-lg-12 main-home-payment__money--total">
+                <p class="col-lg-9">Total bill:</p>
+                <p class="col-lg-3 text-center">[[${totalBill[0][0]}]]$</p>
             </div>
-    </form>
 
+            <div class="d-flex p-2 col-lg-12 main-home-payment__money--total align-items-center">
+                <p class="col-lg-9">Customer given:</p>
+                <input class="form-control col-lg-3 text-center mr-0" type="text" name="customer_given" id="customer_given">
+            </div>
 
-    <!--    add cus-->
+            <div class="d-flex p-2 col-lg-12 main-home-payment__money--total">
+                <p class="col-lg-9">Given change:</p>
+                <p id="given_change" class="col-lg-3 text-center">00.00$</p>
+            </div>
+
+            <div class="main-home-payment__process p-3 d-flex justify-content-between col-lg-12">
+                <button type="submit" class="btn btn-danger col-lg-5">Cancel</button>
+                <button type="submit" id="btn-pay" class="btn btn-success col-lg-5">Pay</button>
+            </div>
+        </div>
+    </div>
+
+<!--    add cus-->
     <div class="modal fade" id="add-customer">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -195,7 +204,7 @@
         </div>
     </div>
 
-    <!--    add product-->
+<!--    add product-->
     <div class="modal fade" id="add-product">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -212,10 +221,9 @@
                         <div class="form-group">
                             <input type="hidden" name="product_id" id="product_id">
                             <input type="hidden" name="phone_number_quan" id="phone_number_quan">
-                            <input type="hidden" name="quan_stock" id="quan_stock">
                             <div class="form-group login-form--info">
                                 <label class="login-form__label" for="quantity-ord">Quantity</label>
-                                <input class="form-control login-form__input" type="text" name="quantity-ord" id="quantity-ord" placeholder="Quantity" required>
+                                <input class="form-control login-form__input" type="number" name="quantity-ord" id="quantity-ord" placeholder="Quantity" required>
                             </div>
 
                         </div>
@@ -248,9 +256,6 @@
                         <div class="form-group">
                             <!-- ID item đc click gắn ở đây, kéo lên mục delete chỉnh lại data-id -->
                             <input type="hidden" name="productID" id="productID" value="">
-                            <input type="hidden" name="ordID" id="ordID" value="">
-                            <input type="hidden" name="product-id_real" id="product-id_real">
-                            <input type="hidden" name="quantity-remove" id="quantity-remove">
 
                             <p>Are you sure to remove this product ?</p>
 
@@ -267,40 +272,69 @@
         </div>
     </div>
 
-<!--    cancel-->
-    <div class="modal fade" tabindex="-1"  id="cancel-payment">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form th:action="@{/cancel/payment}" method="post">
-
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h4 class="modal-title">Cancel order</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <input type="hidden" id="phone-cancel" name="phone-cancel">
-                            <p>Are you sure to remove cancel this order ?</p>
-                        </div>
-                    </div>
-
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Yes</button>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-
     <script>
-        searchHome()
-        jsInHome()
+        $(document).ready(function(){
+            var categoryType = null;
+            $('.btn-shows-category').on('click', function() {
+                categoryType = $(this).data('id');
+                $.ajax({
+                    type: 'GET',
+                    url: '/home/category/' + categoryType,
+                    success: function(response) {
+
+                        $('#main-home-product__item').html(response);
+
+                    },
+                });
+            });
+
+            $('.main-home-product__item').on('click', function() {
+                var id = $(this).data('id');
+                var phone = $('#phone').val();
+
+                $('#phone_number_quan').attr('value', phone);
+                $('#product_id').attr('value', id);
+
+            });
+
+            $('.remove-items').on('click', function() {
+                var pro_Id = $(this).data('id');
+                $('#productID').attr('value', pro_Id);
+
+            });
+        });
+
+        $(document).ready(function() {
+            $('#btn-find-phone').on('click', function() {
+                var phone = $("#phone").val();
+                console.log(phone)
+                $.ajax({
+                    type: 'GET',
+                    url: '/find/'+phone,
+                    success: function(response) {
+
+                        $('#customerFindByPhone').html(response);
+
+                    },
+                });
+            });
+        })
+
+        $(document).ready(function() {
+            $('#customer_given').on('input', function() {
+                var number = $(this).val();
+                console.log(number)
+                $.ajax({
+                    type: 'GET',
+                    url: '/calculate_money/'+number,
+                    success: function(response) {
+
+                        $('#given_change').html(response);
+
+                    },
+                });
+            });
+        })
 
     </script>
 </div>

@@ -1,0 +1,39 @@
+<th:block th:each="p: ${productList}">
+    <a data-toggle="modal" th:data-id="${p.product_id}" data-target="#add-product" style="text-decoration: none; " class="main-home-product__item col-lg-4 col-md-4 col-sm-6 text-center text-dark mt-3">
+        <div style="background-color: white;border-radius: 10px" class=" p-3">
+            <div class="main-home-product__img">
+                <img style="width: 80px; height: 80px; object-fit: contain" th:src="@{/img/{image}(image=${p.product_img})}" alt="" srcset="">
+            </div>
+
+            <div class="main-home-product__name mt-3">
+                <p class="main-home-product__para mb-1">
+                    [[${p.product_name}]]
+                </p>
+                <p style="font-size: 0.8rem" class="main-home-product__para mb-1">
+                    [[${p.quantity_stock}]] remaining
+                </p>
+                <h5>[[${p.retail_price}]]$</h5>
+            </div>
+        </div>
+    </a>
+</th:block>
+
+<ul style="float: right;cursor: pointer" th:if="${productList.totalPages > 1}" class="pagination justify-content-end col-lg-12 col-md-12 col-sm-12 ml-auto mt-5">
+    <li class="page-item">
+        <a th:if="${productList.hasPrevious()}" th:data-page_number="@{'/' + ${productList.previousPageable().pageNumber + 1}}" class="page-link">Previous</a>
+    </li>
+    <li th:each="pageNumber : ${#numbers.sequence(0, productList.totalPages - 1)}" class="page-item">
+        <a th:data-page_number="@{'/' + ${pageNumber + 1}}"
+           th:text="${pageNumber + 1}"
+           th:class="${pageNumber + 1 == productList.number ? 'active page-link' : 'page-link'}">
+        </a>
+    </li>
+
+    <li class="page-item">
+        <a th:if="${productList.hasNext()}" th:data-page_number="@{'/' + ${productList.nextPageable().pageNumber + 1}}" class="page-link">Next</a>
+    </li>
+</ul>
+
+<script>
+    jsInHome()
+</script>

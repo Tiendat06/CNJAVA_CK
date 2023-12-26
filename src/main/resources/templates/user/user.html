@@ -34,7 +34,7 @@
                         </tr>
                     </thead>
 
-                    <tbody>
+                    <tbody id="tbody-user">
                     <th:block th:each="u, itemStat: ${userList}">
                         <tr>
                             <th scope="row" >[[${itemStat.index + 1}]]</th>
@@ -68,21 +68,22 @@
                     </th:block>
 
                     </tbody>
+
                 </table>
 
-                <ul style="float: right" th:if="${userList.totalPages > 1}" class="pagination">
+                <ul style="float: right; cursor: pointer" th:if="${userList.totalPages > 1}" class="pagination">
                     <li class="page-item">
-                        <a th:if="${userList.hasPrevious()}" th:href="@{'/user/' + ${userList.previousPageable().pageNumber + 1}}" class="page-link">Previous</a>
+                        <a th:if="${userList.hasPrevious()}" th:data-page_number="@{'/user/' + ${productList.previousPageable().pageNumber + 1}}" class="page-link">Previous</a>
                     </li>
                     <li th:each="pageNumber : ${#numbers.sequence(0, userList.totalPages - 1)}" class="page-item">
-                        <a th:href="@{'/user/' + ${pageNumber + 1}}"
+                        <a th:data-page_number="@{'/user/' + ${pageNumber + 1}}"
                            th:text="${pageNumber + 1}"
                            th:class="${pageNumber + 1 == userList.number ? 'active page-link' : 'page-link'}">
                         </a>
                     </li>
 
                     <li class="page-item">
-                        <a th:if="${userList.hasNext()}" th:href="@{'/user/' + ${userList.nextPageable().pageNumber + 1}}" class="page-link">Next</a>
+                        <a th:if="${userList.hasNext()}" th:data-page_number="@{'/user/' + ${userList.nextPageable().pageNumber + 1}}" class="page-link">Next</a>
                     </li>
                 </ul>
 
@@ -270,42 +271,7 @@
                                 -->
 
     <script>
-        $(document).ready(function() {
-            $('.btn-show-details').on('click', function() {
-                var userId = $(this).data('id_member');
-                var firstname = $(this).data('first_name')
-                var lastname = $(this).data('last_name')
-                var email = $(this).data('email')
-                var phone = $(this).data('phone')
-                var gender = $(this).data('gender')
-                var address = $(this).data('address')
-                var dob = $(this).data('birthday')
-
-                // alert(userId)
-                $('#userIdEdit').attr('value', userId);
-                $('#firstname_edit').attr('value', firstname);
-                $('#lastname_edit').attr('value', lastname);
-                $('#email_edit').attr('value', email);
-                $('#address_edit').attr('value', address);
-                $('#phone_edit').val(phone);
-                $('#date_edit').val(dob);
-                $('#gender_edit').val(gender);
-
-            });
-        });
-
-        $(document).ready(function() {
-            $('.btn-show-details-delete').on('click', function() {
-                var id = $(this).data('id_member');
-
-                $('#userIdDelete').attr('value', id);
-
-                $('#userIdDelete-para').html('Are you sure to delete '+ id + ' ?');
-
-            });
-        });
-
-
+        jsInUser()
     </script>
 </div>
 

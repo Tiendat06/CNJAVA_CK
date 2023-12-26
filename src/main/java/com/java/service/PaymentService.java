@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,31 +26,32 @@ public class PaymentService {
     @Autowired
     public OrdersService ordersService;
 
-    public Float getTotalPaymentAmount(){
-        return paymentRepository.totalAmount();
+    public Float getTotalPaymentAmount(Date dateStart, Date dateEnd){
+        return paymentRepository.totalAmount(dateStart, dateEnd);
     }
 
-    public ByteArrayOutputStream createInvoicePdf() throws DocumentException {
+    public ByteArrayOutputStream createInvoicePdf(float customer_given, float given_change, String cus_name) throws DocumentException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Document document = new Document();
         PdfWriter.getInstance(document, baos);
         document.open();
 
-        Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18, BaseColor.BLACK);
+        Font titleFont = FontFactory.getFont(FontFactory.TIMES_ROMAN, 20, BaseColor.BLACK);
         Paragraph title = new Paragraph("Invoice", titleFont);
         title.setAlignment(Element.ALIGN_CENTER);
         document.add(title);
 
-        document.add(new Paragraph("Customer name: "));
-        document.add(new Paragraph(""));
+//        document.add(new Paragraph("Customer name: "));
+//        document.add(new Paragraph(""));
 
-        Font contentFont = FontFactory.getFont(FontFactory.HELVETICA, 12, BaseColor.BLACK);
+        Font contentFont = FontFactory.getFont(FontFactory.TIMES_ROMAN, 13, BaseColor.BLACK);
+
+        document.add(new Chunk("Customer name: " + cus_name, contentFont));
 
         Paragraph paragraph = new Paragraph();
         paragraph.add(new Chunk("Product name", contentFont));
         paragraph.add(new Chunk(new VerticalPositionMark()));
-        paragraph.add(new Chunk("Quantity", contentFont));
-        paragraph.add(new Chunk(new VerticalPositionMark()));
+        paragraph.add(new Chunk("Quantity     ", contentFont));
         paragraph.add(new Chunk("Total price", contentFont));
         document.add(paragraph);
 
@@ -64,9 +66,9 @@ public class PaymentService {
         }
         document.add(new Paragraph("----------------------------------------------------------------------------------------------------------------------------------"));
 
-        document.add(new Paragraph("Total Amount: " + totalBill.get()[0]));
-        document.add(new Paragraph("Customer Given: " + ""));
-        document.add(new Paragraph("Change given: "+ ""));
+        document.add(new Paragraph("Total Amount: " + totalBill.get()[0] + "$"));
+        document.add(new Paragraph("Customer Given: " + customer_given + "$"));
+        document.add(new Paragraph("Change Given: "+ given_change + "$"));
         document.close();
         return baos;
     }
@@ -74,8 +76,17 @@ public class PaymentService {
         Paragraph paragraph = new Paragraph();
         paragraph.add(new Chunk(index+") "+productName, contentFont));
         paragraph.add(new Chunk(new VerticalPositionMark()));
-        paragraph.add(new Chunk(quantity+"     "+price, contentFont));
+        paragraph.add(new Chunk(quantity+"             "+price, contentFont));
         return paragraph;
+    }
+
+    public String AUTO_PAY_ID(){
+        String maxID = paymentRepository.maxID();
+        if (maxID != null) {
+            int number = Integer.parseInt(maxID.substring(3)) + 1;
+            return String.format("PAY%07d", number);
+        }
+        return "PAY0000001";
     }
 
 }

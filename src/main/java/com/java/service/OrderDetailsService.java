@@ -27,6 +27,10 @@ public class OrderDetailsService {
         return orderDetailsRepository.getPurchaseHistoryListByCustomerId(id);
     }
 
+//    public void deleteAllProductByOrderId(String ord_id){
+//        orderDetailsRepository.deleteAllProductByOrderId(ord_id);
+//    }
+
     public String AUTO_ODT_ID(){
         String maxID = orderDetailsRepository.maxID();
         if (maxID != null) {

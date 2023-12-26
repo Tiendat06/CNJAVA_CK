@@ -56,6 +56,16 @@ public class AccountController {
         return "index";
     }
 
+    @GetMapping("/{pageNo}/ajax")
+    public String accountPagination_AJAX(@PathVariable int pageNo,
+                                    @RequestParam(defaultValue = "10") int pageSize, Model model){
+
+        Page<Object[]> accList = accountService.getAccPagination(pageNo - 1, pageSize);
+        model.addAttribute("accList", accList);
+
+        return "/account/acc_list";
+    }
+
     @GetMapping("/{accID}/{roleName}")
     public void changeRole(@PathVariable String accID, @PathVariable String roleName, HttpServletResponse resp) throws IOException {
         int roleId = roleService.getRoleByRoleName(roleName).getRole_id();

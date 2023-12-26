@@ -13,6 +13,10 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, String> {
 
+    @Query("SELECT pro " +
+            "FROM product pro WHERE pro.product_name like %:character%")
+    Page<Product> searchInHome(@Param("character") String character, Pageable pageable);
+
     @Query("select max (product_id) from product")
     String maxID();
 
@@ -29,6 +33,7 @@ public interface ProductRepository extends JpaRepository<Product, String> {
             p.setRetail_price(product.getRetail_price());
             p.setQuantity_stock(product.getQuantity_stock());
             p.setDescription(product.getDescription());
+            save(p);
         });
     }
 //    Page<Product> findAll(Pageable pageable);

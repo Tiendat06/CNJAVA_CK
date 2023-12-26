@@ -94,6 +94,7 @@ public class LogController {
             return "redirect:/log/fail";
         }
 
+        HttpSession session = request.getSession();
         accountRepository.updateStatusAndVerifyCode(account.getAccount_id());
         try {
             String username = accountRepository.findEmailByAccount_id(account.getAccount_id());
@@ -107,7 +108,11 @@ public class LogController {
     }
 
     @GetMapping("/change_pass")
-    public String changePass_GET(Model model){
+    public String changePass_GET(Model model, HttpServletRequest req){
+        HttpSession session = req.getSession();
+        if (session.getAttribute("password") != null){
+            session.removeAttribute("password");
+        }
         model.addAttribute("content", "change_pass");
         MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         model.addAttribute("userImg", myUserDetail.getCombinedUser().getUser().getImage());
@@ -134,7 +139,8 @@ public class LogController {
             accountRepository.updatePassword(myUserDetail.getCombinedUser().getAccount().getAccount_id(),pwd);
             session.setAttribute("password", "success");
         }
-        return "redirect:/log/change_pass";
+        model.addAttribute("content", "change_pass");
+        return "index";
     }
 
 }
