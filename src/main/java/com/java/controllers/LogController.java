@@ -98,7 +98,7 @@ public class LogController {
         try {
             String username = accountRepository.findEmailByAccount_id(account.getAccount_id());
             String password = username.split("@")[0];
-            request.login(username, password);
+            request.login(password, password);
             return "redirect:/log/success";
         } catch (Exception exception) {
             return "redirect:/log/fail";
