@@ -41,13 +41,13 @@ public interface OrderRepository extends JpaRepository<Order, String> {
     @Query("select ord.order_id " +
             "from orders ord, order_details odt, product pro " +
             "where ord.order_id = odt.order_id and ord.user_id = :userId " +
-            "and ord.date_created is null and odt.product_id = pro.product_id")
+            "and ord.date_created is null and odt.product_id = pro.product_id group by odt.order_id")
     Optional<String> getOrderIdToCancel(@Param("userId") String userId);
 
     @Query("select ord.order_id, pay.date_created, cus.customer_name, use.first_name, use.last_name, tra.status, pay.total_amount " +
             "from orders ord, transaction tra, payment pay, user use, customers cus " +
             "where ord.order_id = tra.order_id and pay.date_created = ord.date_created and " +
-            "ord.user_id = use.user_id and cus.customer_id = ord.customer_id and DATE(pay.date_created) <= :date " +
+            "ord.user_id = use.user_id and cus.customer_id = ord.customer_id and pay.payment_id = tra.payment_id and DATE(pay.date_created) <= :date " +
             "order by ord.date_created asc ")
     Page<Object[]> getAllOrderList(Pageable pageable, @Param("date") Date date);
 
@@ -60,7 +60,7 @@ public interface OrderRepository extends JpaRepository<Order, String> {
     @Query("select ord.order_id, pay.date_created, cus.customer_name, use.first_name, use.last_name, tra.status, pay.total_amount " +
             "from orders ord, transaction tra, payment pay, user use, customers cus " +
             "where ord.order_id = tra.order_id and pay.date_created = ord.date_created and " +
-            "ord.user_id = use.user_id and cus.customer_id = ord.customer_id and DATE(pay.date_created) >= :date_start and DATE(pay.date_created) <= :date_end " +
+            "ord.user_id = use.user_id and cus.customer_id = ord.customer_id and tra.payment_id = pay.payment_id and DATE(pay.date_created) >= :date_start and DATE(pay.date_created) <= :date_end " +
             "order by ord.date_created asc ")
     Page<Object[]> getAllOrderListSortByDatetime(Pageable pageable, @Param("date_start") Date date_start, @Param("date_end") Date date_end);
 

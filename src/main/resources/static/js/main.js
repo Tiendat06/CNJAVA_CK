@@ -124,7 +124,7 @@ function jsInProduct(){
             $('#name-edit').attr('value', name);
             $('#Iprice-edit').attr('value', import_price);
             $('#Rprice-edit').attr('value', retail);
-            $("#type-edit").val(category);
+            // $("#type-edit").val(category);
             $('#quan-edit').val(quan);
             $('#des-edit').val(des);
         });

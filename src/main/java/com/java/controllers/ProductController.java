@@ -72,6 +72,10 @@ public class ProductController {
     @PostMapping("/edit")
     public void updateProduct_POST(@RequestParam("img-edit") MultipartFile imgFile ,HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
+        if (req.getParameter("type-edit").equals("none")){
+            resp.sendRedirect("/product/1");
+        }
+
         String id = req.getParameter("productIdEdit");
         String name = req.getParameter("name-edit");
         int type = Integer.parseInt(req.getParameter("type-edit"));
