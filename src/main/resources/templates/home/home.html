@@ -151,7 +151,7 @@
     <div class="modal fade" id="add-customer">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form th:action="@{/add/customer}" method="post">
+                <form th:action="@{/add/customer}" onsubmit="return false" method="post">
 
                     <!-- Modal Header -->
                     <div class="modal-header">
@@ -164,30 +164,35 @@
                         <div class="form-group">
                             <div class="form-group login-form--info">
                                 <label class="login-form__label" for="fullname">Full name</label>
-                                <input class="form-control login-form__input" type="text" name="fullname" id="fullname" placeholder="First name" required>
+                                <input class="form-control login-form__input" type="text" name="fullname" id="fullname" placeholder="Full name">
                             </div>
 
                             <div class="form-group login-form--info">
                                 <label class="login-form__label" for="email">Email</label>
-                                <input class="form-control login-form__input" type="email" name="email" id="email" placeholder="Email" required>
+                                <input class="form-control login-form__input" type="email" name="email" id="email" placeholder="Email">
                             </div>
 
                             <div class="form-group login-form--info">
                                 <label class="login-form__label" for="address">Address</label>
-                                <input class="form-control login-form__input" type="text" name="address" id="address" placeholder="Address" required>
+                                <input class="form-control login-form__input" type="text" name="address" id="address" placeholder="Address">
                             </div>
 
                             <div class="form-group login-form--info">
                                 <label class="login-form__label" for="phone-add">Phone number</label>
-                                <input class="form-control login-form__input" type="number" name="phone-add" id="phone-add" placeholder="Phone number" required>
+                                <input class="form-control login-form__input" type="number" name="phone-add" id="phone-add" placeholder="Phone number">
                             </div>
 
                         </div>
                     </div>
+                    <div class="form-group login-form--error text-center d-none pr-3 pl-3" id="add-user-error">
+                        <p class="login-form__para mb-0 text-secondary alert alert-info" id="add-user__error--text">
+
+                        </p>
+                    </div>
 
                     <!-- Modal footer -->
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" id="btn-add-customer" class="btn btn-primary">Submit</button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                     </div>
                 </form>

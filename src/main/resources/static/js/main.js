@@ -401,6 +401,36 @@ function jsInHome(){
             });
         });
     })
+
+    $(document).ready(function(){
+        $('#btn-add-customer').on('click', function (){
+            var fullname = $('#fullname').val();
+            var email = $('#email').val();
+            var address = $('#address').val();
+            var phone = $('#phone-add').val();
+            console.log(fullname);
+            console.log(email);
+            console.log(address);
+            console.log(phone);
+            $.ajax({
+                type: 'GET',
+                url: '/add/customer/AJAX',
+                data: {
+                  fullname: fullname,
+                  email: email,
+                  address: address,
+                  phone: phone,
+                },
+                success: function (response){
+                    $('#add-user-error').removeClass('d-none');
+                    $('#add-user__error--text').html(response);
+                },
+                error: function (error) {
+                    console.log(error)
+                }
+            })
+        })
+    })
 }
 
 function searchHome(){

@@ -218,6 +218,9 @@ public class SiteController implements ErrorController {
     public OrderDetailsService orderDetailsService;
     @Autowired
     public TransactionService transactionService;
+    @Autowired
+    public ProxyCustomerService proxyCustomerService;
+
     @GetMapping("")
     public String index(Model model, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession session = req.getSession();
@@ -383,11 +386,43 @@ public class SiteController implements ErrorController {
         String email = req.getParameter("email");
         String address = req.getParameter("address");
         String phone = req.getParameter("phone-add");
+        Customer customer = new Customer(id, fullname, address, phone, email, null);
 
-        customerService.customerRepository.save(new Customer(id, fullname, address, phone, email, null));
+        proxyCustomerService.addCustomer(customer);
+//        customerService.customerRepository.save(new Customer(id, fullname, address, phone, email, null));
 
         resp.sendRedirect("/");
 
+    }
+
+    @GetMapping("/add/customer/AJAX")
+    public String addCustomerInHomePageAJAX(@RequestParam String fullname,
+                                            @RequestParam String email,
+                                            @RequestParam String address,
+                                            @RequestParam String phone,
+                                            Model model){
+        String id = customerService.AUTO_CUS_ID();
+//        String fullname = req.getParameter("fullname");
+//        String email = req.getParameter("email");
+//        String address = req.getParameter("address");
+//        String phone = req.getParameter("phone");
+
+        System.out.println(fullname);
+        System.out.println(email);
+        System.out.println(address);
+        System.out.println(phone);
+
+        Customer customer = new Customer(id, fullname, address, phone, email, null);
+
+//        PROXY PATTERN (TTD)
+        String result = proxyCustomerService.addCustomer(customer);
+        if (result.equals("Success")){
+            model.addAttribute("result", "Add Successfully !");
+        }else{
+            model.addAttribute("result", result);
+        }
+
+        return "/home/validate_add_cus";
     }
 
     @GetMapping("/find/{phone_number}")

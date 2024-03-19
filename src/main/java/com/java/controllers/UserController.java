@@ -183,6 +183,7 @@ public class UserController {
     @PostMapping("/delete")
     public void deleteUser_POST(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String user_id = req.getParameter("userIdDelete");
+//        ADAPTER PATTERN
         User user = userService.getAccIDByUserID(user_id);
         String acc_id = user.getAccount_id();
 

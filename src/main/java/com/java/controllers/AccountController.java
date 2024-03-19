@@ -30,7 +30,6 @@ public class AccountController {
 
     @Autowired
     public AccountService accountService;
-
     @Autowired
     public RoleService roleService;
     @Autowired

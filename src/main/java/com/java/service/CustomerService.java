@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CustomerService {
+public class CustomerService implements ICustomerService {
 
     @Autowired
     public CustomerRepository customerRepository;
@@ -30,5 +30,11 @@ public class CustomerService {
             return String.format("CUS%07d", number);
         }
         return "CUS0000001";
+    }
+
+    @Override
+    public String addCustomer(Customer customer) {
+        customerRepository.save(customer);
+        return "Success";
     }
 }

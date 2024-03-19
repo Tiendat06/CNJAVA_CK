@@ -15,7 +15,6 @@ public interface IUserBuilder {
     IUserBuilder setAccIdBuilder(String acc_id);
     IUserBuilder setBirthdayBuilder(Date dob);
     IUserBuilder setGenderBuilder(String gender);
-
     User build();
 
 }
