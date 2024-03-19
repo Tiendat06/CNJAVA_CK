@@ -26,7 +26,7 @@ public class MyUserDetail implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority(combinedUser.getRole().getRole_name()));
     }
-
+//
     @Override
     public String getPassword() {
         return combinedUser.getAccount().getPassword() ;

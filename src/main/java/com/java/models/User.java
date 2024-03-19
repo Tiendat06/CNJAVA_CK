@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
-
+//  Builder Pattern
     @Id
     @Column(name = "USER_ID")
     private String user_id;

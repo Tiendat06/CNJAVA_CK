@@ -50,7 +50,7 @@ public class LogController {
         return "/log/failed";
     }
 
-
+//  ROL
     @PostMapping("/login")
     public String login_POST(Model model, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String username = req.getParameter("username");

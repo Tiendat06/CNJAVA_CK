@@ -1,5 +1,7 @@
 package com.java.controllers;
 
+import com.java.builder.IUserBuilder;
+import com.java.builder.UserBuilder;
 import com.java.models.Account;
 import com.java.models.MyUserDetail;
 import com.java.models.User;
@@ -134,7 +136,23 @@ public class UserController {
 
         accountService.accountRepository.save(new Account(acc_id, false, true, true, 2, pwd, formattedDateTime + "-" + UUID.randomUUID()));
 
-            User user = new User(maxID, firstname, lastname, email, phone, address, "user_profile.png", acc_id, date, gender);
+//            User user = new User(maxID, firstname, lastname, email, phone, address, "user_profile.png", acc_id, date, gender);
+
+//        BUILDER PATTERN (TTD)
+        IUserBuilder userBuilder = new UserBuilder()
+                                    .setUserIdBuilder(maxID)
+                                    .setFirstNameBuilder(firstname)
+                                    .setLastNameBuilder(lastname)
+                                    .setEmailBuilder(email)
+                                    .setPhoneNumberBuilder(phone)
+                                    .setAddressBuilder(address)
+                                    .setImgBuilder("user_profile.png")
+                                    .setAccIdBuilder(acc_id)
+                                    .setBirthdayBuilder(date)
+                                    .setGenderBuilder(gender);
+
+        User user = userBuilder.build();
+
         userService.userRepository.save(user);
 
         String url = req.getRequestURL().toString();

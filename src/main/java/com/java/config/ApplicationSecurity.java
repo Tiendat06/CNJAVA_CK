@@ -27,7 +27,6 @@ public class ApplicationSecurity {
         return provider;
     }
 
-
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http

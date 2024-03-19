@@ -81,6 +81,7 @@ public class AccountController {
         if (status) newStatus = false;
 
 //        System.out.println("hiii");
+//
         accountService.updateStatusByAccId(accID, newStatus);
         resp.sendRedirect("/account/1");
 

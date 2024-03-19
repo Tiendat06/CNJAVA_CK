@@ -32,7 +32,6 @@ public class AccountService {
     }
 
     public Account getAccountByEmailAndPassword(){
-
         return new Account();
     }
 
