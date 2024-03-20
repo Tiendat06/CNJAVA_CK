@@ -402,15 +402,11 @@ public class SiteController implements ErrorController {
                                             @RequestParam String phone,
                                             Model model){
         String id = customerService.AUTO_CUS_ID();
-//        String fullname = req.getParameter("fullname");
-//        String email = req.getParameter("email");
-//        String address = req.getParameter("address");
-//        String phone = req.getParameter("phone");
 
-        System.out.println(fullname);
-        System.out.println(email);
-        System.out.println(address);
-        System.out.println(phone);
+//        System.out.println(fullname);
+//        System.out.println(email);
+//        System.out.println(address);
+//        System.out.println(phone);
 
         Customer customer = new Customer(id, fullname, address, phone, email, null);
 

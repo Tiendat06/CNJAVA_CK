@@ -11,10 +11,10 @@ public class ProxyCustomerService implements ICustomerService{
 
     @Override
     public String addCustomer(Customer customer) {
-        if (isValidCustomer(customer).equals("Success")){
-            return customerService.addCustomer(customer);
-        }
-        return isValidCustomer(customer);
+//        if (isValidCustomer(customer).equals("Success")){
+//            return customerService.addCustomer(customer);
+//        }
+        return isValidCustomer(customer).equals("Success") ? customerService.addCustomer(customer): isValidCustomer(customer);
     }
 
     private String isValidCustomer(Customer customer){
@@ -23,7 +23,11 @@ public class ProxyCustomerService implements ICustomerService{
             return "You must fill in all fields !";
         } else if (!customer.getCustomer_email().contains("@")){
             return "Invalid email format !";
+        } else if (customerService.findCusByPhone(customer.getCustomer_phone()) != null) {
+            return "Phone is already existed !";
         }
         return "Success";
     }
+
+
 }
