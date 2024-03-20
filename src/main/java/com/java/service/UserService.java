@@ -3,6 +3,8 @@ package com.java.service;
 import com.java.models.User;
 import com.java.repository.AccountRepository;
 import com.java.repository.UserRepository;
+import com.java.service.adapter.IProvinceAPI;
+import com.java.service.adapter.ProvinceAPIAdapter;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,6 +29,10 @@ public class UserService {
     public Page<User> getUserPagination(int pageNo, int pageSize){
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         return userRepository.findAll(pageable);
+    }
+
+    public void addUser(User user){
+        userRepository.save(user);
     }
 
     public void updateUser(String id, User user){
@@ -54,6 +60,11 @@ public class UserService {
             return String.format("USE%07d", number);
         }
         return "USE0000001";
+    }
+
+    public List<String> getProvinceAPI(){
+        IProvinceAPI iProvinceAPI = new ProvinceAPIAdapter();
+        return iProvinceAPI.getProvinceAPI();
     }
 
     public void sendEmail(User user, String url) {

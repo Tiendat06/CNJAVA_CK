@@ -53,9 +53,12 @@ public class UserController {
                                     @RequestParam(defaultValue = "10") int pageSize, Model model){
         Page<User> userList = userService.getUserPagination(pageNo - 1, pageSize);
         MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        ADAPTER PATTERN (TTD)
+        List<String> provinceAPI = userService.getProvinceAPI();
         model.addAttribute("userImg", myUserDetail.getCombinedUser().getUser().getImage());
         model.addAttribute("content", "user");
         model.addAttribute("userList", userList);
+        model.addAttribute("provinceAPI", provinceAPI);
         return "index";
     }
 
@@ -150,7 +153,7 @@ public class UserController {
 
         User user = userBuilder.build();
 
-        userService.userRepository.save(user);
+        userService.addUser(user);
 
         String url = req.getRequestURL().toString();
         url = url.replace(req.getServletPath(), "");

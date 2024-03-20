@@ -30,7 +30,8 @@ function jsInUser(){
             $('#firstname_edit').attr('value', firstname);
             $('#lastname_edit').attr('value', lastname);
             $('#email_edit').attr('value', email);
-            $('#address_edit').attr('value', address);
+            // $('#address_edit').attr('value', address);
+            $('#address_edit').val(address);
             $('#phone_edit').val(phone);
             $('#date_edit').val(dob);
             $('#gender_edit').val(gender);
@@ -67,6 +68,7 @@ function jsInAccount(){
 }
 
 function jsInProduct(){
+    // delete product
     $(document).ready(function() {
         $('.page-link').on('click', function() {
             var page = $(this).data('page_number');

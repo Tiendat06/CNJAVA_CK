@@ -180,6 +180,7 @@
                             <div class="form-group login-form--info">
                                 <label class="login-form__label" for="address">Address</label>
                                 <select name="address" id="address" class="form-control" required>
+                                    <option value="">--Choose province--</option>
                                     <th:block th:each="province: ${provinceAPI}">
                                         <option th:value="${province}">[[${province}]]</option>
                                     </th:block>
