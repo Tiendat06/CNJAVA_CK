@@ -1,6 +1,7 @@
-package com.java.service;
+package com.java.service.proxy;
 
 import com.java.models.Customer;
+import com.java.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

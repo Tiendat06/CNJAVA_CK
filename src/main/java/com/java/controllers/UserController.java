@@ -1,7 +1,7 @@
 package com.java.controllers;
 
-import com.java.builder.IUserBuilder;
-import com.java.builder.UserBuilder;
+import com.java.service.builder.IUserBuilder;
+import com.java.service.builder.UserBuilder;
 import com.java.models.Account;
 import com.java.models.MyUserDetail;
 import com.java.models.User;
@@ -10,11 +10,8 @@ import com.java.service.ImageService;
 import com.java.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;

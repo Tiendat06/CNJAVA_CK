@@ -170,21 +170,15 @@
 
 package com.java.controllers;
 
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.pdf.draw.VerticalPositionMark;
 import com.java.models.*;
 import com.java.service.*;
+import com.java.service.proxy.ProxyCustomerService;
 import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.core.convert.ConverterNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -197,7 +191,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.security.Security;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -255,8 +248,13 @@ public class SiteController implements ErrorController {
             model.addAttribute("totalBill", "0");
         }
 
+//        ADAPTER PATTERN (TTD)
+        List<String> provinceAPI = customerService.getProvinceAPI();
+//        provinceAPI.forEach(System.out::println);
+
         model.addAttribute("productList", productList);
         model.addAttribute("orderListCus", orderListCus);
+        model.addAttribute("provinceAPI", provinceAPI);
 
         return "index";
 

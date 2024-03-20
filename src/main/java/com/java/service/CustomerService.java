@@ -2,17 +2,25 @@ package com.java.service;
 
 import com.java.models.Customer;
 import com.java.repository.CustomerRepository;
+import com.java.service.adapter.IProvinceAPI;
+import com.java.service.adapter.ProvinceAPIAdapter;
+import com.java.service.proxy.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CustomerService implements ICustomerService {
 
     @Autowired
     public CustomerRepository customerRepository;
+
+    @Autowired
+    public ProvinceAPIAdapter provinceAPIAdapter;
 
     public Page<Customer> getCustomersPagination(int pageNo, int pageSize){
         Pageable pageable = PageRequest.of(pageNo, pageSize);
@@ -30,6 +38,11 @@ public class CustomerService implements ICustomerService {
             return String.format("CUS%07d", number);
         }
         return "CUS0000001";
+    }
+
+    public List<String> getProvinceAPI(){
+        IProvinceAPI iProvinceAPI = new ProvinceAPIAdapter();
+        return iProvinceAPI.getProvinceAPI();
     }
 
     @Override

@@ -43,6 +43,11 @@
 
 
 /*home+product*/
+
+.main-home-payment__order::-webkit-scrollbar{
+    display: none;
+}
+
 .main-home-list{
     background-color: white;
     border-radius: 10px;
