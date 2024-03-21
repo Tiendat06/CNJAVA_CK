@@ -4,6 +4,7 @@ import com.java.models.Customer;
 import com.java.repository.CustomerRepository;
 import com.java.service.adapter.IProvinceAPI;
 import com.java.service.adapter.ProvinceAPIAdapter;
+import com.java.service.adapter.ThirdPartyAdaptee;
 import com.java.service.proxy.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -41,7 +42,7 @@ public class CustomerService implements ICustomerService {
     }
 
     public List<String> getProvinceAPI(){
-        IProvinceAPI iProvinceAPI = new ProvinceAPIAdapter();
+        IProvinceAPI iProvinceAPI = new ProvinceAPIAdapter(new ThirdPartyAdaptee());
         return iProvinceAPI.getProvinceAPI();
     }
 

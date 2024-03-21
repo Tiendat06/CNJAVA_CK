@@ -5,6 +5,7 @@ import com.java.repository.AccountRepository;
 import com.java.repository.UserRepository;
 import com.java.service.adapter.IProvinceAPI;
 import com.java.service.adapter.ProvinceAPIAdapter;
+import com.java.service.adapter.ThirdPartyAdaptee;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -63,7 +64,7 @@ public class UserService {
     }
 
     public List<String> getProvinceAPI(){
-        IProvinceAPI iProvinceAPI = new ProvinceAPIAdapter();
+        IProvinceAPI iProvinceAPI = new ProvinceAPIAdapter(new ThirdPartyAdaptee());
         return iProvinceAPI.getProvinceAPI();
     }
 

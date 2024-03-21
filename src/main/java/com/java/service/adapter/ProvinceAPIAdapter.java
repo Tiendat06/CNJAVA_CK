@@ -15,16 +15,20 @@ import java.util.List;
 @Service
 public class ProvinceAPIAdapter implements IProvinceAPI{
 
+    private ThirdPartyAdaptee thirdPartyAdaptee;
+    public ProvinceAPIAdapter(){
+        this.thirdPartyAdaptee = new ThirdPartyAdaptee();
+    }
+
+    public ProvinceAPIAdapter(ThirdPartyAdaptee thirdPartyAdaptee){
+        this.thirdPartyAdaptee = thirdPartyAdaptee;
+    }
     @Override
     public List<String> getProvinceAPI() {
         List<String> list = new ArrayList<>();
-        String APIUrl = "https://api.ghsv.vn/v1/address/provinces";
-        OkHttpClient okHttpClient = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url(APIUrl)
-                .build();
+
         try {
-            Response response = okHttpClient.newCall(request).execute();
+            Response response = thirdPartyAdaptee.requestAPI();
             String responseData = response.body().string();
             JSONObject jsonObject = new JSONObject(responseData);
             JSONArray data = jsonObject.getJSONArray("provinces");
