@@ -500,6 +500,7 @@ public class SiteController implements ErrorController {
     }
 
     @PostMapping("/home/order")
+//    FACADE PATTERN (PLH)
     public ResponseEntity<byte[]> downloadInvoice(Model model, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String customer_given = req.getParameter("customer_given");
         String change_given = req.getParameter("total_amount");
