@@ -573,5 +573,16 @@ public class SiteController implements ErrorController {
 
     }
 
+    @GetMapping("/site/payment_success")
+    public String paymentSuccess(){
+
+        return "/home/payment_success";
+    }
+
+    @GetMapping("/site/payment_failed")
+    public String paymentFailed(){
+
+        return "/home/payment_failed";
+    }
 
 }

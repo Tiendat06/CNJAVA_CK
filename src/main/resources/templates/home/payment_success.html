@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head lang="en" th:include="fragments/header :: header">
+</head>
+<body class="bg-light m-auto" style="height:100vh">
+<div class="container verified h-100 d-flex justify-content-center align-items-center">
+    <div class="row flex-wrap p-5 w-50" style="background-color: white; border-radius: 10px">
+        <div style="width: 40px; height: 40px; border-radius: 50%" class="text-light bg-success-new d-flex justify-content-center align-items-center p-5 text-center m-auto">
+            <i style="font-size: 3rem;" class="fa-regular fa-thumbs-up"></i>
+        </div>
+
+        <div class="verified-title col-lg-12 text-center mt-2">
+            <h4 style="text-transform: uppercase" class="">$ 125.88</h4>
+        </div>
+
+        <div class="text-dark verified-para col-lg-12 text-center">
+            <p style="font-size: 20px" class="font-weight-bold">Payment Successful !</p>
+            <p class=" mb-0">This payment has been done successfully.</p>
+            <p class="" >Thanks for being there with us.</p>
+        </div>
+
+        <div class="text-secondary verified-para col-lg-12 text-center">
+            <p class="font-weight-bold">Payment ID: 283848.24 Oct.2024 - 11:55 PM</p>
+        </div>
+
+        <div class="verified-link col-lg-12 text-center mt-3">
+            <a style="border-radius: 10px" class="payment-hover bg-success-new pl-3 pr-3 pt-2 pb-2 text-light" href="/">
+<!--                <i class="fa-solid fa-house"></i>-->
+                <i class="fa-solid fa-check"></i>
+                DONE
+            </a>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

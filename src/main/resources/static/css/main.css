@@ -80,6 +80,10 @@
     transition: ease-in-out 0.2s;
 }
 
+.payment-hover:hover{
+    text-decoration: none;
+}
+
 /*side bar*/
 
 .main-sidebar{
