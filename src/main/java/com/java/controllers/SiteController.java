@@ -330,9 +330,10 @@ public class SiteController implements ErrorController {
         int quantity = Integer.parseInt(req.getParameter("quantity-ord"));
         String phone = req.getParameter("phone_number_quan");
 //        System.out.println(phone);
-//        System.out.println(quantity);
+        System.out.println("quan ord: "+quantity);
 
         int quan_stock = Integer.parseInt(req.getParameter("quan_stock"));
+        System.out.println("hello word: "+quan_stock);
         if (quantity > quan_stock){
             return "redirect:/1";
         }

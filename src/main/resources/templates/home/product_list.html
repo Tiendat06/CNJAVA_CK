@@ -1,5 +1,5 @@
 <th:block th:each="p: ${productList}">
-    <a data-toggle="modal" th:data-id="${p.product_id}" data-target="#add-product" style="text-decoration: none; " class="main-home-product__item col-lg-4 col-md-4 col-sm-6 text-center text-dark mt-3">
+    <a data-toggle="modal" th:data-id="${p.product_id}" th:data-quan="${p.quantity_stock}" data-target="#add-product" style="text-decoration: none; " class="main-home-product__item col-lg-4 col-md-4 col-sm-6 text-center text-dark mt-3">
         <div style="background-color: white;border-radius: 10px" class=" p-3">
             <div class="main-home-product__img">
                 <img style="width: 80px; height: 80px; object-fit: contain" th:src="@{/img/{image}(image=${p.product_img})}" alt="" srcset="">
