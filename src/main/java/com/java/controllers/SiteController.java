@@ -180,8 +180,6 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -189,9 +187,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -213,6 +209,8 @@ public class SiteController implements ErrorController {
     public TransactionService transactionService;
     @Autowired
     public ProxyCustomerService proxyCustomerService;
+    @Autowired
+    public OrderFacade orderFacade;
 
     @GetMapping("")
     public String index(Model model, HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -262,7 +260,7 @@ public class SiteController implements ErrorController {
 
     @GetMapping("/{pageNo}/ajax")
     public String homeProductPagination_AJAX(@PathVariable int pageNo,
-                                        @RequestParam(defaultValue = "9") int pageSize, Model model){
+                                             @RequestParam(defaultValue = "9") int pageSize, Model model){
 
         Page<Product> productList = productService.getAllProductPagination(pageNo - 1, pageSize);
 
@@ -346,7 +344,7 @@ public class SiteController implements ErrorController {
 
         String userId = myUserDetail.getCombinedUser().getUser().getUser_id();
 
-        String odt_id = orderDetailsService.AUTO_ODT_ID();
+        String odt_id = orderFacade.generateAutoOrderDetailId();
 
 //        String max_ord_id = ordersService.orderRepository.maxID();
 //        Optional<Order> orderOptional = ordersService.orderRepository.checkUserIdIsNull(max_ord_id);
@@ -357,7 +355,7 @@ public class SiteController implements ErrorController {
 
         Optional<String> userOptional = ordersService.orderRepository.checkUserIsOrder(userId);
         if (!userOptional.isPresent()){
-            String ord_id = ordersService.AUTO_ORD_ID();
+            String ord_id = orderFacade.generateAutoOrderId();
             Optional<Customer> checkCusByPhone = customerService.customerRepository.CheckCusByPhone(phone);
             Customer customer = customerService.findCusByPhone(phone);
             if (checkCusByPhone.isPresent()){
@@ -508,57 +506,65 @@ public class SiteController implements ErrorController {
 //        pending
         String phone = req.getParameter("phone");
         Customer customer = customerService.findCusByPhone(phone);
-
-        System.out.println(customer_given);
-        System.out.println(total_amount);
-        HttpSession session = req.getSession();
         try {
-            if (Float.parseFloat(customer_given) >= total_amount){
-                try {
-                    ByteArrayOutputStream baos = paymentService.createInvoicePdf(Float.parseFloat(customer_given), Float.parseFloat(change_given), customer.getCustomer_name());
-                    HttpHeaders headers = new HttpHeaders();
-                    headers.setContentType(MediaType.APPLICATION_PDF);
-                    headers.setContentDispositionFormData("inline", "invoice.pdf");
-                    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-
-                    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-                    MyUserDetail myUserDetail = (MyUserDetail) auth.getPrincipal();
-
-                    String userId = myUserDetail.getCombinedUser().getUser().getUser_id();
-
-//                    Float change_given = Float.parseFloat(customer_given) - Float.parseFloat(total_amount);
-                    Optional<String> order_id = ordersService.getOrderToPayment(userId);
-                    String tra_id = transactionService.AUTO_TRA_ID();
-                    String pay_id = paymentService.AUTO_PAY_ID();
-                    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-
-                    if (order_id.isPresent()){
-                        Optional<String> checkCusFirst = customerService.customerRepository.checkIsFirstCustomer(customer.getCustomer_id());
-                        if (checkCusFirst.isPresent()){
-                            customer.setDate_created(timestamp);
-                        }
-                        String order_id_val = order_id.get();
-                        ordersService.updateOrderToPayment(order_id_val, timestamp, "Noted");
-                        transactionService.transactionRepositriy.save(new Transaction(tra_id, pay_id, "Completed", order_id_val));
-                        paymentService.paymentRepository.save(new Payment(pay_id, "PMM0000002", total_amount, Float.parseFloat(change_given), timestamp));
-
-                    }
-
-//                    System.out.println(customer_given);
-//                    System.out.println(total_amount);
-
-                    return ResponseEntity.ok()
-                            .headers(headers)
-                            .body(baos.toByteArray());
-                } catch (Exception e) {
-                    return ResponseEntity.status(500).body(null);
-                }
-            }else{
-                session.setAttribute("low_customer_given", true);
+            ResponseEntity<byte[]> invoice =  orderFacade.downloadInvoice(model,req,resp,customer);
+            String order_id = orderFacade.saveInvoiceDetailsToDatabase(req,total_amount, Float.valueOf(change_given),customer);
+            if (order_id!=null) {
+                if (orderFacade.processPayment(order_id))
+                    return invoice;
+                else  return null;
             }
-        } catch (NumberFormatException e){
-            e.printStackTrace();
+        } catch (Exception ignored) {
         }
+
+
+//        System.out.println(customer_given);
+//        System.out.println(total_amount);
+//        HttpSession session = req.getSession();
+//        try {
+//            if (Float.parseFloat(customer_given) >= total_amount){
+//                try {
+//                    ByteArrayOutputStream baos = orderFacade.createInvoicePdf(Float.parseFloat(customer_given), Float.parseFloat(change_given), customer.getCustomer_name());
+//                    HttpHeaders headers = new HttpHeaders();
+//                    headers.setContentType(MediaType.APPLICATION_PDF);
+//                    headers.setContentDispositionFormData("inline", "invoice.pdf");
+//                    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+//
+//                    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//                    MyUserDetail myUserDetail = (MyUserDetail) auth.getPrincipal();
+//
+//                    String userId = myUserDetail.getCombinedUser().getUser().getUser_id();
+//
+////                    Float change_given = Float.parseFloat(customer_given) - Float.parseFloat(total_amount);
+//                    Optional<String> order_id = ordersService.getOrderToPayment(userId);
+//                    String tra_id = transactionService.AUTO_TRA_ID();
+//                    String pay_id = orderFacade.generateAutoPaymentId();
+//                    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+//
+//                    if (order_id.isPresent()){
+//                        Optional<String> checkCusFirst = customerService.customerRepository.checkIsFirstCustomer(customer.getCustomer_id());
+//                        if (checkCusFirst.isPresent()){
+//                            customer.setDate_created(timestamp);
+//                        }
+//                        String order_id_val = order_id.get();
+//                        ordersService.updateOrderToPayment(order_id_val, timestamp, "Noted");
+//                        transactionService.transactionRepositriy.save(new Transaction(tra_id, pay_id, "Completed", order_id_val));
+//                        paymentService.paymentRepository.save(new Payment(pay_id, "PMM0000002", total_amount, Float.parseFloat(change_given), timestamp));
+//
+//                    }
+//
+//                    return ResponseEntity.ok()
+//                            .headers(headers)
+//                            .body(baos.toByteArray());
+//                } catch (Exception e) {
+//                    return ResponseEntity.status(500).body(null);
+//                }
+//            }else{
+//                session.setAttribute("low_customer_given", true);
+//            }
+//        } catch (NumberFormatException e){
+//            e.printStackTrace();
+//        }
 
         resp.sendRedirect("/1");
         return null;

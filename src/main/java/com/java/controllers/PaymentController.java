@@ -1,6 +1,7 @@
 package com.java.controllers;
 
 import com.java.models.MyUserDetail;
+import com.java.service.OrderFacade;
 import com.java.service.OrdersService;
 import com.java.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ public class PaymentController {
     public OrdersService ordersService;
     @Autowired
     public PaymentService paymentService;
+    @Autowired
+    public OrderFacade orderFacade;
 
     @GetMapping("/report")
     public String index(Model model){
@@ -40,7 +43,7 @@ public class PaymentController {
         Date currentDate = new Date(System.currentTimeMillis());
         System.out.println(currentDate);
 
-        Page<Object[]> orderList = ordersService.getAllOrdersList(pageNo - 1, pageSize, currentDate);
+        Page<Object[]> orderList = orderFacade.getAllOrdersList(pageNo - 1, pageSize, currentDate);
         model.addAttribute("orderList", orderList);
 
         return "index";
@@ -53,7 +56,7 @@ public class PaymentController {
         Date currentDate = new Date(System.currentTimeMillis());
 //        System.out.println(currentDate);
 
-        Page<Object[]> orderList = ordersService.getAllOrdersList(pageNo - 1, pageSize, currentDate);
+        Page<Object[]> orderList = orderFacade.getAllOrdersList(pageNo - 1, pageSize, currentDate);
         model.addAttribute("orderList", orderList);
 
         return "/payment/report_list";
@@ -80,7 +83,7 @@ public class PaymentController {
         List<Object[]> totalOrder = ordersService.getTotalOrderOrderByDate(dateStart, dateEnd);
         List<Object[]> totalProduct = ordersService.getTotalProductOrderByDate(dateStart, dateEnd);
 
-        Float totalAmount = paymentService.getTotalPaymentAmount(dateStart, dateEnd);
+        Float totalAmount = orderFacade.getTotalPaymentAmount(dateStart, dateEnd);
 
         List<Object[]> quanNPriceList = ordersService.getQuanAndPrice(dateStart, dateEnd);
         float sum = 0.0f;

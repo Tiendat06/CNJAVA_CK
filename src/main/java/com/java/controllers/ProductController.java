@@ -4,10 +4,7 @@ import com.java.models.Category;
 import com.java.models.MyUserDetail;
 import com.java.models.Product;
 import com.java.models.User;
-import com.java.service.CategoryService;
-import com.java.service.ImageService;
-import com.java.service.OrderDetailsService;
-import com.java.service.ProductService;
+import com.java.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +35,8 @@ public class ProductController {
     public ImageService imageService;
     @Autowired
     public OrderDetailsService orderDetailsService;
+    @Autowired
+    public OrderFacade orderFacade;
 
     @GetMapping("")
     public String index(Model model){
@@ -102,7 +101,7 @@ public class ProductController {
     public void deleteProduct_POST(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String id = req.getParameter("productIdDelete");
 
-        if (orderDetailsService.getAllOrderDetails(id).isEmpty()){
+        if (orderFacade.getAllOrderDetails(id).isEmpty()){
 //            System.out.println("noooo");
             productService.deleteProduct(id);
         }
