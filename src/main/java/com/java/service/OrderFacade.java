@@ -1,7 +1,10 @@
 package com.java.service;
 
 import com.itextpdf.text.DocumentException;
+import com.java.controllers.PaypalController;
 import com.java.models.*;
+import com.paypal.api.payments.Links;
+import com.paypal.base.rest.PayPalRESTException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -14,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -34,6 +38,8 @@ public class OrderFacade {
     private TransactionService transactionService;
     @Autowired
     private  CustomerService customerService;
+    @Autowired
+    private PaypalController paypalController;
 
     public Page<Object[]> getAllOrdersList(int pageNo, int pageSize, Date date) {
         return ordersService.getAllOrdersList(pageNo,pageSize,date);
@@ -95,7 +101,7 @@ public class OrderFacade {
         resp.sendRedirect("/1");
         return null;
     }
-    public String saveInvoiceDetailsToDatabase(HttpServletRequest req, Float total_amount, Float change_given, Customer customer) {
+    public String saveInvoiceDetailsToDatabase(HttpServletRequest req, Float total_amount, Float change_given, Customer customer,String payment_method) {
         try {
             String userId = getUserIdFromRequest(req);
             Optional<String> order_id = ordersService.getOrderToPayment(userId);
@@ -111,7 +117,8 @@ public class OrderFacade {
                 String order_id_val = order_id.get();
                 ordersService.updateOrderToPayment(order_id_val, timestamp, "Noted");
                 transactionService.transactionRepositriy.save(new Transaction(tra_id, pay_id, "Completed", order_id_val));
-                paymentService.paymentRepository.save(new Payment(pay_id, "PMM0000002", total_amount, change_given, timestamp));
+                String payment_method_id = payment_method.equals("cash") ? "PMM0000002" : "PMM0000003";
+                paymentService.paymentRepository.save(new Payment(pay_id, payment_method_id, total_amount, change_given, timestamp));
                 return order_id_val;
             }
         } catch (Exception e) {
@@ -126,9 +133,6 @@ public class OrderFacade {
         return myUserDetail.getCombinedUser().getUser().getUser_id();
     }
 
-    public boolean processPayment(String order_id) {
-        ////// processing payment
-        return true;
-    }
+
 
 }

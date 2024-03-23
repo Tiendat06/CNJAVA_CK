@@ -186,6 +186,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
 import java.util.List;
@@ -211,6 +212,8 @@ public class SiteController implements ErrorController {
     public ProxyCustomerService proxyCustomerService;
     @Autowired
     public OrderFacade orderFacade;
+    @Autowired
+    public PaypalController paypalController;
 
     @GetMapping("")
     public String index(Model model, HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -226,6 +229,21 @@ public class SiteController implements ErrorController {
             return "redirect:/log/change_pass";
         }
         return "redirect:/1";
+    }
+    @GetMapping("/test")
+    public String test() {
+        return "home/test";
+    }
+
+    @GetMapping("/site/payment_success")
+    public String paymentSuccess(){
+        return "/home/payment_success";
+    }
+
+    @GetMapping("/site/payment_failed")
+    public String paymentFailed(){
+
+        return "/home/payment_failed";
     }
 
     @GetMapping("/{pageNo}")
@@ -502,20 +520,25 @@ public class SiteController implements ErrorController {
     @PostMapping("/home/order")
 //    FACADE PATTERN (PLH)
     public ResponseEntity<byte[]> downloadInvoice(Model model, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+//        resp.sendRedirect("/payment/create");
         String customer_given = req.getParameter("customer_given");
         String change_given = req.getParameter("total_amount");
-        Float total_amount = Float.parseFloat(customer_given) - Float.parseFloat(change_given);
-//        pending
+        float total_amount = Float.parseFloat(customer_given) - Float.parseFloat(change_given);
+        String payment_method = req.getParameter("payment-method__radio");
         String phone = req.getParameter("phone");
         Customer customer = customerService.findCusByPhone(phone);
         try {
             ResponseEntity<byte[]> invoice =  orderFacade.downloadInvoice(model,req,resp,customer);
-            String order_id = orderFacade.saveInvoiceDetailsToDatabase(req,total_amount, Float.valueOf(change_given),customer);
-            if (order_id!=null) {
-                if (orderFacade.processPayment(order_id))
-                    return invoice;
-                else  return null;
+            RedirectView redirectView = paypalController.paymentCreate(payment_method, String.valueOf(total_amount),"USD","");
+            if (redirectView.isRedirectView());
+            {
+                String url = redirectView.getUrl();
+                resp.sendRedirect(url);
+                String order_id = orderFacade.saveInvoiceDetailsToDatabase(req,total_amount, Float.valueOf(change_given),customer,payment_method);
+                return invoice;
             }
+
+
         } catch (Exception ignored) {
         }
 
@@ -573,16 +596,5 @@ public class SiteController implements ErrorController {
 
     }
 
-    @GetMapping("/site/payment_success")
-    public String paymentSuccess(){
-
-        return "/home/payment_success";
-    }
-
-    @GetMapping("/site/payment_failed")
-    public String paymentFailed(){
-
-        return "/home/payment_failed";
-    }
 
 }
