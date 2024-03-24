@@ -1,7 +1,7 @@
 package com.java.service;
 
 import com.itextpdf.text.DocumentException;
-import com.java.controllers.PaypalController;
+//import com.java.controllers.PaypalController;
 import com.java.models.*;
 import com.paypal.api.payments.Links;
 import com.paypal.base.rest.PayPalRESTException;
@@ -38,8 +38,8 @@ public class OrderFacade {
     private TransactionService transactionService;
     @Autowired
     private  CustomerService customerService;
-    @Autowired
-    private PaypalController paypalController;
+//    @Autowired
+//    private PaypalController paypalController;
 
     public Page<Object[]> getAllOrdersList(int pageNo, int pageSize, Date date) {
         return ordersService.getAllOrdersList(pageNo,pageSize,date);

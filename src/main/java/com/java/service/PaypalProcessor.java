@@ -5,6 +5,7 @@ import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
-public class PaypalService {
+public class PaypalProcessor implements PaymentProcessor{
 
     private final APIContext apiContext;
 
@@ -65,4 +66,37 @@ public class PaypalService {
 
         return payment.execute(apiContext, paymentExecution);
     }
+
+    public RedirectView paymentCreate(String amount) {
+        try {
+            String cancelUrl = "http://localhost:8080/site/payment_failed";
+            String successUrl = "http://localhost:8080/site/payment_success";
+            String method = "Paypal";
+            String currency = "USD";
+            String description = "";
+            Payment payment = createPayment(
+                    Double.valueOf(amount),
+                    currency,
+                    method,
+                    "sale",
+                    description,
+                    cancelUrl,
+                    successUrl
+            );
+
+            for (Links links: payment.getLinks()) {
+                if (links.getRel().equals("approval_url")) {
+                    return new RedirectView(links.getHref());
+                }
+            }
+        } catch (PayPalRESTException ignored) {
+            return new RedirectView("/site/payment_failed");
+        }
+        return new RedirectView("/site/payment_failed");
+    }
+    @Override
+    public RedirectView processPayment(double amount) {
+        return paymentCreate(String.valueOf(amount));
+    }
+
 }

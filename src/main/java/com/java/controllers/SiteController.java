@@ -212,8 +212,10 @@ public class SiteController implements ErrorController {
     public ProxyCustomerService proxyCustomerService;
     @Autowired
     public OrderFacade orderFacade;
+//    @Autowired
+//    public PaypalController paypalController;
     @Autowired
-    public PaypalController paypalController;
+    private PaymentFactory factory;
 
     @GetMapping("")
     public String index(Model model, HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -529,7 +531,8 @@ public class SiteController implements ErrorController {
         Customer customer = customerService.findCusByPhone(phone);
         try {
             ResponseEntity<byte[]> invoice =  orderFacade.downloadInvoice(model,req,resp,customer);
-            RedirectView redirectView = paypalController.paymentCreate(payment_method, String.valueOf(total_amount),"USD","");
+            PaymentProcessor processor = factory.getPaymentProcessor(payment_method);
+            RedirectView redirectView = processor.processPayment(total_amount);
             if (redirectView.isRedirectView());
             {
                 String url = redirectView.getUrl();
