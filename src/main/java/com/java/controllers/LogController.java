@@ -133,14 +133,17 @@ public class LogController {
     }
 
     @PostMapping("/change_pass")
-    public String  changePass(HttpServletRequest req, HttpServletResponse resp, Model model) {
+    public String changePass(HttpServletRequest req, HttpServletResponse resp, Model model) {
         String pwd = req.getParameter("new_pass");
         String new_pwd = req.getParameter("re_new_pass");
         HttpSession session = req.getSession();
-        if (pwd.length()<6) {
+        if (pwd.isEmpty() || new_pwd.isEmpty()){
+            session.setAttribute("password", "You must fill in all fields");
+        }
+        else if (pwd.length()<6) {
             session.setAttribute("password", "Password must have least 6 characters");
         }
-        if (!pwd.equals(new_pwd)) {
+        else if (!pwd.equals(new_pwd)) {
             session.setAttribute("password", "Confirm password didn't match");
         }
         else {

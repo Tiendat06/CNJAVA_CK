@@ -69,6 +69,12 @@
                 <input class="form-control login-form__input" th:value="${u[6]}" type="number" name="phone" id="phone" placeholder="Phone number" required>
             </div>
 
+            <div th:unless='${add_success == ""}' class="alert col-lg-12 col-md-12 col-sm-12 main-profile__error">
+                <div class="alert alert-info text-center main-profile__error--inner">
+                    <p class="mb-0 main-profile__error--para">[[${add_success}]]</p>
+                </div>
+            </div>
+
             <div class="main-home-profile__btn col-lg-12 text-right">
                 <a data-toggle="modal" data-target="#edit-user" class="btn btn-primary"
                         th:data-id="${u[10]}"
@@ -111,7 +117,7 @@
 
                     <!-- Modal footer -->
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Update</button>
+                        <button type="submit" class="btn-show-details btn btn-primary">Update</button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                     </div>
             </div>
@@ -121,3 +127,6 @@
     </th:block>
 
 </div>
+<script>
+    jsInSettings()
+</script>

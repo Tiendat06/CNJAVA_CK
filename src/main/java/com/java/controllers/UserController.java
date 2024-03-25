@@ -59,6 +59,7 @@ public class UserController {
         model.addAttribute("content", "user");
         model.addAttribute("userList", userList);
         model.addAttribute("provinceAPI", provinceAPI);
+
         return "index";
     }
 
@@ -83,11 +84,20 @@ public class UserController {
 //        System.out.println(user.toString());
         model.addAttribute("userInfo", user);
 
+        model.addAttribute("update_error", "");
+        model.addAttribute("add_success", "");
+
         return "index";
     }
 
     @PostMapping("/profile/update")
-    public void user_profile_update_GET(@RequestParam("fileImg") MultipartFile fileImg, HttpServletResponse resp, HttpServletRequest req) throws IOException {
+    public void user_profile_update_GET(@RequestParam("fileImg") MultipartFile fileImg, HttpServletResponse resp, HttpServletRequest req, Model model) throws IOException {
+        MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        List<Object[]> user_info = userService.getUserProfile(myUserDetail.getCombinedUser().getUser().getUser_id());
+        model.addAttribute("userImg", myUserDetail.getCombinedUser().getUser().getImage());
+        model.addAttribute("userInfo", user_info);
+
         String id = req.getParameter("user_id");
         String firstname = req.getParameter("firstname");
         String lastname = req.getParameter("lastname");
@@ -99,8 +109,22 @@ public class UserController {
         User user1 = userService.getAccIDByUserID(id);
         String imgName = "user_profile.png";
 
+//        check null or empty
+        if (id.isEmpty() || firstname.isEmpty() || lastname.isEmpty()
+                || gender.isEmpty() || birthday.toString().isEmpty()
+                || email.isEmpty() || address.isEmpty() || phone.isEmpty()){
+            model.addAttribute("update_error", "You must fill in all fields");
+            System.out.println("Hi world !");
+            resp.sendRedirect("/user/profile");
+        } else if (!email.contains("@")) {
+            model.addAttribute("update_error", "Invalid email format");
+            resp.sendRedirect("/user/profile");
+        }
         if (!user1.getImage().equals(imgName) && fileImg.isEmpty()){
             imgName = id + ".png";
+//            if (!user1.getImage().equals(imgName) && fileImg.isEmpty()){
+//                imgName = id + ".png";
+//            }
         }
         if (!fileImg.isEmpty()){
             byte[] img = fileImg.getBytes();
@@ -110,9 +134,12 @@ public class UserController {
 
         User user = userService.getAccIDByUserID(id);
         String acc_id = user.getAccount_id();
+        model.addAttribute("add_success", "Update Successfully !!");
 
         userService.updateProfile(id, new User(id, firstname, lastname, email, phone, address, imgName, acc_id, birthday, gender));
+
         resp.sendRedirect("/user/profile");
+
     }
 
     @PostMapping("/add")

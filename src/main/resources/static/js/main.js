@@ -435,6 +435,33 @@ function jsInHome(){
     })
 }
 
+function jsInSettings(){
+    $(document).ready(function() {
+        $('.btn-show-details').on('click', function() {
+            var userId = $(this).data('id_member');
+            var firstname = $(this).data('first_name')
+            var lastname = $(this).data('last_name')
+            var email = $(this).data('email')
+            var phone = $(this).data('phone')
+            var gender = $(this).data('gender')
+            var address = $(this).data('address')
+            var dob = $(this).data('birthday')
+
+            // alert(userId)
+            $('#userIdEdit').attr('value', userId);
+            $('#firstname_edit').attr('value', firstname);
+            $('#lastname_edit').attr('value', lastname);
+            $('#email_edit').attr('value', email);
+            // $('#address_edit').attr('value', address);
+            $('#address_edit').val(address);
+            $('#phone_edit').val(phone);
+            $('#date_edit').val(dob);
+            $('#gender_edit').val(gender);
+
+        });
+    });
+}
+
 function searchHome(){
     let input = document.getElementById('search-navbar');
     let list = document.getElementById('main-home-product__item');
