@@ -171,8 +171,15 @@
 package com.java.controllers;
 
 import com.java.models.*;
-import com.java.service.*;
+import com.java.service.catalog.ProductService;
+import com.java.service.customer.CustomerService;
+import com.java.service.order.OrderDetailsService;
+import com.java.service.order.OrderFacade;
+import com.java.service.payment.factories.PaymentFactory;
+import com.java.service.payment.processors.PaymentProcessor;
+import com.java.service.payment.services.PaymentService;
 import com.java.service.proxy.ProxyCustomerService;
+import com.java.service.transaction.TransactionService;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -199,7 +206,7 @@ public class SiteController implements ErrorController {
     @Autowired
     public ProductService productService;
     @Autowired
-    public OrdersService ordersService;
+    public CustomerService.OrdersService ordersService;
     @Autowired
     public CustomerService customerService;
     @Autowired

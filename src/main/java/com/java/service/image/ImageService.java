@@ -1,4 +1,4 @@
-package com.java.service;
+package com.java.service.image;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

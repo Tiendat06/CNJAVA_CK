@@ -1,10 +1,11 @@
-package com.java.service;
+package com.java.service.order;
 
 import com.itextpdf.text.DocumentException;
 //import com.java.controllers.PaypalController;
 import com.java.models.*;
-import com.paypal.api.payments.Links;
-import com.paypal.base.rest.PayPalRESTException;
+import com.java.service.transaction.TransactionService;
+import com.java.service.customer.CustomerService;
+import com.java.service.payment.services.PaymentService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -17,7 +18,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -29,7 +29,7 @@ import java.util.Optional;
 @Service
 public class OrderFacade {
     @Autowired
-    private OrdersService ordersService;
+    private CustomerService.OrdersService ordersService;
     @Autowired
     private OrderDetailsService orderDetailsService;
     @Autowired

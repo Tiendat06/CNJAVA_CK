@@ -1,5 +1,8 @@
-package com.java.service;
+package com.java.service.payment.factories;
 
+import com.java.service.payment.processors.CashProcessor;
+import com.java.service.payment.processors.PaymentProcessor;
+import com.java.service.payment.processors.PaypalProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

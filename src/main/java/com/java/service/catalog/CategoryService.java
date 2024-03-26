@@ -1,4 +1,4 @@
-package com.java.service;
+package com.java.service.catalog;
 
 import com.java.models.Category;
 import com.java.repository.CategoryRepository;

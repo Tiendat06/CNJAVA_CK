@@ -1,4 +1,4 @@
-package com.java.service;
+package com.java.service.order;
 
 import com.java.models.OrderDetail;
 import com.java.repository.OrderDetailsRepository;

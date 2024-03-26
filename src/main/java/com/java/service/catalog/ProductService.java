@@ -1,4 +1,4 @@
-package com.java.service;
+package com.java.service.catalog;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.oned.Code128Writer;

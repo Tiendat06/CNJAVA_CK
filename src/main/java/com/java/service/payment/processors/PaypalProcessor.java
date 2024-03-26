@@ -1,4 +1,4 @@
-package com.java.service;
+package com.java.service.payment.processors;
 
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
@@ -13,7 +13,7 @@ import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
-public class PaypalProcessor implements PaymentProcessor{
+public class PaypalProcessor implements PaymentProcessor {
 
     private final APIContext apiContext;
 

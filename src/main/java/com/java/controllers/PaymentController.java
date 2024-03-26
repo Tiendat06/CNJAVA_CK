@@ -1,9 +1,9 @@
 package com.java.controllers;
 
 import com.java.models.MyUserDetail;
-import com.java.service.OrderFacade;
-import com.java.service.OrdersService;
-import com.java.service.PaymentService;
+import com.java.service.customer.CustomerService;
+import com.java.service.order.OrderFacade;
+import com.java.service.payment.services.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,7 +22,7 @@ import java.util.List;
 public class PaymentController {
 
     @Autowired
-    public OrdersService ordersService;
+    public CustomerService.OrdersService ordersService;
     @Autowired
     public PaymentService paymentService;
     @Autowired

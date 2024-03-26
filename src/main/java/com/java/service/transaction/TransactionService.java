@@ -1,4 +1,4 @@
-package com.java.service;
+package com.java.service.transaction;
 
 import com.java.repository.TransactionRepositriy;
 import org.springframework.beans.factory.annotation.Autowired;

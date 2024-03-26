@@ -1,10 +1,11 @@
-package com.java.service;
+package com.java.service.payment.processors;
 
+import com.java.service.payment.processors.PaymentProcessor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Service
-public class CashProcessor implements PaymentProcessor{
+public class CashProcessor implements PaymentProcessor {
     @Override
     public RedirectView processPayment(double amount) {
         System.out.println("Processing cash payment for $" + amount);

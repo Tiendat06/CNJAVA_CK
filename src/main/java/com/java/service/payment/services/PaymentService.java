@@ -1,16 +1,12 @@
-package com.java.service;
+package com.java.service.payment.services;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.VerticalPositionMark;
 import com.java.models.MyUserDetail;
-import com.java.models.Payment;
-import com.java.models.Product;
 import com.java.repository.PaymentRepository;
+import com.java.service.customer.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +20,7 @@ public class PaymentService {
     @Autowired
     public PaymentRepository paymentRepository;
     @Autowired
-    public OrdersService ordersService;
+    public CustomerService.OrdersService ordersService;
 
     public Float getTotalPaymentAmount(Date dateStart, Date dateEnd){
         return paymentRepository.totalAmount(dateStart, dateEnd);

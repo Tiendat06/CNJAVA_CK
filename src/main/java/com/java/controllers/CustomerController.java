@@ -2,11 +2,8 @@ package com.java.controllers;
 
 import com.java.models.Customer;
 import com.java.models.MyUserDetail;
-import com.java.models.OrderDetail;
-import com.java.service.CustomerService;
-import com.java.service.OrderDetailsService;
-import com.java.service.OrdersService;
-import jakarta.servlet.http.HttpServletRequest;
+import com.java.service.customer.CustomerService;
+import com.java.service.order.OrderDetailsService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/customer")
@@ -28,7 +24,7 @@ public class CustomerController {
     @Autowired
     public OrderDetailsService orderDetailsService;
     @Autowired
-    public OrdersService ordersService;
+    public CustomerService.OrdersService ordersService;
 
     @GetMapping("")
     public String index(Model model, HttpSession session){

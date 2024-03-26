@@ -1,19 +1,15 @@
 package com.java.controllers;
 
-import com.java.models.Account;
 import com.java.models.MyUserDetail;
 import com.java.models.User;
 import com.java.repository.AccountRepository;
-import com.java.service.AccountService;
-import com.java.service.RoleService;
-import com.java.service.UserService;
-import jakarta.mail.internet.MimeMessage;
+import com.java.service.account.AccountService;
+import com.java.service.security.RoleService;
+import com.java.service.user.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @Controller
 @RequestMapping("/account")

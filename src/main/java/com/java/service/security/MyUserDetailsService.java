@@ -1,4 +1,4 @@
-package com.java.service;
+package com.java.service.security;
 
 import com.java.models.*;
 import com.java.repository.AccountRepository;

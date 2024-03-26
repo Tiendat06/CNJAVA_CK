@@ -1,4 +1,4 @@
-package com.java.service;
+package com.java.service.user;
 
 import com.java.models.User;
 import com.java.repository.AccountRepository;
