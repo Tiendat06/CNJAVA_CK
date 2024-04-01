@@ -218,6 +218,14 @@ function jsInReport(){
         });
     })
 
+    $(document).ready(function (){
+        $('.btn-show-VAT').on('click', function (){
+            var orderId = $(this).data('id');
+
+            $('#order-id-vat').val(orderId);
+        })
+    })
+
     $(document).ready(function() {
         var orderId = null;
         $('.btn-show-details').on('click', function() {

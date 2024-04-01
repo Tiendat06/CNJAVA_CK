@@ -115,6 +115,11 @@
                         <a data-toggle="modal" class="btn btn-show-details" th:data-id="${ord[0]}" data-target="#order-details">
                             <i style="cursor: pointer" class="p-2 text-primary fa-solid fa-eye"></i>
                         </a>
+
+                        <a data-toggle="modal" class="btn btn-show-VAT" th:data-id="${ord[0]}" data-target="#down-vat">
+<!--                            <i style="cursor: pointer" class="p-2 text-primary fa-solid fa-eye"></i>-->
+                            <i style="cursor: pointer" class="p-2 text-primary fa-solid fa-download"></i>
+                        </a>
                     </td>
                 </tr>
             </th:block>
@@ -177,6 +182,43 @@
                     <!--                        <button type="submit" class="btn btn-primary">Submit</button>-->
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--   down VAT-->
+    <div class="modal fade" id="down-vat">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="/payment/report/VAT" method="post">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Choose file type</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body" style="overflow-y: scroll">
+                        <div class="form-group">
+                            <input type="hidden" id="order-id-vat" name="order-id-vat" value="">
+                            <div class="form-group">
+                                <select class="form-control" name="vat-type" id="vat-type">
+                                    <option value="">--Choose file type--</option>
+                                    <option value="XML">XML</option>
+                                    <option value="PDF">PDF</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <!--                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>-->
+                    </div>
+                </form>
             </div>
         </div>
     </div>
