@@ -266,7 +266,7 @@ public class SiteController implements ErrorController {
 
         List<Object[]> orderListCus = ordersService.getOrderOfCustomerInHome(myUserDetail.getCombinedUser().getUser().getUser_id());
         Optional<Object[]> totalBill = ordersService.totalBillInHome(myUserDetail.getCombinedUser().getUser().getUser_id());
-
+//        System.out.println(totalBill.get()[0]);
         if (totalBill.isPresent()){
             model.addAttribute("totalBill", totalBill);
         }else{
@@ -357,7 +357,7 @@ public class SiteController implements ErrorController {
         int quantity = Integer.parseInt(req.getParameter("quantity-ord"));
         String phone = req.getParameter("phone_number_quan");
 //        System.out.println(phone);
-        System.out.println("quan ord: "+quantity);
+        System.out.println("quan ord - 1: "+quantity);
 
         int quan_stock = Integer.parseInt(req.getParameter("quan_stock"));
         System.out.println("hello word: "+quan_stock);
