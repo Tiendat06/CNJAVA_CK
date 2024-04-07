@@ -1,10 +1,10 @@
 package com.java.controllers;
 
 
-import com.java.controllers.ChainOfResponsibility.AdminCredentialsHandler;
-import com.java.controllers.ChainOfResponsibility.EmptyFieldsHandler;
-import com.java.controllers.ChainOfResponsibility.InvalidCredentialsHandler;
-import com.java.controllers.ChainOfResponsibility.LoginHandler;
+import com.java.controllers.ChainOfResponsibility.EmptyPasswordHandler;
+import com.java.controllers.ChainOfResponsibility.MinLengthPasswordHandler;
+import com.java.controllers.ChainOfResponsibility.PasswordHandler;
+import com.java.controllers.ChainOfResponsibility.PasswordMatchHandler;
 import com.java.models.Account;
 import com.java.models.MyUserDetail;
 import com.java.repository.AccountRepository;
@@ -31,16 +31,6 @@ import java.time.format.DateTimeFormatter;
 @Controller
 @RequestMapping("/log")
 public class LogController {
-    private LoginHandler loginHandler;
-
-    public LogController() {
-        LoginHandler invalidCredentialsHandler = new InvalidCredentialsHandler();
-        LoginHandler adminCredentialsHandler = new AdminCredentialsHandler();
-        LoginHandler emptyFieldsHandler = new EmptyFieldsHandler();
-        emptyFieldsHandler.setNextHandler(adminCredentialsHandler);
-        adminCredentialsHandler.setNextHandler(invalidCredentialsHandler);
-        this.loginHandler  = emptyFieldsHandler;
-    }
 
     @Autowired
     private AccountRepository accountRepository;
@@ -62,7 +52,6 @@ public class LogController {
     @PostMapping("/login")
     public String login_POST(Model model, HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        loginHandler.handleRequest(req, resp, model);
         //        String username = req.getParameter("username");
 //        String pwd = req.getParameter("password");
 //        System.out.println(username);
@@ -134,29 +123,57 @@ public class LogController {
 
     @PostMapping("/change_pass")
     public String changePass(HttpServletRequest req, HttpServletResponse resp, Model model) {
+
         String pwd = req.getParameter("new_pass");
         String new_pwd = req.getParameter("re_new_pass");
         HttpSession session = req.getSession();
-        if (pwd.isEmpty() || new_pwd.isEmpty()){
-            session.setAttribute("password", "You must fill in all fields");
-        }
-        else if (pwd.length()<6) {
-            session.setAttribute("password", "Password must have least 6 characters");
-        }
-        else if (!pwd.equals(new_pwd)) {
-            session.setAttribute("password", "Confirm password didn't match");
-        }
-        else {
+
+        PasswordHandler handler = new EmptyPasswordHandler();
+        PasswordHandler minLengthHandler = new MinLengthPasswordHandler();
+        PasswordHandler passwordMatchHandler = new PasswordMatchHandler();
+
+        handler.setNextHandler(minLengthHandler);
+        minLengthHandler.setNextHandler(passwordMatchHandler);
+
+        if (!handler.handleRequest(pwd, new_pwd, session)) {
             session.setAttribute("temp_pass", false);
             MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             myUserDetail.getCombinedUser().getAccount().setTemp_pass(false);
             accountRepository.updateTempPass(myUserDetail.getCombinedUser().getAccount().getAccount_id());
             pwd = new BCryptPasswordEncoder().encode(pwd);
-            accountRepository.updatePassword(myUserDetail.getCombinedUser().getAccount().getAccount_id(),pwd);
+            accountRepository.updatePassword(myUserDetail.getCombinedUser().getAccount().getAccount_id(), pwd);
             session.setAttribute("password", "success");
         }
+
         model.addAttribute("content", "change_pass");
         return "index";
+//        String pwd = req.getParameter("new_pass");
+//        String new_pwd = req.getParameter("re_new_pass");
+//        HttpSession session = req.getSession();
+//
+//                if (pwd.isEmpty() || new_pwd.isEmpty()){
+//            session.setAttribute("password", "You must fill in all fields");
+//        }
+//        else if (pwd.length()<6) {
+//            session.setAttribute("password", "Password must have least 6 characters");
+//        }
+//        else if (!pwd.equals(new_pwd)) {
+//            session.setAttribute("password", "Confirm password didn't match");
+//        }
+//        else {
+//            session.setAttribute("temp_pass", false);
+//            MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//            myUserDetail.getCombinedUser().getAccount().setTemp_pass(false);
+//            accountRepository.updateTempPass(myUserDetail.getCombinedUser().getAccount().getAccount_id());
+//            pwd = new BCryptPasswordEncoder().encode(pwd);
+//            accountRepository.updatePassword(myUserDetail.getCombinedUser().getAccount().getAccount_id(),pwd);
+//            session.setAttribute("password", "success");
+//        }
+//
+//        model.addAttribute("content", "change_pass");
+//        return "index";
     }
 
 }
+
+
