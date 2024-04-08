@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 08, 2024 at 04:35 PM
+-- Generation Time: Apr 08, 2024 at 09:19 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -144,6 +144,26 @@ INSERT INTO `customers` (`CUSTOMER_ID`, `NAME`, `ADDRESS`, `PHONE_NUMBER`, `EMAI
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `customers_voucher`
+--
+
+CREATE TABLE `customers_voucher` (
+  `CUSTOMER_VOUCHER_ID` varchar(50) NOT NULL,
+  `VOUCHER_ID` int(11) NOT NULL,
+  `CUSTOMER_ID` varchar(500) NOT NULL,
+  `DATE_USED` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `customers_voucher`
+--
+
+INSERT INTO `customers_voucher` (`CUSTOMER_VOUCHER_ID`, `VOUCHER_ID`, `CUSTOMER_ID`, `DATE_USED`) VALUES
+('CSV0000001', 1, 'CUS0000011', '2024-04-09');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `orders`
 --
 
@@ -160,35 +180,38 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`ORDER_ID`, `USER_ID`, `DATE_CREATED`, `NOTE`, `CUSTOMER_ID`) VALUES
-('ORD0000001', 'USE0000001', '2023-12-19 14:52:27', 'First order', 'CUS0000001'),
-('ORD0000002', 'USE0000002', '2023-12-19 14:52:27', 'Second order', 'CUS0000001'),
-('ORD0000003', 'USE0000003', '2023-12-20 14:52:27', 'Third order', 'CUS0000001'),
-('ORD0000004', 'USE0000004', '2023-12-18 14:52:27', 'Fourth order', 'CUS0000004'),
-('ORD0000005', 'USE0000005', '2023-12-19 14:52:27', 'Fifth order', 'CUS0000005'),
-('ORD0000006', 'USE0000006', '2023-12-19 14:52:27', 'Sixth order', 'CUS0000006'),
-('ORD0000007', 'USE0000007', '2023-12-20 00:00:00', 'Seventh order', 'CUS0000007'),
-('ORD0000008', 'USE0000008', '2023-12-19 14:52:27', 'Eighth order', 'CUS0000008'),
-('ORD0000009', 'USE0000009', '2023-11-28 00:05:19', 'Ninth order', 'CUS0000009'),
-('ORD0000010', 'USE0000010', '2023-12-19 14:52:27', 'Tenth order', 'CUS0000010'),
-('ORD0000011', 'USE0000001', '2023-12-23 00:07:33', 'Noted', 'CUS0000002'),
-('ORD0000012', 'USE0000002', '2023-12-24 00:08:02', 'Noted', 'CUS0000003'),
-('ORD0000013', 'USE0000001', '2023-12-25 15:21:21', 'Noted', 'CUS0000002'),
-('ORD0000014', 'USE0000002', '2023-12-25 15:28:24', 'Noted', 'CUS0000001'),
-('ORD0000015', 'USE0000001', '2023-12-25 15:32:24', 'Noted', 'CUS0000001'),
-('ORD0000016', 'USE0000001', '2023-12-26 01:41:19', 'Noted', 'CUS0000001'),
-('ORD0000017', 'USE0000001', '2023-12-26 02:18:54', 'Noted', 'CUS0000011'),
-('ORD0000018', 'USE0000001', '2023-12-26 02:41:16', 'Noted', 'CUS0000013'),
-('ORD0000019', 'USE0000001', '2023-12-26 02:42:39', 'Noted', 'CUS0000012'),
-('ORD0000020', 'USE0000001', '2023-12-26 02:43:28', 'Noted', 'CUS0000011'),
-('ORD0000021', 'USE0000001', '2023-12-26 02:46:37', 'Noted', 'CUS0000011'),
-('ORD0000022', 'USE0000001', '2023-12-26 13:01:15', 'Noted', 'CUS0000001'),
-('ORD0000023', 'USE0000001', '2023-12-26 13:05:51', 'Noted', 'CUS0000001'),
-('ORD0000024', 'USE0000001', '2023-12-26 16:44:11', 'Noted', 'CUS0000014'),
-('ORD0000025', 'USE0000001', '2024-03-19 21:19:14', 'Noted', 'CUS0000011'),
-('ORD0000026', 'USE0000001', '2024-03-22 14:48:03', 'Noted', 'CUS0000011'),
-('ORD0000027', 'USE0000001', '2024-04-03 15:44:30', 'Noted', 'CUS0000011'),
-('ORD0000028', 'USE0000001', '2024-04-03 15:45:15', 'Noted', 'CUS0000011'),
-('ORD0000029', 'USE0000001', '2024-04-08 13:51:24', 'Noted', 'CUS0000011');
+('ORD0000001', 'USE0000001', '2023-12-19 14:52:27', '1', 'CUS0000001'),
+('ORD0000002', 'USE0000002', '2023-12-19 14:52:27', '2', 'CUS0000001'),
+('ORD0000003', 'USE0000003', '2023-12-20 14:52:27', '3', 'CUS0000001'),
+('ORD0000004', 'USE0000004', '2023-12-18 14:52:27', '1', 'CUS0000004'),
+('ORD0000005', 'USE0000005', '2023-12-19 14:52:27', '1', 'CUS0000005'),
+('ORD0000006', 'USE0000006', '2023-12-19 14:52:27', '1', 'CUS0000006'),
+('ORD0000007', 'USE0000007', '2023-12-20 00:00:00', '1', 'CUS0000007'),
+('ORD0000008', 'USE0000008', '2023-12-19 14:52:27', '1', 'CUS0000008'),
+('ORD0000009', 'USE0000009', '2023-11-28 00:05:19', '1', 'CUS0000009'),
+('ORD0000010', 'USE0000010', '2023-12-19 14:52:27', '1', 'CUS0000010'),
+('ORD0000011', 'USE0000001', '2023-12-23 00:07:33', '1', 'CUS0000002'),
+('ORD0000012', 'USE0000002', '2023-12-24 00:08:02', '1', 'CUS0000003'),
+('ORD0000013', 'USE0000001', '2023-12-25 15:21:21', '2', 'CUS0000002'),
+('ORD0000014', 'USE0000002', '2023-12-25 15:28:24', '4', 'CUS0000001'),
+('ORD0000015', 'USE0000001', '2023-12-25 15:32:24', '5', 'CUS0000001'),
+('ORD0000016', 'USE0000001', '2023-12-26 01:41:19', '6', 'CUS0000001'),
+('ORD0000017', 'USE0000001', '2023-12-26 02:18:54', '1', 'CUS0000011'),
+('ORD0000018', 'USE0000001', '2023-12-26 02:41:16', '1', 'CUS0000013'),
+('ORD0000019', 'USE0000001', '2023-12-26 02:42:39', '1', 'CUS0000012'),
+('ORD0000020', 'USE0000001', '2023-12-26 02:43:28', '2', 'CUS0000011'),
+('ORD0000021', 'USE0000001', '2023-12-26 02:46:37', '3', 'CUS0000011'),
+('ORD0000022', 'USE0000001', '2023-12-26 13:01:15', '7', 'CUS0000001'),
+('ORD0000023', 'USE0000001', '2023-12-26 13:05:51', '8', 'CUS0000001'),
+('ORD0000024', 'USE0000001', '2023-12-26 16:44:11', '1', 'CUS0000014'),
+('ORD0000025', 'USE0000001', '2024-03-19 21:19:14', '4', 'CUS0000011'),
+('ORD0000026', 'USE0000001', '2024-03-22 14:48:03', '5', 'CUS0000011'),
+('ORD0000027', 'USE0000001', '2024-04-03 15:44:30', '6', 'CUS0000011'),
+('ORD0000028', 'USE0000001', '2024-04-03 15:45:15', '7', 'CUS0000011'),
+('ORD0000029', 'USE0000001', '2024-04-08 13:51:24', '8', 'CUS0000011'),
+('ORD0000030', 'USE0000001', '2024-04-08 22:41:15', '9', 'CUS0000011'),
+('ORD0000031', 'USE0000001', '2024-04-08 23:44:42', '10', 'CUS0000011'),
+('ORD0000032', 'USE0000001', '2024-04-09 00:09:16', '11', 'CUS0000011');
 
 -- --------------------------------------------------------
 
@@ -275,7 +298,11 @@ INSERT INTO `order_details` (`ORDER_DETAILS_ID`, `ORDER_ID`, `PRODUCT_ID`, `QUAN
 ('ODT0000068', 'ORD0000028', 'PRO0000007', 1),
 ('ODT0000069', 'ORD0000029', 'PRO0000002', 1),
 ('ODT0000070', 'ORD0000029', 'PRO0000003', 2),
-('ODT0000071', 'ORD0000029', 'PRO0000004', 1);
+('ODT0000071', 'ORD0000029', 'PRO0000004', 1),
+('ODT0000072', 'ORD0000030', 'PRO0000011', 2),
+('ODT0000073', 'ORD0000030', 'PRO0000012', 2),
+('ODT0000074', 'ORD0000031', 'PRO0000005', 1),
+('ODT0000075', 'ORD0000032', 'PRO0000011', 1);
 
 -- --------------------------------------------------------
 
@@ -324,7 +351,10 @@ INSERT INTO `payment` (`PAYMENT_ID`, `PAYMENT_METHOD_ID`, `total_amount`, `chang
 ('PAY0000026', 'PMM0000002', 4874.95, 125.05, '2024-03-22 14:48:03'),
 ('PAY0000027', 'PMM0000002', 249.99, 750.01, '2024-04-03 15:44:30'),
 ('PAY0000028', 'PMM0000003', 39.99, 60.01, '2024-04-03 15:45:15'),
-('PAY0000029', 'PMM0000003', 134.96, 5865.04, '2024-04-08 13:51:24');
+('PAY0000029', 'PMM0000003', 134.96, 5865.04, '2024-04-08 13:51:24'),
+('PAY0000030', 'PMM0000002', 6400, 600, '2024-04-08 22:41:15'),
+('PAY0000031', 'PMM0000002', 14.99, 585.01, '2024-04-08 23:44:42'),
+('PAY0000032', 'PMM0000002', 200, 400, '2024-04-09 00:09:16');
 
 -- --------------------------------------------------------
 
@@ -376,14 +406,14 @@ INSERT INTO `product` (`PRODUCT_ID`, `NAME`, `DESCRIPTION`, `QTY_STOCK`, `price`
 ('PRO0000002', 'T-shirt', 'Cotton T-shirt', 46, 19.99, 2, 'PRO0000002.png', 24.99, '2023-12-19 07:52:27', 'PRO0000002_barcode.png'),
 ('PRO0000003', 'Book', 'Bestseller novel', 11, 14.99, 3, 'PRO0000003.png', 19.99, '2023-12-19 07:52:27', 'PRO0000003_barcode.png'),
 ('PRO0000004', 'Vase', 'Elegant home decor', 12, 49.99, 4, 'PRO0000004.png', 69.99, '2023-12-19 07:52:27', 'PRO0000004_barcode.png'),
-('PRO0000005', 'Lipstick', 'Matte finish', 26, 9.99, 5, 'PRO0000005.png', 14.99, '2023-12-19 07:52:27', 'PRO0000005_barcode.png'),
+('PRO0000005', 'Lipstick', 'Matte finish', 25, 9.99, 5, 'PRO0000005.png', 14.99, '2023-12-19 07:52:27', 'PRO0000005_barcode.png'),
 ('PRO0000006', 'Running Shoes', 'Comfortable running shoes', 15, 79.99, 6, 'PRO0000006.png', 99.99, '2023-12-19 07:52:27', 'PRO0000006_barcode.png'),
 ('PRO0000007', 'Toy Car', 'Remote-controlled car', 39, 29.99, 7, 'PRO0000007.png', 39.99, '2023-12-19 07:52:27', 'PRO0000007_barcode.png'),
 ('PRO0000008', 'Chocolate', 'Assorted chocolates', 49, 4.99, 8, 'PRO0000008.png', 7.99, '2023-12-19 07:52:27', 'PRO0000008_barcode.png'),
 ('PRO0000009', 'Coffee Table', 'Modern furniture', 7, 199.99, 9, 'PRO0000009.png', 249.99, '2023-12-19 07:52:27', 'PRO0000009_barcode.png'),
 ('PRO0000010', 'Diamond Ring', '18k gold', 4, 499.99, 10, 'PRO0000010.png', 699.99, '2023-12-19 07:52:27', 'PRO0000010_barcode.png'),
-('PRO0000011', 'Pant', 'This is pants from UK', 98, 100, 2, 'PRO0000011.png', 200, '2023-12-25 17:02:57', 'PRO0000011_barcode.png'),
-('PRO0000012', 'MacBook Air Pro', 'Mac Book Air Black', 49, 2000, 1, 'PRO0000012.png', 3000, '2023-12-26 09:25:31', 'PRO0000012_barcode.png');
+('PRO0000011', 'Pant', 'This is pants from UK', 95, 100, 2, 'PRO0000011.png', 200, '2023-12-25 17:02:57', 'PRO0000011_barcode.png'),
+('PRO0000012', 'MacBook Air Pro', 'Mac Book Air Black', 47, 2000, 1, 'PRO0000012.png', 3000, '2023-12-26 09:25:31', 'PRO0000012_barcode.png');
 
 -- --------------------------------------------------------
 
@@ -467,7 +497,10 @@ INSERT INTO `transaction` (`TRANSACTION_ID`, `PAYMENT_ID`, `STATUS`, `ORDER_ID`)
 ('TRA0000026', 'PAY0000026', 'Completed', 'ORD0000026'),
 ('TRA0000027', 'PAY0000027', 'Completed', 'ORD0000027'),
 ('TRA0000028', 'PAY0000028', 'Completed', 'ORD0000028'),
-('TRA0000029', 'PAY0000029', 'Completed', 'ORD0000029');
+('TRA0000029', 'PAY0000029', 'Completed', 'ORD0000029'),
+('TRA0000030', 'PAY0000030', 'Completed', 'ORD0000030'),
+('TRA0000031', 'PAY0000031', 'Completed', 'ORD0000031'),
+('TRA0000032', 'PAY0000032', 'Completed', 'ORD0000032');
 
 -- --------------------------------------------------------
 
@@ -493,7 +526,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`USER_ID`, `FIRST_NAME`, `LAST_NAME`, `EMAIL`, `PHONE_NUMBER`, `ADDRESS`, `image`, `ACCOUNT_ID`, `birthday`, `GENDER`) VALUES
-('USE0000001', 'Admin 2', 'Tạ', 'admin@example.com', '0356779197', 'Thành phố Hồ Chí Minh', 'USE0000001.png', 'ACC0000001', '1990-02-02', 'Male'),
+('USE0000001', 'Admin 2', 'Tạ', 'admin@example.com', '0987654321', 'Thành phố Hồ Chí Minh', 'USE0000001.png', 'ACC0000001', '1990-02-02', 'Male'),
 ('USE0000002', 'Regular', 'Senna', 'user@example.com', '555-user', 'Tỉnh Nghệ An', 'user_profile.png', 'ACC0000002', '1995-05-05', 'Female'),
 ('USE0000003', 'Test', 'User', 'test@example.com', '555-test', 'Tỉnh Sóc Trăng', 'user_profile.png', 'ACC0000003', '1988-10-10', 'Male'),
 ('USE0000004', 'Demo', 'User', 'demo@example.com', '555-demo', 'Thành phố Hải Phòng', 'user_profile.png', 'ACC0000004', '1985-06-15', 'Female'),
@@ -504,21 +537,8 @@ INSERT INTO `user` (`USER_ID`, `FIRST_NAME`, `LAST_NAME`, `EMAIL`, `PHONE_NUMBER
 ('USE0000009', 'Charlie', 'White', 'charlie.white@example.com', '555-charlie', 'Tỉnh Bắc Giang', 'user_profile.png', 'ACC0000009', '1987-09-22', 'Male'),
 ('USE0000010', 'Eva', 'Green', 'eva.green@example.com', '555-eva', 'Tỉnh Lào Cai', 'user_profile.png', 'ACC0000010', '1991-04-12', 'Female'),
 ('USE0000011', 'Tạ', 'Tiến Đạt', 'tadat290903@gmail.com', '0356779197', 'Tỉnh Bắc Ninh', 'user_profile.png', 'ACC0000011', '2024-01-01', 'Male'),
-('USE0000012', 'Tạ', 'Tiến Đạt', 'jakejohn3004@gmail.com', '0356779197', 'Tỉnh Bến Tre', 'user_profile.png', 'ACC0000012', '2024-03-13', 'Male'),
-('USE0000013', 'Tạ', 'Tiến Đạt', 'tiendat79197@gmail.com', '0356779197', 'Thành phố Hồ Chí Minh', 'user_profile.png', 'ACC0000013', '2024-03-07', 'Male');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `user_voucher`
---
-
-CREATE TABLE `user_voucher` (
-  `USER_VOUCHER_ID` varchar(50) NOT NULL,
-  `VOUCHER_ID` int(11) NOT NULL,
-  `USER_ID` varchar(500) NOT NULL,
-  `DATE_USED` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+('USE0000012', 'Tạ', 'Tiến Đạt', 'jakejohn3004@gmail.com', '0123456789', 'Tỉnh Bến Tre', 'user_profile.png', 'ACC0000012', '2024-03-13', 'Male'),
+('USE0000013', 'Tạ', 'Tiến Đạt', 'tiendat79197@gmail.com', '0213654789', 'Thành phố Hồ Chí Minh', 'user_profile.png', 'ACC0000013', '2024-03-07', 'Male');
 
 -- --------------------------------------------------------
 
@@ -537,9 +557,9 @@ CREATE TABLE `voucher` (
 --
 
 INSERT INTO `voucher` (`VOUCHER_ID`, `VOUCHER_NAME`, `VOUCHER_DISCOUNT`) VALUES
-(1, 'HAPPY10', '10%'),
-(2, 'HAPPY20', '20%'),
-(3, 'HAPPY30', '30%');
+(1, 'HAPPY10', '10'),
+(2, 'HAPPY20', '20'),
+(3, 'HAPPY30', '30');
 
 -- --------------------------------------------------------
 
@@ -580,6 +600,12 @@ ALTER TABLE `category`
 --
 ALTER TABLE `customers`
   ADD PRIMARY KEY (`CUSTOMER_ID`);
+
+--
+-- Indexes for table `customers_voucher`
+--
+ALTER TABLE `customers_voucher`
+  ADD PRIMARY KEY (`CUSTOMER_VOUCHER_ID`,`VOUCHER_ID`,`CUSTOMER_ID`);
 
 --
 -- Indexes for table `orders`
@@ -632,12 +658,6 @@ ALTER TABLE `transaction`
 ALTER TABLE `user`
   ADD PRIMARY KEY (`USER_ID`),
   ADD KEY `fk_user_account` (`ACCOUNT_ID`);
-
---
--- Indexes for table `user_voucher`
---
-ALTER TABLE `user_voucher`
-  ADD PRIMARY KEY (`USER_VOUCHER_ID`,`VOUCHER_ID`,`USER_ID`);
 
 --
 -- Indexes for table `voucher`
