@@ -4,6 +4,8 @@ import com.java.models.MyUserDetail;
 import com.java.service.customer.CustomerService;
 import com.java.service.order.OrderFacade;
 import com.java.service.payment.services.PaymentService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
 
@@ -103,9 +106,13 @@ public class PaymentController {
         return "/payment/total";
     }
 
-    @PostMapping("/report/VAT")
-    public void exportFileVAT(){
-
+    @GetMapping("/report/VAT")
+    public void exportFileVAT(HttpServletResponse resp, HttpServletRequest req) throws IOException {
+        String name = req.getParameter("vat-type");
+        System.out.println(name);
+        String id = req.getParameter("order-id-vat");
+        System.out.println(id);
+        resp.sendRedirect("/");
     }
 
 }
