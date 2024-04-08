@@ -9,8 +9,12 @@
 </div>
 
 <div th:if="${cusNull != 'cusNull'}" class="d-flex main-home-payment__customer--address">
-    <p class="col-lg-6 mb-0">Address:</p>
-    <p class="col-lg-6 text-right mb-0">[[${customer.customer_address}]]</p>
+    <p class="col-lg-6 mb-2">Address:</p>
+    <p class="col-lg-6 text-right mb-2">[[${customer.customer_address}]]</p>
+</div>
+
+<div class="d-flex main-home-payment__customer--voucher">
+    <p class="mb-0 col-lg-12" style="cursor: pointer">Check customer voucher </p>
 </div>
 
 

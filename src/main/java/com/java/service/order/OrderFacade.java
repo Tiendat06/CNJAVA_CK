@@ -115,7 +115,8 @@ public class OrderFacade {
                     customer.setDate_created(timestamp);
                 }
                 String order_id_val = order_id.get();
-                ordersService.updateOrderToPayment(order_id_val, timestamp, "Noted");
+                String totalCustomerOrder = ordersService.currentCustomerOrder(customer.getCustomer_id());
+                ordersService.updateOrderToPayment(order_id_val, timestamp, totalCustomerOrder);
                 transactionService.transactionRepositriy.save(new Transaction(tra_id, pay_id, "Completed", order_id_val));
                 String payment_method_id = payment_method.equals("cash") ? "PMM0000002" : "PMM0000003";
                 paymentService.paymentRepository.save(new Payment(pay_id, payment_method_id, total_amount, change_given, timestamp));

@@ -405,7 +405,7 @@ function jsInHome(){
                 type: 'GET',
                 url: '/find/'+phone,
                 success: function(response) {
-
+                    $('#customerFindByPhone').removeClass("d-none");
                     $('#customerFindByPhone').html(response);
                 },
             });

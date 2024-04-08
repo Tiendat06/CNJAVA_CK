@@ -20,6 +20,9 @@ public interface OrderRepository extends JpaRepository<Order, String> {
     @Query("select max (order_id) from orders ")
     String maxID();
 
+    @Query("select count(ord.customer_id) from orders ord where ord.customer_id = :cus_id")
+    String currentCustomerOrder(@Param("cus_id") String cus_id);
+
     default void updateOrderToPayment(String ord_id, Timestamp date, String note){
         findById(ord_id).ifPresent(ord -> {
             ord.setDate_created(date);

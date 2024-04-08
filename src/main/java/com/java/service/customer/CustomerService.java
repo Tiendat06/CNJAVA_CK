@@ -107,6 +107,10 @@ public class CustomerService implements ICustomerService {
             orderRepository.updateOrderToPayment(ord_id, date, note);
         }
 
+        public String currentCustomerOrder(String cus_id){
+            return orderRepository.currentCustomerOrder(cus_id);
+        }
+
         public String AUTO_ORD_ID(){
             String maxID = orderRepository.maxID();
             if (maxID != null) {
