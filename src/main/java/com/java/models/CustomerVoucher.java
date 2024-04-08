@@ -7,21 +7,21 @@ import lombok.*;
 
 import java.sql.Date;
 
-@Entity(name = "user_voucher")
+@Entity(name = "customers_voucher")
 @Getter
 @Setter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserVoucher {
+public class CustomerVoucher {
 
     @Id
-    @Column(name = "USER_VOUCHER_ID")
-    private String user_voucher_id;
+    @Column(name = "CUSTOMER_VOUCHER_ID")
+    private String customer_voucher_id;
     @Column(name = "VOUCHER_ID")
     private int voucher_id;
-    @Column(name = "USER_ID")
-    private String user_id;
+    @Column(name = "CUSTOMER_ID")
+    private String customer_id;
     @Column(name = "DATE_USED")
     private Date date_used;
 }

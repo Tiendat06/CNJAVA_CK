@@ -412,6 +412,27 @@ function jsInHome(){
         });
     })
 
+    $(document).ready(function (){
+        $('.btn-add-voucher').on('click', function (){
+            var phone_number = $("#phone").val();
+            var voucher_id = $(this).data('id');
+            var csrfToken = $("meta[name='_csrf']").attr("content");
+            $.ajax({
+                type: "GET",
+                url: "/customer_voucher/add_voucher/AJAX",
+                data: {
+                    phone_number: phone_number,
+                    voucher_id: voucher_id,
+                    "_csrf": csrfToken
+                }, success: function (response) {
+
+                }, error: function (response) {
+                    console.log(response);
+                }
+            })
+        })
+    })
+
     $(document).ready(function(){
         $('#btn-add-customer').on('click', function (){
             var fullname = $('#fullname').val();

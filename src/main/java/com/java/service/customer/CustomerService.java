@@ -52,6 +52,7 @@ public class CustomerService implements ICustomerService {
 
     @Override
     public String addCustomer(Customer customer) {
+//        PROXY PATTERN [TTD]
         customerRepository.save(customer);
         return "Success";
     }

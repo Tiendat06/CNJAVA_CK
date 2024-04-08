@@ -173,6 +173,7 @@ package com.java.controllers;
 import com.java.models.*;
 import com.java.service.catalog.ProductService;
 import com.java.service.customer.CustomerService;
+import com.java.service.customer.CustomerVoucherService;
 import com.java.service.order.OrderDetailsService;
 import com.java.service.order.OrderFacade;
 import com.java.service.payment.factories.PaymentFactory;
@@ -180,6 +181,7 @@ import com.java.service.payment.processors.PaymentProcessor;
 import com.java.service.payment.services.PaymentService;
 import com.java.service.proxy.ProxyCustomerService;
 import com.java.service.transaction.TransactionService;
+import com.java.service.voucher.VoucherService;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -219,6 +221,10 @@ public class SiteController implements ErrorController {
     public ProxyCustomerService proxyCustomerService;
     @Autowired
     public OrderFacade orderFacade;
+    @Autowired
+    public CustomerVoucherService customerVoucherService;
+    @Autowired
+    public VoucherService voucherService;
 //    @Autowired
 //    public PaypalController paypalController;
     @Autowired
@@ -277,9 +283,17 @@ public class SiteController implements ErrorController {
         List<String> provinceAPI = customerService.getProvinceAPI();
 //        provinceAPI.forEach(System.out::println);
 
+        List<Voucher> voucherList = voucherService.findAll();
+
+        for (Voucher v: voucherList){
+            System.out.println(v.getVoucher_name());
+        }
+
         model.addAttribute("productList", productList);
         model.addAttribute("orderListCus", orderListCus);
         model.addAttribute("provinceAPI", provinceAPI);
+        model.addAttribute("voucherList", voucherList);
+
 
         return "index";
 
@@ -452,8 +466,18 @@ public class SiteController implements ErrorController {
         HttpSession session = req.getSession();
 
         Customer customer = customerService.findCusByPhone(phone_number);
+
+        String totalCustomerOrder = ordersService.currentCustomerOrder(customer.getCustomer_id());
+        String customerVoucherUsed = customerVoucherService.totalCustomerVoucherUsed(customer.getCustomer_id());
+
+//        System.out.println((int) Double.parseDouble(customerVoucherUsed));
+
+        String customerTotalPoint = String.valueOf (Integer.parseInt(totalCustomerOrder) - (int) Double.parseDouble(customerVoucherUsed));
+
         session.setAttribute("customer_phone", customer.getCustomer_phone());
         model.addAttribute("customer", customer);
+        model.addAttribute("totalVoucher", customerTotalPoint);
+
         return "/home/find_cus_by_phone";
     }
 
