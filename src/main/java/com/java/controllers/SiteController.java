@@ -180,6 +180,10 @@ import com.java.service.payment.factories.PaymentFactory;
 import com.java.service.payment.processors.PaymentProcessor;
 import com.java.service.payment.services.PaymentService;
 import com.java.service.proxy.ProxyCustomerService;
+import com.java.service.strategy.HAPPY10Voucher;
+import com.java.service.strategy.HAPPY30Voucher;
+import com.java.service.strategy.IStrategy;
+import com.java.service.strategy.VoucherStrategy;
 import com.java.service.transaction.TransactionService;
 import com.java.service.voucher.VoucherService;
 import jakarta.servlet.RequestDispatcher;
@@ -198,6 +202,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -263,7 +269,7 @@ public class SiteController implements ErrorController {
 
     @GetMapping("/{pageNo}")
     public String homeProductPagination(@PathVariable int pageNo,
-                                        @RequestParam(defaultValue = "9") int pageSize, Model model){
+                                        @RequestParam(defaultValue = "9") int pageSize, Model model, HttpSession session){
         model.addAttribute("content", "home");
         MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         model.addAttribute("userImg", myUserDetail.getCombinedUser().getUser().getImage());
@@ -273,11 +279,16 @@ public class SiteController implements ErrorController {
         List<Object[]> orderListCus = ordersService.getOrderOfCustomerInHome(myUserDetail.getCombinedUser().getUser().getUser_id());
         Optional<Object[]> totalBill = ordersService.totalBillInHome(myUserDetail.getCombinedUser().getUser().getUser_id());
 //        System.out.println(totalBill.get()[0]);
-        if (totalBill.isPresent()){
-            model.addAttribute("totalBill", totalBill);
+//        Object totalBills = totalBill.get()[0];
+        double totalBillInDouble = 0.0;
+        if (totalBill.get()[0] != null){
+            totalBillInDouble = (double) totalBill.get()[0];
         }else{
-            model.addAttribute("totalBill", "0");
+            totalBillInDouble = 0.0;
         }
+
+//        System.out.println(totalBills);
+
 
 //        ADAPTER PATTERN (TTD)
         List<String> provinceAPI = customerService.getProvinceAPI();
@@ -285,10 +296,48 @@ public class SiteController implements ErrorController {
 
         List<Voucher> voucherList = voucherService.findAll();
 
-        for (Voucher v: voucherList){
-            System.out.println(v.getVoucher_name());
-        }
 
+        if (session.getAttribute("customer_phone") != null){
+            String phone_number = (String) session.getAttribute("customer_phone");
+            Customer customer = customerService.findCusByPhone(phone_number);
+            String voucher_id = customerVoucherService.getCustomerVoucherId(customer.getCustomer_id());
+            if(voucher_id != null){
+                Optional<Voucher> voucher = voucherService.findById(Integer.parseInt(voucher_id));
+                Integer voucher_discount = Integer.parseInt(voucher.get().getVoucher_discount());
+
+//                STRATEGY PATTERN [TTD]
+                IStrategy iStrategy = null;
+                VoucherStrategy voucherStrategy = new VoucherStrategy();
+                if (voucher.get().getVoucher_id() == 1){
+                    iStrategy = new HAPPY10Voucher();
+                    voucherStrategy.setStrategy(iStrategy);
+                    totalBillInDouble = voucherStrategy.calculateVoucher((double)totalBill.get()[0], voucher_discount);
+                } else if(voucher.get().getVoucher_id() == 2){
+                    iStrategy = new HAPPY10Voucher();
+                    voucherStrategy.setStrategy(iStrategy);
+                    totalBillInDouble = voucherStrategy.calculateVoucher((double)totalBill.get()[0], voucher_discount);
+                }else if(voucher.get().getVoucher_id() == 3){
+                    iStrategy = new HAPPY30Voucher();
+                    voucherStrategy.setStrategy(iStrategy);
+                    totalBillInDouble = voucherStrategy.calculateVoucher((double)totalBill.get()[0], voucher_discount);
+                }
+
+                if (voucher.isPresent()){
+                    model.addAttribute("voucherName", voucher.get().getVoucher_name());
+                }
+            }
+
+
+        }
+        totalBillInDouble = Math.round(totalBillInDouble * 100.0) / 100.0;
+
+//        if (totalBill.isPresent()){
+//            model.addAttribute("totalBill", totalBillInDouble);
+//        }else{
+//            model.addAttribute("totalBill", "0");
+//        }
+
+        model.addAttribute("totalBill", totalBillInDouble);
         model.addAttribute("productList", productList);
         model.addAttribute("orderListCus", orderListCus);
         model.addAttribute("provinceAPI", provinceAPI);
@@ -470,7 +519,9 @@ public class SiteController implements ErrorController {
         String totalCustomerOrder = ordersService.currentCustomerOrder(customer.getCustomer_id());
         String customerVoucherUsed = customerVoucherService.totalCustomerVoucherUsed(customer.getCustomer_id());
 
-//        System.out.println((int) Double.parseDouble(customerVoucherUsed));
+        if (customerVoucherUsed == null){
+            customerVoucherUsed = "0";
+        }
 
         String customerTotalPoint = String.valueOf (Integer.parseInt(totalCustomerOrder) - (int) Double.parseDouble(customerVoucherUsed));
 
@@ -481,17 +532,96 @@ public class SiteController implements ErrorController {
         return "/home/find_cus_by_phone";
     }
 
+    @PostMapping("/add/customer/voucher")
+    public void addCustomerVoucher(HttpServletRequest req, HttpServletResponse resp, HttpSession session) throws IOException {
+
+        String phone = (String) session.getAttribute("customer_phone");
+        String voucher_id = req.getParameter("add_voucher_id");
+
+        Customer customer = customerService.findCusByPhone(phone);
+
+        String totalCustomerOrder = ordersService.currentCustomerOrder(customer.getCustomer_id());
+        String totalCustomerVoucherUsed = customerVoucherService.totalCustomerVoucherUsed(customer.getCustomer_id());
+
+        String customerVoucherID = customerVoucherService.AUTO_CSV_ID();
+        Date date_used = Date.valueOf(LocalDate.now());
+
+        CustomerVoucher customerVoucher = new CustomerVoucher(customerVoucherID, Integer.parseInt(voucher_id), customer.getCustomer_id(), null);
+
+        if (totalCustomerVoucherUsed == null){
+            totalCustomerVoucherUsed = "0";
+        }
+
+        String customerTotalPoint = String.valueOf (Integer.parseInt(totalCustomerOrder) - (int) Double.parseDouble(totalCustomerVoucherUsed));
+
+        if(Integer.parseInt(customerTotalPoint) >= 10 && Integer.parseInt(voucher_id) == 1){
+            customerVoucherService.addCustomerVoucher(customerVoucher);
+        } else if (Integer.parseInt(customerTotalPoint) >= 20 && Integer.parseInt(voucher_id) == 2) {
+            customerVoucherService.addCustomerVoucher(customerVoucher);
+        } else if (Integer.parseInt(customerTotalPoint) >= 30 && Integer.parseInt(voucher_id) == 3){
+            customerVoucherService.addCustomerVoucher(customerVoucher);
+        } else{
+            System.out.println("Point is not enough");
+        }
+
+
+//        System.out.println(phone);
+//        System.out.println(voucher_id);
+
+        resp.sendRedirect("/1");
+    }
+
     @GetMapping("/calculate/{money_Given}")
-    public String calculateCustomerGivenChange(@PathVariable String money_Given,Model model, HttpServletRequest req){
+    public String calculateCustomerGivenChange(@PathVariable String money_Given,Model model, HttpServletRequest req, HttpSession session){
 
 //        System.out.println("hiiii");
 //        String moneyGiven = req.getParameter("number");
         MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         Optional<Object[]> totalBillList = ordersService.totalBillInHome(myUserDetail.getCombinedUser().getUser().getUser_id());
-        if (totalBillList.isPresent()){
+        if (totalBillList.isPresent() && totalBillList.get()[0] != null){
             Object[] totalBill = totalBillList.get();
-            float totalMoney = Float.parseFloat(totalBill[0].toString());
+            float totalMoney = 0.0f;
+            if (totalBill[0] != null){
+                totalMoney = Float.parseFloat(totalBill[0].toString());
+            } else{
+                totalMoney = 0.0f;
+            }
+
+            if (session.getAttribute("customer_phone") != null){
+                String phone_number = (String) session.getAttribute("customer_phone");
+                Customer customer = customerService.findCusByPhone(phone_number);
+                String voucher_id = customerVoucherService.getCustomerVoucherId(customer.getCustomer_id());
+                if(voucher_id != null){
+                    Optional<Voucher> voucher = voucherService.findById(Integer.parseInt(voucher_id));
+                    Integer voucher_discount = Integer.parseInt(voucher.get().getVoucher_discount());
+
+//                    STRATEGY PATTERN [TTD]
+                    IStrategy iStrategy = null;
+                    VoucherStrategy voucherStrategy = new VoucherStrategy();
+                    if (voucher.get().getVoucher_id() == 1){
+                        iStrategy = new HAPPY10Voucher();
+                        voucherStrategy.setStrategy(iStrategy);
+                        totalMoney = (float) voucherStrategy.calculateVoucher(totalMoney, voucher_discount);
+                    } else if(voucher.get().getVoucher_id() == 2){
+                        iStrategy = new HAPPY10Voucher();
+                        voucherStrategy.setStrategy(iStrategy);
+                        totalMoney = (float) voucherStrategy.calculateVoucher(totalMoney, voucher_discount);
+                    } else if(voucher.get().getVoucher_id() == 3){
+                        iStrategy = new HAPPY30Voucher();
+                        voucherStrategy.setStrategy(iStrategy);
+                        totalMoney = (float) voucherStrategy.calculateVoucher(totalMoney, voucher_discount);
+                    }
+
+                    if (voucher.isPresent()){
+                        model.addAttribute("voucherName", voucher.get().getVoucher_name());
+                    }
+                }
+
+
+            }
+
+
 
             float cus_given_change = (float) (Math.round((Float.parseFloat(money_Given) - totalMoney) * 100.0) / 100.0);
             model.addAttribute("cus_given_change", cus_given_change);

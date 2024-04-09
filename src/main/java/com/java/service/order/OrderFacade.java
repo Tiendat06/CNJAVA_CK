@@ -3,6 +3,7 @@ package com.java.service.order;
 import com.itextpdf.text.DocumentException;
 //import com.java.controllers.PaypalController;
 import com.java.models.*;
+import com.java.service.customer.CustomerVoucherService;
 import com.java.service.transaction.TransactionService;
 import com.java.service.customer.CustomerService;
 import com.java.service.payment.services.PaymentService;
@@ -23,6 +24,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +40,8 @@ public class OrderFacade {
     private TransactionService transactionService;
     @Autowired
     private  CustomerService customerService;
+    @Autowired
+    private CustomerVoucherService customerVoucherService;
 //    @Autowired
 //    private PaypalController paypalController;
 
@@ -116,6 +120,16 @@ public class OrderFacade {
                 }
                 String order_id_val = order_id.get();
                 String totalCustomerOrderNote = ordersService.currentCustomerOrder(customer.getCustomer_id());
+                String voucher_id = customerVoucherService.getCustomerVoucherId(customer.getCustomer_id());
+
+                Optional<CustomerVoucher> customerVoucher = customerVoucherService.findCustomerVoucherByCusIdAndVoucherId(customer.getCustomer_id(), Integer.parseInt(voucher_id));
+                if (customerVoucher.isPresent()){
+                    Date date_used = Date.valueOf(LocalDate.now());
+                    CustomerVoucher csv = new CustomerVoucher(customerVoucher.get().getCustomer_voucher_id(), customerVoucher.get().getVoucher_id(), customerVoucher.get().getCustomer_id(), date_used);
+                    customerVoucherService.updateCustomerVoucherInUsed(csv);
+                }
+
+
                 ordersService.updateOrderToPayment(order_id_val, timestamp, totalCustomerOrderNote);
                 transactionService.transactionRepositriy.save(new Transaction(tra_id, pay_id, "Completed", order_id_val));
                 String payment_method_id = payment_method.equals("cash") ? "PMM0000002" : "PMM0000003";

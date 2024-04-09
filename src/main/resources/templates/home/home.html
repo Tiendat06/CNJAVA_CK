@@ -126,7 +126,12 @@
             <div style="" class="bg-light main-home-payment__money mt-2">
                 <div class="d-flex p-2 col-lg-12 main-home-payment__money--total">
                     <p class="col-lg-9">Total bill:</p>
-                    <p class="col-lg-3 text-center">[[${totalBill.get()[0]}]]$</p>
+                    <p class="col-lg-3 text-center">[[${totalBill}]] $</p>
+                </div>
+
+                <div th:if="${voucherName != null}" class="d-flex p-2 col-lg-12 main-home-payment__money--total">
+                    <p class="col-lg-9">Voucher:</p>
+                    <p class="col-lg-3 text-center">[[${voucherName}]]</p>
                 </div>
 
                 <div class="d-flex p-2 col-lg-12 main-home-payment__money--total align-items-center">
@@ -136,7 +141,7 @@
                 <input type="hidden" name="total_amount" id="total_amount">
                 <div class="d-flex p-2 col-lg-12 main-home-payment__money--total">
                     <p class="col-lg-9">Given change:</p>
-                    <p id="given_change" class="col-lg-3 text-center">00.00$</p>
+                    <p id="given_change" class="col-lg-3 text-center">0.0 $</p>
                 </div>
 
                 <div class="d-flex align-items-center p-2 col-lg-12 main-home__payment-method">
@@ -332,11 +337,11 @@
         </div>
     </div>
 
-    <!--    add cus-->
+    <!--    add voucher-->
     <div class="modal fade" id="choose-voucher">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="" onsubmit="return false" method="post">
+                <form th:action="@{/add/voucher}" onsubmit="return false" method="post">
 
                     <!-- Modal Header -->
                     <div class="modal-header">
@@ -362,9 +367,9 @@
                                         <th scope="row">[[${itemStat.index + 1}]]</th>
                                         <td>[[${v.voucher_name}]]</td>
                                         <td>[[${v.voucher_discount}]]</td>
-                                        <td>[[${v.voucher_discount}]]$</td>
+                                        <td>[[${v.voucher_discount}]]%</td>
                                         <td class="text-center">
-                                            <button th:data-id="${v.voucher_id}" class="btn btn-success btn-add-voucher">Add</button>
+                                            <button data-toggle="modal" data-target="#confirm-voucher" th:data-id="${v.voucher_id}" th:data-name="${v.voucher_name}" class=" btn btn-success btn-add-voucher">Add</button>
                                         </td>
                                     </tr>
                                 </th:block>
@@ -390,6 +395,37 @@
         </div>
     </div>
 
+    <!--    confirm add voucher-->
+    <div class="modal fade" tabindex="-1"  id="confirm-voucher">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form th:action="@{/add/customer/voucher}" method="POST">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Cancel order</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="form-group">
+<!--                            <input type="hidden" id="voucher-confirm" name="voucher-confirm">-->
+                            <input type="hidden" name="add_voucher_id" id="add_voucher_id" value="">
+
+                            <p id="voucher-confirm-para">Are you sure to add </p>
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Yes</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <script>
         searchHome()

@@ -412,24 +412,35 @@ function jsInHome(){
         });
     })
 
+    // $(document).ready(function (){
+    //     $('.btn-add-voucher').on('click', function (){
+    //         var phone_number = $("#phone").val();
+    //         var voucher_id = $(this).data('id');
+    //         var csrfToken = $("meta[name='_csrf']").attr("content");
+    //         $.ajax({
+    //             type: "GET",
+    //             url: "/customer_voucher/add_voucher/AJAX",
+    //             data: {
+    //                 phone_number: phone_number,
+    //                 voucher_id: voucher_id,
+    //                 "_csrf": csrfToken
+    //             }, success: function (response) {
+    //
+    //             }, error: function (response) {
+    //                 console.log(response);
+    //             }
+    //         })
+    //     })
+    // })
+
     $(document).ready(function (){
         $('.btn-add-voucher').on('click', function (){
-            var phone_number = $("#phone").val();
             var voucher_id = $(this).data('id');
-            var csrfToken = $("meta[name='_csrf']").attr("content");
-            $.ajax({
-                type: "GET",
-                url: "/customer_voucher/add_voucher/AJAX",
-                data: {
-                    phone_number: phone_number,
-                    voucher_id: voucher_id,
-                    "_csrf": csrfToken
-                }, success: function (response) {
+            var voucher_name = $(this).data('name');
 
-                }, error: function (response) {
-                    console.log(response);
-                }
-            })
+            $('#add_voucher_id').val(voucher_id);
+            $('#voucher-confirm-para').html(`Are you sure to add ${voucher_name} ?`);
+
         })
     })
 
