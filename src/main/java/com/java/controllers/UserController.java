@@ -1,7 +1,7 @@
 package com.java.controllers;
 
-import com.java.service.builder.IUserBuilder;
-import com.java.service.builder.UserBuilder;
+import com.java.service.user.builder.IUserBuilder;
+import com.java.service.user.builder.UserBuilder;
 import com.java.models.Account;
 import com.java.models.MyUserDetail;
 import com.java.models.User;
@@ -50,7 +50,7 @@ public class UserController {
 
     @GetMapping("/{pageNo}")
     public String getUserPagination(@PathVariable int pageNo,
-                                    @RequestParam(defaultValue = "10") int pageSize, Model model){
+                                    @RequestParam(defaultValue = "10") int pageSize, Model model) throws IOException {
         Page<User> userList = userService.getUserPagination(pageNo - 1, pageSize);
         MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        ADAPTER PATTERN (TTD)

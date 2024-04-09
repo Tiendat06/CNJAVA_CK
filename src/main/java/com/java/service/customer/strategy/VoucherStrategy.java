@@ -1,4 +1,4 @@
-package com.java.service.strategy;
+package com.java.service.customer.strategy;
 
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;

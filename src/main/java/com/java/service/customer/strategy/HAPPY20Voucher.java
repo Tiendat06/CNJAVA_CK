@@ -1,4 +1,4 @@
-package com.java.service.strategy;
+package com.java.service.customer.strategy;
 
 public class HAPPY20Voucher implements IStrategy {
     @Override

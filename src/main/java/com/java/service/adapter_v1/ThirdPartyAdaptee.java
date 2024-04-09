@@ -1,4 +1,4 @@
-package com.java.service.adapter;
+package com.java.service.adapter_v1;
 
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -13,22 +13,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ProvinceAPIAdapter implements IProvinceAPI{
+public class ThirdPartyAdaptee {
+    public List<String> requestAPI() throws IOException {
+        String APIUrl = "https://api.ghsv.vn/v1/address/provinces";
+        OkHttpClient okHttpClient = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(APIUrl)
+                .build();
 
-    private ThirdPartyAdaptee thirdPartyAdaptee;
-    public ProvinceAPIAdapter(){
-        this.thirdPartyAdaptee = new ThirdPartyAdaptee();
-    }
-
-    public ProvinceAPIAdapter(ThirdPartyAdaptee thirdPartyAdaptee){
-        this.thirdPartyAdaptee = thirdPartyAdaptee;
-    }
-    @Override
-    public List<String> getProvinceAPI() {
         List<String> list = new ArrayList<>();
 
         try {
-            Response response = thirdPartyAdaptee.requestAPI();
+            Response response = okHttpClient.newCall(request).execute();
             String responseData = response.body().string();
             JSONObject jsonObject = new JSONObject(responseData);
             JSONArray data = jsonObject.getJSONArray("provinces");

@@ -3,16 +3,17 @@ package com.java.service.customer;
 import com.java.models.Customer;
 import com.java.repository.CustomerRepository;
 import com.java.repository.OrderRepository;
-import com.java.service.adapter.IProvinceAPI;
-import com.java.service.adapter.ProvinceAPIAdapter;
-import com.java.service.adapter.ThirdPartyAdaptee;
-import com.java.service.proxy.ICustomerService;
+import com.java.service.adapter_v1.IProvinceAPI;
+import com.java.service.adapter_v1.ProvinceAPIAdapter;
+import com.java.service.adapter_v1.ThirdPartyAdaptee;
+import com.java.service.customer.proxy.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
@@ -45,7 +46,7 @@ public class CustomerService implements ICustomerService {
         return "CUS0000001";
     }
 
-    public List<String> getProvinceAPI(){
+    public List<String> getProvinceAPI() throws IOException {
         IProvinceAPI iProvinceAPI = new ProvinceAPIAdapter(new ThirdPartyAdaptee());
         return iProvinceAPI.getProvinceAPI();
     }

@@ -3,9 +3,9 @@ package com.java.service.user;
 import com.java.models.User;
 import com.java.repository.AccountRepository;
 import com.java.repository.UserRepository;
-import com.java.service.adapter.IProvinceAPI;
-import com.java.service.adapter.ProvinceAPIAdapter;
-import com.java.service.adapter.ThirdPartyAdaptee;
+import com.java.service.adapter_v1.IProvinceAPI;
+import com.java.service.adapter_v1.ProvinceAPIAdapter;
+import com.java.service.adapter_v1.ThirdPartyAdaptee;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +15,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -63,7 +64,7 @@ public class UserService {
         return "USE0000001";
     }
 
-    public List<String> getProvinceAPI(){
+    public List<String> getProvinceAPI() throws IOException {
         IProvinceAPI iProvinceAPI = new ProvinceAPIAdapter(new ThirdPartyAdaptee());
         return iProvinceAPI.getProvinceAPI();
     }

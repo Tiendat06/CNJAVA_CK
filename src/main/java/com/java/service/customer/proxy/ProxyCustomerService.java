@@ -1,4 +1,4 @@
-package com.java.service.proxy;
+package com.java.service.customer.proxy;
 
 import com.java.models.Customer;
 import com.java.service.customer.CustomerService;

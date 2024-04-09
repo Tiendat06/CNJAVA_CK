@@ -1,4 +1,4 @@
-package com.java.service.builder;
+package com.java.service.user.builder;
 
 import com.java.models.User;
 

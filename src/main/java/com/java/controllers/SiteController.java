@@ -179,11 +179,11 @@ import com.java.service.order.OrderFacade;
 import com.java.service.payment.factories.PaymentFactory;
 import com.java.service.payment.processors.PaymentProcessor;
 import com.java.service.payment.services.PaymentService;
-import com.java.service.proxy.ProxyCustomerService;
-import com.java.service.strategy.HAPPY10Voucher;
-import com.java.service.strategy.HAPPY30Voucher;
-import com.java.service.strategy.IStrategy;
-import com.java.service.strategy.VoucherStrategy;
+import com.java.service.customer.proxy.ProxyCustomerService;
+import com.java.service.customer.strategy.HAPPY10Voucher;
+import com.java.service.customer.strategy.HAPPY30Voucher;
+import com.java.service.customer.strategy.IStrategy;
+import com.java.service.customer.strategy.VoucherStrategy;
 import com.java.service.transaction.TransactionService;
 import com.java.service.voucher.VoucherService;
 import jakarta.servlet.RequestDispatcher;
@@ -269,7 +269,7 @@ public class SiteController implements ErrorController {
 
     @GetMapping("/{pageNo}")
     public String homeProductPagination(@PathVariable int pageNo,
-                                        @RequestParam(defaultValue = "9") int pageSize, Model model, HttpSession session){
+                                        @RequestParam(defaultValue = "9") int pageSize, Model model, HttpSession session) throws IOException {
         model.addAttribute("content", "home");
         MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         model.addAttribute("userImg", myUserDetail.getCombinedUser().getUser().getImage());
