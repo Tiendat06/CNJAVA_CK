@@ -1,20 +1,28 @@
 package com.java.controllers;
 
 import com.java.models.MyUserDetail;
+import com.java.models.VatReport;
+import com.java.models.VatReportItem;
 import com.java.service.customer.CustomerService;
 import com.java.service.order.OrderFacade;
 import com.java.service.payment.services.PaymentService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
+import java.io.StringWriter;
+import java.lang.reflect.Field;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -106,13 +114,70 @@ public class PaymentController {
         return "/payment/total";
     }
 
-    @GetMapping("/report/VAT")
-    public void exportFileVAT(HttpServletResponse resp, HttpServletRequest req) throws IOException {
-        String name = req.getParameter("vat-type");
-        System.out.println(name);
-        String id = req.getParameter("order-id-vat");
-        System.out.println(id);
-        resp.sendRedirect("/");
+//    @GetMapping("/report/VAT")
+//    @ResponseBody
+//    public String exportFileVAT(HttpServletRequest req, HttpServletResponse resp){
+//        String vatType = req.getParameter("vat-type");
+//        String orderID = req.getParameter("order-id-vat");
+//        List<Object[]> odtList = ordersService.getAllOrderListDetails(orderID);
+//        for (Object[] x: odtList) {
+//            String productName = (String) x[0];
+//            int quanity = (int) x[2];
+//            double change_give = (float) x[3];
+//            String description = (String) x[4];
+//        }
+//
+//
+//        return  vatType + " " + orderID;
+//    }
+@GetMapping("/report/VAT")
+public ResponseEntity<String> exportFileVAT(HttpServletRequest req, HttpServletResponse resp) throws JAXBException {
+    String vatType = req.getParameter("vat-type");
+    String orderID = req.getParameter("order-id-vat");
+    List<Object[]> odtList = ordersService.getAllOrderListDetails(orderID);
+    return exportXML(orderID,odtList);
+}
+
+private ResponseEntity<String> exportXML(String orderID,List<Object[]> odtList) throws JAXBException {
+    VatReport vatReport = new VatReport();
+    vatReport.setOrderId(orderID);
+    List<VatReportItem> items = new ArrayList<>();
+    for (Object[] data : odtList) {
+        VatReportItem item = new VatReportItem();
+        item.setProductName((String) data[0]);
+        item.setQuantity((int) data[2]);
+        // Assuming data[3] is a monetary value, convert to double
+        item.setChangeGiven(Double.parseDouble(String.valueOf(data[3])));
+        item.setDescription((String) data[4]);
+        items.add(item);
     }
+    vatReport.setItems(items);
+
+
+    double totalAmount = vatReport.getItems().stream().mapToDouble(VatReportItem::getChangeGiven).sum();
+    vatReport.setTotalAmount(totalAmount);
+
+
+
+    // Use JAXB to convert VAT report object to XML string
+    JAXBContext jaxbContext = JAXBContext.newInstance(VatReport.class);
+    Marshaller marshaller = jaxbContext.createMarshaller();
+    marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true); // Formatted output for readability
+
+    StringWriter stringWriter = new StringWriter();
+    marshaller.marshal(vatReport, stringWriter);
+    String xmlString = stringWriter.toString();
+
+    // Set response headers for XML content
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_XML);
+    headers.setContentDisposition(ContentDisposition.attachment()
+            .filename("vat_report_" + orderID + ".xml")
+            .build());
+
+    // Return XML response entity with appropriate headers
+    return new ResponseEntity<>(xmlString, headers, HttpStatus.OK);
+}
+
 
 }
