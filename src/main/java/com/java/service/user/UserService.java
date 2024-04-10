@@ -6,11 +6,16 @@ import com.java.repository.UserRepository;
 import com.java.service.adapter_v1.IProvinceAPI;
 import com.java.service.adapter_v1.ProvinceAPIAdapter;
 import com.java.service.adapter_v1.ThirdPartyAdaptee;
+import com.java.service.user.adapter.IOldReport;
+import com.java.service.user.adapter.NewReport;
+import com.java.service.user.adapter.OldReport;
+import com.java.service.user.adapter.ReportAdapter;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -31,6 +36,10 @@ public class UserService {
     public Page<User> getUserPagination(int pageNo, int pageSize){
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         return userRepository.findAll(pageable);
+    }
+
+    public List<User> getAllUser(){
+        return userRepository.findAll();
     }
 
     public void addUser(User user){
@@ -67,6 +76,11 @@ public class UserService {
     public List<String> getProvinceAPI() throws IOException {
         IProvinceAPI iProvinceAPI = new ProvinceAPIAdapter(new ThirdPartyAdaptee());
         return iProvinceAPI.getProvinceAPI();
+    }
+
+    public ResponseEntity<byte[]> exportCustomerReport(List<User> userList){
+        IOldReport report = new ReportAdapter(new NewReport());
+        return report.exportReportOldMethod(userList);
     }
 
     public void sendEmail(User user, String url) {

@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -219,5 +220,13 @@ public class UserController {
 //        System.out.println(user_id);
 //        System.out.println(acc_id);
         resp.sendRedirect("/user/1");
+    }
+
+    @GetMapping("/export")
+    public ResponseEntity<byte[]> exportUser_POST(HttpServletResponse resp, HttpServletRequest req) throws IOException {
+        System.out.println("hello world");
+        List<User> userList = userService.getAllUser();
+        return userService.exportCustomerReport(userList);
+//        resp.sendRedirect("/1");
     }
 }
