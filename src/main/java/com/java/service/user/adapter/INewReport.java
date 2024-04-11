@@ -8,5 +8,5 @@ import java.util.List;
 
 @FunctionalInterface
 public interface INewReport {
-    ResponseEntity<byte[]> exportReportNewMethod(List<User> userList);
+    ResponseEntity<byte[]> exportReportNewMethod(List<String[]> userList);
 }

@@ -5,17 +5,31 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ReportAdapter implements IOldReport {
 
     private INewReport iNewReport;
-    public ReportAdapter(INewReport report){
-        this.iNewReport = report;
+    public ReportAdapter(){
+        this.iNewReport = new NewReport();
     }
     @Override
     public ResponseEntity<byte[]> exportReportOldMethod(List<User> userList) {
-        return iNewReport.exportReportNewMethod(userList);
+        List<String[]> userListData = new ArrayList<>();
+        for (User user: userList){
+            userListData.add(new String[]{
+                    user.getUser_id(),
+                    user.getFirst_name(),
+                    user.getLast_name(),
+                    user.getEmail(),
+                    user.getPhone_number(),
+                    user.getAddress(),
+                    user.getBirthday().toString(),
+                    user.getGender()
+            });
+        }
+        return iNewReport.exportReportNewMethod(userListData);
     }
 }

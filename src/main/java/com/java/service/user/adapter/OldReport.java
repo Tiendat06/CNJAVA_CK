@@ -9,6 +9,11 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.java.models.User;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,69 +28,47 @@ public class OldReport implements IOldReport {
 
     @Override
     public ResponseEntity<byte[]> exportReportOldMethod(List<User> userList) {
-        byte[] pdfBytes = createPDFBytes(userList);
+        byte[] excelBytes = createExcelBytes(userList);
 
-        // Set headers for the response
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("attachment", "data.pdf");
-        headers.setContentLength(pdfBytes.length);
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=data.xlsx");
 
         return ResponseEntity.ok()
                 .headers(headers)
-                .body(pdfBytes);
+                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .body(excelBytes);
     }
 
-    private byte[] createPDFBytes(List<User> userList) {
-        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-            PdfDocument pdfDocument = new PdfDocument(new PdfWriter(outputStream));
-            Document document = new Document(pdfDocument);
+    private byte[] createExcelBytes(List<User> userList) {
+        try (Workbook workbook = new XSSFWorkbook();
+             ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            Sheet sheet = workbook.createSheet("Data");
 
-//            userList.forEach(System.out::println);
-
-            Table table = new Table(8);
-
-            // Add headers
-            table.addCell(createCell("ID", TextAlignment.CENTER));
-            table.addCell(createCell("First name", TextAlignment.CENTER));
-            table.addCell(createCell("Last name", TextAlignment.CENTER));
-            table.addCell(createCell("Email", TextAlignment.CENTER));
-            table.addCell(createCell("Phone number", TextAlignment.CENTER));
-            table.addCell(createCell("Address", TextAlignment.CENTER));
-            table.addCell(createCell("Birthday", TextAlignment.CENTER));
-            table.addCell(createCell("Gender", TextAlignment.CENTER));
-
-            // Add data rows
-            for (User user: userList){
-                table.addCell(createCell(user.getUser_id(), TextAlignment.CENTER));
-                table.addCell(createCell(user.getFirst_name(), TextAlignment.CENTER));
-                table.addCell(createCell(user.getLast_name(), TextAlignment.CENTER));
-                table.addCell(createCell(user.getEmail(), TextAlignment.CENTER));
-                table.addCell(createCell(user.getPhone_number(), TextAlignment.CENTER));
-                table.addCell(createCell(user.getAddress(), TextAlignment.CENTER));
-                table.addCell(createCell(user.getBirthday().toString(), TextAlignment.CENTER));
-                table.addCell(createCell(user.getGender(), TextAlignment.CENTER));
+            Row headerRow = sheet.createRow(0);
+            String[] headers = {"ID", "First name", "Last name", "Email", "Phone number", "Address", "Birthday", "Gender"};
+            for (int i = 0; i < headers.length; i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(headers[i]);
             }
 
-            document.add(table);
-            document.close();
+            int rowNum = 1;
+            for (User user : userList) {
+                Row row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue(user.getUser_id());
+                row.createCell(1).setCellValue(user.getFirst_name());
+                row.createCell(2).setCellValue(user.getLast_name());
+                row.createCell(3).setCellValue(user.getEmail());
+                row.createCell(4).setCellValue(user.getPhone_number());
+                row.createCell(5).setCellValue(user.getAddress());
+                row.createCell(6).setCellValue(user.getBirthday().toString());
+                row.createCell(7).setCellValue(user.getGender());
+            }
 
+            workbook.write(outputStream);
             return outputStream.toByteArray();
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
-    }
-
-    private Cell createCell(String content, TextAlignment alignment) throws IOException {
-
-        PdfFont font = PdfFontFactory.createFont(StandardFonts.HELVETICA);
-        Text text = new Text(content).setFont(font);
-        Paragraph paragraph = new Paragraph().add(text);
-
-        Cell cell = new Cell().add(paragraph);
-        cell.setTextAlignment(alignment);
-
-        return cell;
     }
 }

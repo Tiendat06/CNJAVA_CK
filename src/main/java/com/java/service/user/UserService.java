@@ -78,8 +78,16 @@ public class UserService {
         return iProvinceAPI.getProvinceAPI();
     }
 
-    public ResponseEntity<byte[]> exportCustomerReport(List<User> userList){
-        IOldReport report = new ReportAdapter(new NewReport());
+    public ResponseEntity<byte[]> exportUserReport(List<User> userList){
+//        ADAPTER PATTERN V2 [TTD]
+        IOldReport report = null;
+        report = new ReportAdapter();
+//        if(choice.equals("CSV")){
+//        }else if(choice.equals("XLSX")){
+//            report = new OldReport();
+//        }else{
+//            return null;
+//        }
         return report.exportReportOldMethod(userList);
     }
 

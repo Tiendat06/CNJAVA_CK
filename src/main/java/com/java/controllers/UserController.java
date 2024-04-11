@@ -224,9 +224,13 @@ public class UserController {
 
     @GetMapping("/export")
     public ResponseEntity<byte[]> exportUser_POST(HttpServletResponse resp, HttpServletRequest req) throws IOException {
-        System.out.println("hello world");
+//        System.out.println("hello world");
         List<User> userList = userService.getAllUser();
-        return userService.exportCustomerReport(userList);
+//        String fileType = req.getParameter("id-export");
+//        if (fileType.isEmpty()){
+//            resp.sendRedirect("/user");
+//        }
+        return userService.exportUserReport(userList);
 //        resp.sendRedirect("/1");
     }
 }
