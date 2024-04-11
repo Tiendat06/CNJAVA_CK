@@ -31,7 +31,7 @@ public class OldReport implements IOldReport {
         byte[] excelBytes = createExcelBytes(userList);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=data.xlsx");
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=user_data.xlsx");
 
         return ResponseEntity.ok()
                 .headers(headers)
@@ -42,7 +42,7 @@ public class OldReport implements IOldReport {
     private byte[] createExcelBytes(List<User> userList) {
         try (Workbook workbook = new XSSFWorkbook();
              ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-            Sheet sheet = workbook.createSheet("Data");
+            Sheet sheet = workbook.createSheet("User Data");
 
             Row headerRow = sheet.createRow(0);
             String[] headers = {"ID", "First name", "Last name", "Email", "Phone number", "Address", "Birthday", "Gender"};

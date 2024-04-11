@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -133,6 +134,16 @@ public class ProductController {
         model.addAttribute("productList", productList);
         model.addAttribute("categoryList", new ProductUtils());
         return "/product/product_list";
+    }
+
+    @GetMapping("/export")
+    public ResponseEntity<byte[]> exportProductData(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        List<Product> productList = productService.getAllProducts();
+        String extraChoice = req.getParameter("id-export-product");
+        System.out.println(extraChoice);
+        System.out.println("hello world");
+
+         return productService.exportProductData(productList);
     }
 
     public class ProductUtils{

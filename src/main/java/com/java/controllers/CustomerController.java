@@ -4,14 +4,18 @@ import com.java.models.Customer;
 import com.java.models.MyUserDetail;
 import com.java.service.customer.CustomerService;
 import com.java.service.order.OrderDetailsService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -68,6 +72,19 @@ public class CustomerController {
         List<Object[]> purchaseList = orderDetailsService.getPurchaseHistoryDetailsByCusId(cusId, date);
         model.addAttribute("purchaseList", purchaseList);
         return "/customer/purchase_history_details";
+    }
+
+    @GetMapping("/export")
+    public ResponseEntity<byte[]> exportCustomerData(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        List<Customer> customerList = customerService.getAllCustomer();
+        String extraChoice = req.getParameter("id-export-customer");
+        System.out.println(extraChoice);
+        System.out.println("hello world");
+
+        resp.sendRedirect("/");
+
+//        DECORATOR [TTP]
+        return null;
     }
 
 

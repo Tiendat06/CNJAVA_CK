@@ -4,6 +4,12 @@
     </div>
 
     <div th:if="${#strings.contains(#authentication.principal.authorities,'Admin')}" class="main-content-user__button text-light p-3 w-100 text-right" style="">
+        <button data-toggle="modal" data-target="#export-product" type="submit" class="btn-export-product mr-2 btn btn-danger text-light pt-2 pl-3 pr-3 pb-2 bg-danger">
+            <!--            <i style="background-color: white" class="text-light bg-danger fa-solid fa-user-gear"></i>-->
+            <i class="text-light bg-danger fa-regular fa-file-lines"></i>
+            Export product
+        </button>
+
         <button data-toggle="modal" data-target="#add-product" type="submit" class="btn btn-primary text-light pt-2 pl-3 pr-3 pb-2 bg-primary">
             <i style="background-color: white" class="text-light bg-primary fa-solid fa-user-gear"></i>
             Add product
@@ -265,16 +271,57 @@
         </div>
     </div>
 
+    <!--   export product -->
+    <div class="modal fade" tabindex="-1"  id="export-product">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form th:action="@{/product/export}" method="get">
 
-<!--                               th:data-id="${p.product_id}"
-                                   th:data-name="${p.product_name}"
-                                   th:data-import="${p.product_price}"
-                                   th:data-retail="${p.retail_price}"
-                                   th:data-category="${categoryList.getCategory(p.category_id)}"
-                                   th:data-quan="${p.quantity_stock}"
-                                   th:data-date="${p.date_created}"
-                                   th:data-des="${p.description}"
-                                    -->
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Export Customer</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <!--                            <input type="hidden" name="id-export" value="1">-->
+                            <!--                            <p id="userIdExport-para">Are you sure to export user management ?</p>-->
+                            <div class="form-group login-form--info">
+                                <label class="login-form__label" for="id-export-product">Extra choice</label>
+                                <select name="id-export-product" id="id-export-product" class="form-control">
+                                    <option value="">--Choose extra--</option>
+                                    <option value="Encrypt">Encrypt</option>
+                                    <option value="Compress">Compress</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Export</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!--                               th:data-id="${p.product_id}"
+                                       th:data-name="${p.product_name}"
+                                       th:data-import="${p.product_price}"
+                                       th:data-retail="${p.retail_price}"
+                                       th:data-category="${categoryList.getCategory(p.category_id)}"
+                                       th:data-quan="${p.quantity_stock}"
+                                       th:data-date="${p.date_created}"
+                                       th:data-des="${p.description}"
+                                        -->
     <script>
 
         jsInProduct()

@@ -5,10 +5,13 @@ import com.google.zxing.oned.Code128Writer;
 import com.java.models.Category;
 import com.java.models.Product;
 import com.java.repository.ProductRepository;
+import com.java.service.user.adapter.IOldReport;
+import com.java.service.user.adapter.ReportAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
@@ -22,6 +25,8 @@ import java.util.List;
 public class ProductService {
     @Autowired
     public ProductRepository productRepository;
+    @Autowired
+    public  ProductReport productReport;
 
     public Page<Product> getAllProductPagination(int pageNo, int pageSize){
         Pageable pageable = PageRequest.of(pageNo, pageSize);
@@ -31,6 +36,15 @@ public class ProductService {
     public Page<Object[]> getAllProductPaginationOrderByCategory(int pageNo, int pageSize, int categoryId){
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         return productRepository.getAllProductOrderByCategory(pageable, categoryId);
+    }
+
+    public List<Product> getAllProducts(){
+        return productRepository.findAll();
+    }
+
+    public ResponseEntity<byte[]> exportProductData(List<Product> productList){
+
+        return productReport.exportProductReport(productList);
     }
 
     public Page<Product> searchInHome(int pageNo, int pageSize, String character){

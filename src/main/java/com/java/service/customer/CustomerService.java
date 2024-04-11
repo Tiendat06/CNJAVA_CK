@@ -33,6 +33,10 @@ public class CustomerService implements ICustomerService {
         return customerRepository.findAll(pageable);
     }
 
+    public List<Customer> getAllCustomer(){
+        return customerRepository.findAll();
+    }
+
     public Customer findCusByPhone(String phone){
         return customerRepository.findCusByPhone(phone);
     }

@@ -32,7 +32,7 @@ public class NewReport implements INewReport{
         byte[] csvBytes = convertCsvToBytes(data);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        headers.setContentDispositionFormData("attachment", "data.csv");
+        headers.setContentDispositionFormData("attachment", "user_data.csv");
 
         return ResponseEntity.ok()
                 .headers(headers)
