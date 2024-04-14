@@ -233,87 +233,15 @@ public class UserController {
         resp.sendRedirect("/user/1");
     }
 
-
-    @GetMapping("/export")
-    @ResponseBody
-    public ResponseEntity<byte[]> exportUser_POST(@RequestParam("id-export-user") String exportOption) throws IOException {
+        @GetMapping("/export")
+    public ResponseEntity<byte[]> exportUser_POST(HttpServletResponse resp, HttpServletRequest req) throws IOException {
+//        System.out.println("hello world");
         List<User> userList = userService.getAllUser();
-        Export export;
-        if ("Normal".equals(exportOption)) {
-            export = new NormalExport();
-//            return userService.exportUserReport(userList);
-//            byte[] csvData = generateCSVData(userList);
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.setContentDispositionFormData("attachment", "user_report.csv");
-//            headers.setContentLength(csvData.length);
-//            return new ResponseEntity<>(csvData, headers, HttpStatus.OK);
-        }else if("Compress".equals(exportOption)) {
-            Export ex2 = new NormalExport();
-            export = new CompressDecorator(ex2);
-//            byte[] compressedFile = compressUserReport(userList);
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.setContentDispositionFormData("attachment", "compressed_user_report.zip");
-//            headers.setContentLength(compressedFile.length);
-//            return new ResponseEntity<>(compressedFile, headers, HttpStatus.OK);
-        }else {
-            return ResponseEntity.badRequest().body("Invalid export option".getBytes());
-        }
-
-        byte[] exportedData = export.export(userList);
-        HttpHeaders headers = new HttpHeaders();
-        if ("Normal".equals(exportOption)) {
-            headers.setContentDispositionFormData("attachment", "user_report.csv");
-        } else if ("Compress".equals(exportOption)) {
-            headers.setContentDispositionFormData("attachment", "compressed_user_report.zip");
-        }
-        headers.setContentLength(exportedData.length);
-        return new ResponseEntity<>(exportedData, headers, HttpStatus.OK);
+//        String fileType = req.getParameter("id-export");
+//        if (fileType.isEmpty()){
+//            resp.sendRedirect("/user");
+//        }
+        return userService.exportUserReport(userList);
+//        resp.sendRedirect("/1");
     }
-
-//    private byte[] generateCSVData(List<User> userList) {
-//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//        try (CSVWriter writer = new CSVWriter(new OutputStreamWriter(byteArrayOutputStream, StandardCharsets.UTF_8))) {
-//            writer.writeNext(new String[]{"Full Name", "Phone Number", "Email", "Gender", "Address", "Birthday"});
-//            for (User user : userList) {
-//                String[] userData = {user.getFirst_name(), user.getPhone_number(), user.getEmail(), user.getGender(), user.getAddress(), String.valueOf(user.getBirthday())};
-//                writer.writeNext(userData);
-//            }
-//        } catch (IOException e) {
-//            // Handle the exception, e.g., log it or return an error response
-//            e.printStackTrace();
-//        }
-//        return byteArrayOutputStream.toByteArray();
-//    }
-
-//    private byte[] compressUserReport(List<User> userList) {
-//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//        try (ZipOutputStream zipOutputStream = new ZipOutputStream(byteArrayOutputStream)) {
-//            ZipEntry zipEntry = new ZipEntry("user_report.csv");
-//            zipOutputStream.putNextEntry(zipEntry);
-//            try (CSVWriter writer = new CSVWriter(new OutputStreamWriter(zipOutputStream, StandardCharsets.UTF_8))) {
-//                writer.writeNext(new String[]{"Full Name", "Phone Number", "Email", "Gender", "Address", "Birthday"});
-//                for (User user : userList) {
-//                    String[] userData = {user.getFirst_name(), user.getPhone_number(), user.getEmail(), user.getGender(), user.getAddress(), String.valueOf(user.getBirthday())};
-//                    writer.writeNext(userData);
-//                }
-//            }
-//            zipOutputStream.closeEntry();
-//        } catch (IOException e) {
-//            // Handle the exception, e.g., log it or return an error response
-//            e.printStackTrace();
-//        }
-//        return byteArrayOutputStream.toByteArray();
-//    }
-
-//    @GetMapping("/export")
-//    public ResponseEntity<byte[]> exportUser_POST(HttpServletResponse resp, HttpServletRequest req) throws IOException {
-////        System.out.println("hello world");
-//        List<User> userList = userService.getAllUser();
-////        String fileType = req.getParameter("id-export");
-////        if (fileType.isEmpty()){
-////            resp.sendRedirect("/user");
-////        }
-//        return userService.exportUserReport(userList);
-////        resp.sendRedirect("/1");
-//    }
 }

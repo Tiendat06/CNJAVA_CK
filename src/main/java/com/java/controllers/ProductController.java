@@ -1,5 +1,8 @@
 package com.java.controllers;
 
+import com.java.controllers.Decorative.CompressDecorator;
+import com.java.controllers.Decorative.Export;
+import com.java.controllers.Decorative.NormalExport;
 import com.java.models.Category;
 import com.java.models.MyUserDetail;
 import com.java.models.Product;
@@ -12,6 +15,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -136,15 +141,51 @@ public class ProductController {
         return "/product/product_list";
     }
 
-    @GetMapping("/export")
-    public ResponseEntity<byte[]> exportProductData(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        @GetMapping("/export")
+    @ResponseBody
+    public ResponseEntity<byte[]> exportUser_POST(@RequestParam("id-export-product") String exportOption) throws IOException {
         List<Product> productList = productService.getAllProducts();
-        String extraChoice = req.getParameter("id-export-product");
-        System.out.println(extraChoice);
-        System.out.println("hello world");
+        Export export;
+        if ("Normal".equals(exportOption)) {
+            export = new NormalExport();
+//            return userService.exportUserReport(userList);
+//            byte[] csvData = generateCSVData(userList);
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.setContentDispositionFormData("attachment", "user_report.csv");
+//            headers.setContentLength(csvData.length);
+//            return new ResponseEntity<>(csvData, headers, HttpStatus.OK);
+        }else if("Compress".equals(exportOption)) {
+            Export ex2 = new NormalExport();
+            export = new CompressDecorator(ex2);
+//            byte[] compressedFile = compressUserReport(userList);
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.setContentDispositionFormData("attachment", "compressed_user_report.zip");
+//            headers.setContentLength(compressedFile.length);
+//            return new ResponseEntity<>(compressedFile, headers, HttpStatus.OK);
+        }else {
+            return ResponseEntity.badRequest().body("Invalid export option".getBytes());
+        }
 
-         return productService.exportProductData(productList);
+        byte[] exportedData = export.export(productList);
+        HttpHeaders headers = new HttpHeaders();
+        if ("Normal".equals(exportOption)) {
+            headers.setContentDispositionFormData("attachment", "product_report.csv");
+        } else if ("Compress".equals(exportOption)) {
+            headers.setContentDispositionFormData("attachment", "compressed_product_report.zip");
+        }
+        headers.setContentLength(exportedData.length);
+        return new ResponseEntity<>(exportedData, headers, HttpStatus.OK);
     }
+
+//    @GetMapping("/export")
+//    public ResponseEntity<byte[]> exportProductData(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+//        List<Product> productList = productService.getAllProducts();
+//        String extraChoice = req.getParameter("id-export-product");
+//        System.out.println(extraChoice);
+//        System.out.println("hello world");
+//
+//         return productService.exportProductData(productList);
+//    }
 
     public class ProductUtils{
         public String getCategory(int id){

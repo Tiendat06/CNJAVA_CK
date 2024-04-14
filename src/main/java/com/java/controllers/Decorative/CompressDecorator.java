@@ -1,5 +1,6 @@
 package com.java.controllers.Decorative;
 
+import com.java.models.Product;
 import com.java.models.User;
 import com.opencsv.CSVWriter;
 
@@ -17,16 +18,16 @@ public class CompressDecorator extends ExportDecorator{
     }
 
     @Override
-    public byte[] export(List<User> userList) {
+    public byte[] export(List<Product> productList) {
         // Call the export method of the decorated object (BasicExport)
-        byte[] exportedData = wrapObj.export(userList);
+        byte[] exportedData = wrapObj.export(productList);
 //        byte[] compressedData = compress(exportedData, userList);
         return compress(exportedData);
     }
     private byte[] compress(byte[] data) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try (ZipOutputStream zipOutputStream = new ZipOutputStream(byteArrayOutputStream)) {
-            ZipEntry zipEntry = new ZipEntry("user_report.csv");
+            ZipEntry zipEntry = new ZipEntry("product_report.csv");
             zipOutputStream.putNextEntry(zipEntry);
             zipOutputStream.write(data); // Write the exported data directly to the zip output stream
             zipOutputStream.closeEntry();

@@ -1,5 +1,6 @@
 package com.java.controllers.Decorative;
 
+import com.java.models.Product;
 import com.java.models.User;
 
 import java.util.List;
@@ -11,8 +12,8 @@ public abstract class ExportDecorator  implements Export{
     }
 
     @Override
-    public byte[] export(List<User> userList) {
+    public byte[] export(List<Product> productList) {
         // Delegate export operation to decorated export object
-        return wrapObj.export(userList);
+        return wrapObj.export(productList);
     }
 }
