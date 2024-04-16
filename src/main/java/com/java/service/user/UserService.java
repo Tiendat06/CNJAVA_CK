@@ -10,6 +10,8 @@ import com.java.service.user.adapter.IOldReport;
 import com.java.service.user.adapter.NewReport;
 import com.java.service.user.adapter.OldReport;
 import com.java.service.user.adapter.ReportAdapter;
+import com.java.service.user.command.ICommand;
+import com.java.service.user.command.MailSenderCommand;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -111,8 +113,11 @@ public class UserService {
 
             helper.setText(content, true);
 
-            mailSender.send(message);
+//            mailSender.send(message);
 
+            // COMMAND PATTERN
+            ICommand cmd = new MailSenderCommand(mailSender, message);
+            cmd.execute();
         } catch (Exception e) {
             e.printStackTrace();
         }
