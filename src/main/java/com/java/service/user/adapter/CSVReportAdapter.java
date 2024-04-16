@@ -1,7 +1,6 @@
 package com.java.service.user.adapter;
 
 import com.java.models.User;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -9,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ReportAdapter implements IOldReport {
+public class CSVReportAdapter implements IXLSXReport {
 
-    private INewReport iNewReport;
-    public ReportAdapter(){
-        this.iNewReport = new NewReport();
+    private ICSVReport ICSVReport;
+    public CSVReportAdapter(){
+        this.ICSVReport = new CSVReport();
     }
     @Override
     public ResponseEntity<byte[]> exportReportOldMethod(List<User> userList) {
@@ -30,6 +29,6 @@ public class ReportAdapter implements IOldReport {
                     user.getGender()
             });
         }
-        return iNewReport.exportReportNewMethod(userListData);
+        return ICSVReport.exportReportNewMethod(userListData);
     }
 }

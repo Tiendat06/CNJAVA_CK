@@ -1,8 +1,6 @@
 package com.java.service.catalog;
 
 import com.java.models.Product;
-import com.java.models.User;
-import com.java.service.user.adapter.IOldReport;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;

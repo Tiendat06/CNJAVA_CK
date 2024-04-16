@@ -6,10 +6,9 @@ import com.java.repository.UserRepository;
 import com.java.service.adapter_v1.IProvinceAPI;
 import com.java.service.adapter_v1.ProvinceAPIAdapter;
 import com.java.service.adapter_v1.ThirdPartyAdaptee;
-import com.java.service.user.adapter.IOldReport;
-import com.java.service.user.adapter.NewReport;
-import com.java.service.user.adapter.OldReport;
-import com.java.service.user.adapter.ReportAdapter;
+import com.java.service.user.adapter.IXLSXReport;
+import com.java.service.user.adapter.XLSXReport;
+import com.java.service.user.adapter.CSVReportAdapter;
 import com.java.service.user.command.ICommand;
 import com.java.service.user.command.MailSenderCommand;
 import jakarta.mail.internet.MimeMessage;
@@ -80,9 +79,14 @@ public class UserService {
         return iProvinceAPI.getProvinceAPI();
     }
 
-    public ResponseEntity<byte[]> exportUserReport(List<User> userList){
+    public ResponseEntity<byte[]> exportUserReport(List<User> userList, String fileType){
 //        ADAPTER PATTERN V2 [TTD]
-        IOldReport report = new ReportAdapter();
+        IXLSXReport report = null;
+        if(fileType.equals("CSV")){
+            report = new CSVReportAdapter();
+        }else if (fileType.equals("XLSX")){
+            report = new XLSXReport();
+        }
 //        report = new ReportAdapter();
         return report.exportReportOldMethod(userList);
     }

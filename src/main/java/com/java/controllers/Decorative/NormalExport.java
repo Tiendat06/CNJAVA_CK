@@ -21,7 +21,7 @@ public class NormalExport implements Export {
         try (CSVWriter writer = new CSVWriter(new OutputStreamWriter(byteArrayOutputStream, StandardCharsets.UTF_8))) {
             writer.writeNext(new String[]{"Product name", "Import price", "Retail price", "Category", "Quantity", "Date Created", "Description","Barcode"});
             for (Product product : productList) {
-                String[] userData = {product.getProduct_name(), String.valueOf(product.getProduct_price()), String.valueOf(product.getRetail_price()),
+                String[] userData = {product.getProduct_name(), String.valueOf(product.getProduct_price()), String.valueOf(product.getRetail_price()), String.valueOf(product.getCategory_id()),
                         String.valueOf(product.getQuantity_stock()), String.valueOf(product.getDate_created()), String.valueOf(product.getDescription()), String.valueOf(product.getBarcode())};
                 writer.writeNext(userData);
             }

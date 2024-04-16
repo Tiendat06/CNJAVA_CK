@@ -237,11 +237,11 @@ public class UserController {
     public ResponseEntity<byte[]> exportUser_POST(HttpServletResponse resp, HttpServletRequest req) throws IOException {
 //        System.out.println("hello world");
         List<User> userList = userService.getAllUser();
-//        String fileType = req.getParameter("id-export");
-//        if (fileType.isEmpty()){
-//            resp.sendRedirect("/user");
-//        }
-        return userService.exportUserReport(userList);
+        String fileType = req.getParameter("id-export");
+        if (fileType.isEmpty()){
+            resp.sendRedirect("/user");
+        }
+        return userService.exportUserReport(userList, fileType);
 //        resp.sendRedirect("/1");
     }
 }

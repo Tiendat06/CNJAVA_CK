@@ -1,13 +1,5 @@
 package com.java.service.user.adapter;
 
-import com.itextpdf.io.font.constants.StandardFonts;
-import com.itextpdf.kernel.font.PdfFont;
-import com.itextpdf.kernel.font.PdfFontFactory;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.*;
-import com.itextpdf.layout.properties.TextAlignment;
 import com.java.models.User;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -24,7 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
-public class OldReport implements IOldReport {
+public class XLSXReport implements IXLSXReport {
 
     @Override
     public ResponseEntity<byte[]> exportReportOldMethod(List<User> userList) {
