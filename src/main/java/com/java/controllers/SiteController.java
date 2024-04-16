@@ -498,6 +498,7 @@ public class SiteController implements ErrorController {
         Customer customer = new Customer(id, fullname, address, phone, email, null);
 
 //        PROXY PATTERN (TTD)
+
         String result = proxyCustomerService.addCustomer(customer);
         if (result.equals("Success")){
             model.addAttribute("result", "Add Successfully !");

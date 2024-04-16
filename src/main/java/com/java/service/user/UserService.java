@@ -80,14 +80,8 @@ public class UserService {
 
     public ResponseEntity<byte[]> exportUserReport(List<User> userList){
 //        ADAPTER PATTERN V2 [TTD]
-        IOldReport report = null;
-        report = new ReportAdapter();
-//        if(choice.equals("CSV")){
-//        }else if(choice.equals("XLSX")){
-//            report = new OldReport();
-//        }else{
-//            return null;
-//        }
+        IOldReport report = new ReportAdapter();
+//        report = new ReportAdapter();
         return report.exportReportOldMethod(userList);
     }
 

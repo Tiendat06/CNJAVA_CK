@@ -19,6 +19,7 @@ public class ProxyCustomerService implements ICustomerService{
     }
 
     private String isValidCustomer(Customer customer){
+        System.out.println(customerService.findCusByPhone(customer.getCustomer_phone()));
         if (customer.getCustomer_name().isEmpty() || customer.getCustomer_email().isEmpty()
                 || customer.getCustomer_address().isEmpty() || customer.getCustomer_phone().isEmpty()){
             return "You must fill in all fields !";

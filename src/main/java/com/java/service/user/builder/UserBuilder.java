@@ -15,7 +15,6 @@ public class UserBuilder implements IUserBuilder{
     private Date birthday;
     private String gender;
 
-
     @Override
     public IUserBuilder setUserIdBuilder(String user_id) {
         this.user_id = user_id;
