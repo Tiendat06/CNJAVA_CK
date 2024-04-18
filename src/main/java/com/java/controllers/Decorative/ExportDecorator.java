@@ -13,7 +13,6 @@ public abstract class ExportDecorator  implements Export{
 
     @Override
     public byte[] export(List<Product> productList) {
-        // Delegate export operation to decorated export object
         return wrapObj.export(productList);
     }
 }

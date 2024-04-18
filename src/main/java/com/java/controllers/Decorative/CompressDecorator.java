@@ -19,7 +19,6 @@ public class CompressDecorator extends ExportDecorator{
 
     @Override
     public byte[] export(List<Product> productList) {
-        // Call the export method of the decorated object (BasicExport)
         byte[] exportedData = wrapObj.export(productList);
 //        byte[] compressedData = compress(exportedData, userList);
         return compress(exportedData);
@@ -29,10 +28,9 @@ public class CompressDecorator extends ExportDecorator{
         try (ZipOutputStream zipOutputStream = new ZipOutputStream(byteArrayOutputStream)) {
             ZipEntry zipEntry = new ZipEntry("product_report.csv");
             zipOutputStream.putNextEntry(zipEntry);
-            zipOutputStream.write(data); // Write the exported data directly to the zip output stream
+            zipOutputStream.write(data);
             zipOutputStream.closeEntry();
         } catch (IOException e) {
-            // Handle the exception, e.g., log it or return an error response
             e.printStackTrace();
         }
         return byteArrayOutputStream.toByteArray();

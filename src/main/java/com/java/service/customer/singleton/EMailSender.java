@@ -44,7 +44,7 @@ public class EMailSender {
 
             content = content.replace("[[name]]", customer.getCustomer_name() /*+ " " + user.getLast_name()*/);
             for (Object[] olc: orderListCus){
-                content += "<p style='margin-bottom: 0;'>"+ olc[0].toString()+" x "+olc[2].toString()+": "+olc[3].toString()+"$" +"</p>";
+                 content += "<p style='margin-bottom: 0;'>"+ olc[0].toString()+" x "+olc[2].toString()+": "+olc[3].toString()+"$" +"</p>";
             }
 
             if (!voucher_name.isEmpty()){

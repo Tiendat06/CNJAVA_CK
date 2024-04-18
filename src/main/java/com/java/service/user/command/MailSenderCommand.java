@@ -16,6 +16,7 @@ public class MailSenderCommand implements ICommand{
 
     @Override
     public void execute() {
+
         javaMailSender.send(this.message);
     }
 }
