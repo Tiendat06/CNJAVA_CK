@@ -12,7 +12,7 @@ import java.util.List;
 public class CSVReport implements ICSVReport {
 
     @Override
-    public ResponseEntity<byte[]> exportReportNewMethod(List<String[]> userListData) {
+    public ResponseEntity<byte[]> exportReportCSVMethod(List<String[]> userListData) {
 
         List<String[]> data = new ArrayList<>();
         data.add(new String[]{"ID", "First Name", "Last Name", "Email", "Phone Number", "Address", "Birthday", "Gender"});

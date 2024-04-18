@@ -15,7 +15,7 @@ public class CSVReportAdapter implements IXLSXReport {
         this.ICSVReport = new CSVReport();
     }
     @Override
-    public ResponseEntity<byte[]> exportReportOldMethod(List<User> userList) {
+    public ResponseEntity<byte[]> exportReportXLSXMethod(List<User> userList) {
         List<String[]> userListData = new ArrayList<>();
         for (User user: userList){
             userListData.add(new String[]{
@@ -29,6 +29,6 @@ public class CSVReportAdapter implements IXLSXReport {
                     user.getGender()
             });
         }
-        return ICSVReport.exportReportNewMethod(userListData);
+        return ICSVReport.exportReportCSVMethod(userListData);
     }
 }

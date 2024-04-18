@@ -238,10 +238,11 @@ public class UserController {
 //        System.out.println("hello world");
         List<User> userList = userService.getAllUser();
         String fileType = req.getParameter("id-export");
-        if (fileType.isEmpty()){
-            resp.sendRedirect("/user");
+        if (!fileType.isEmpty()){
+            return userService.exportUserReport(userList, fileType, resp);
         }
-        return userService.exportUserReport(userList, fileType);
+        resp.sendRedirect("/user");
+        return null;
 //        resp.sendRedirect("/1");
     }
 }

@@ -6,5 +6,5 @@ import java.util.List;
 
 @FunctionalInterface
 public interface ICSVReport {
-    ResponseEntity<byte[]> exportReportNewMethod(List<String[]> userList);
+    ResponseEntity<byte[]> exportReportCSVMethod(List<String[]> userList);
 }

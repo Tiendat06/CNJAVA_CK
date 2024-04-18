@@ -12,6 +12,7 @@ import com.java.service.user.adapter.CSVReportAdapter;
 import com.java.service.user.command.ICommand;
 import com.java.service.user.command.MailSenderCommand;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -79,16 +80,19 @@ public class UserService {
         return iProvinceAPI.getProvinceAPI();
     }
 
-    public ResponseEntity<byte[]> exportUserReport(List<User> userList, String fileType){
+    public ResponseEntity<byte[]> exportUserReport(List<User> userList, String fileType, HttpServletResponse response) throws IOException {
 //        ADAPTER PATTERN V2 [TTD]
         IXLSXReport report = null;
         if(fileType.equals("CSV")){
             report = new CSVReportAdapter();
         }else if (fileType.equals("XLSX")){
             report = new XLSXReport();
+        } else {
+            response.sendRedirect("/user");
+            return null;
         }
 //        report = new ReportAdapter();
-        return report.exportReportOldMethod(userList);
+        return report.exportReportXLSXMethod(userList);
     }
 
     public void sendEmail(User user, String url) {

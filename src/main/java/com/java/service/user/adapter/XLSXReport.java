@@ -19,7 +19,7 @@ import java.util.List;
 public class XLSXReport implements IXLSXReport {
 
     @Override
-    public ResponseEntity<byte[]> exportReportOldMethod(List<User> userList) {
+    public ResponseEntity<byte[]> exportReportXLSXMethod(List<User> userList) {
         byte[] excelBytes = createExcelBytes(userList);
 
         HttpHeaders headers = new HttpHeaders();

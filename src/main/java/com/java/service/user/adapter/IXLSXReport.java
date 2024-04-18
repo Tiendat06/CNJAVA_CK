@@ -7,5 +7,5 @@ import java.util.List;
 
 @FunctionalInterface
 public interface IXLSXReport {
-    ResponseEntity<byte[]> exportReportOldMethod(List<User> userList);
+    ResponseEntity<byte[]> exportReportXLSXMethod(List<User> userList);
 }
