@@ -1,16 +1,19 @@
 package com.java.service.customer;
 
 import com.java.models.Customer;
+import com.java.models.User;
 import com.java.repository.CustomerRepository;
 import com.java.repository.OrderRepository;
 import com.java.service.adapter_v1.IProvinceAPI;
 import com.java.service.adapter_v1.ProvinceAPIAdapter;
 import com.java.service.adapter_v1.ThirdPartyAdaptee;
 import com.java.service.customer.proxy.ICustomerService;
+import com.java.service.customer.singleton.EMailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -27,6 +30,9 @@ public class CustomerService implements ICustomerService {
 
     @Autowired
     public ProvinceAPIAdapter provinceAPIAdapter;
+
+    @Autowired
+    public JavaMailSender mailSender;
 
     public Page<Customer> getCustomersPagination(int pageNo, int pageSize){
         Pageable pageable = PageRequest.of(pageNo, pageSize);
@@ -48,6 +54,15 @@ public class CustomerService implements ICustomerService {
             return String.format("CUS%07d", number);
         }
         return "CUS0000001";
+    }
+
+    public void sendMailConfirm(List<Object[]> orderListCus, Customer customer, String voucher_name, String total_amount){
+        String from = "phanluonghuy4623@gmail.com";
+        String to = customer.getCustomer_email();
+        String subject = "Invoice Verification";
+
+        EMailSender eMailSender = EMailSender.getInstance();
+        eMailSender.sendMail(from, to, subject, orderListCus, customer, mailSender, voucher_name, total_amount);
     }
 
     public List<String> getProvinceAPI() throws IOException {

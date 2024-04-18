@@ -3,6 +3,7 @@ package com.java.service.payment.services;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.VerticalPositionMark;
+import com.java.models.Customer;
 import com.java.models.MyUserDetail;
 import com.java.repository.PaymentRepository;
 import com.java.service.customer.CustomerService;
@@ -21,6 +22,9 @@ public class PaymentService {
     public PaymentRepository paymentRepository;
     @Autowired
     public CustomerService.OrdersService ordersService;
+
+    @Autowired
+    public CustomerService customerService;
 
     public Float getTotalPaymentAmount(Date dateStart, Date dateEnd){
         return paymentRepository.totalAmount(dateStart, dateEnd);

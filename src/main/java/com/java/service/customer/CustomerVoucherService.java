@@ -2,6 +2,7 @@ package com.java.service.customer;
 
 import com.java.models.CustomerVoucher;
 import com.java.repository.CustomerVoucherRepository;
+import com.java.service.voucher.VoucherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.util.Optional;
 public class CustomerVoucherService {
     @Autowired
     private CustomerVoucherRepository customerVoucherRepository;
+
 
     public String totalCustomerVoucherUsed(String cus_id){
         return customerVoucherRepository.totalCustomerVoucherUsed(cus_id);

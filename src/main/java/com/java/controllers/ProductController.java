@@ -134,16 +134,17 @@ public class ProductController {
 
     @GetMapping("/{pageNo}/ajax")
     public String getUserPagination_AJAX(@PathVariable int pageNo,
-                                    @RequestParam(defaultValue = "10") int pageSize, Model model){
+                                         @RequestParam(defaultValue = "10") int pageSize, Model model){
         Page<Product> productList = productService.getAllProductPagination(pageNo - 1, pageSize);
         model.addAttribute("productList", productList);
         model.addAttribute("categoryList", new ProductUtils());
         return "/product/product_list";
     }
 
-        @GetMapping("/export")
+    @GetMapping("/export")
     @ResponseBody
-    public ResponseEntity<byte[]> exportUser_POST(@RequestParam("id-export-product") String exportOption) throws IOException {
+    public ResponseEntity<byte[]> exportProduct_POST(@RequestParam("id-export-product") String exportOption) throws IOException {
+//        DECORATOR PATTERN
         List<Product> productList = productService.getAllProducts();
         Export export;
         if ("Normal".equals(exportOption)) {
