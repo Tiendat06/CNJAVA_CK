@@ -113,7 +113,7 @@ public class OrderFacade {
         try {
             String userId = getUserIdFromRequest(req);
             Optional<String> order_id = ordersService.getOrderToPayment(userId);
-            System.out.println("ORD_USER: "+order_id);
+//            System.out.println("ORD_USER: "+order_id);
             String tra_id = transactionService.AUTO_TRA_ID();
             String pay_id = paymentService.AUTO_PAY_ID();
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -137,7 +137,7 @@ public class OrderFacade {
             List<Object[]> orderListCus = ordersService.getOrderOfCustomerInHome(myUserDetail.getCombinedUser().getUser().getUser_id());
 
             //        send mail confirm invoice
-            customerService.sendMailConfirm(orderListCus, customer, voucher_name, String.valueOf(total_amount));
+//            customerService.sendMailConfirm(orderListCus, customer, voucher_name, String.valueOf(total_amount));
 
             if (order_id.isPresent()){
                 Optional<String> checkCusFirst = customerService.customerRepository.checkIsFirstCustomer(customer.getCustomer_id());

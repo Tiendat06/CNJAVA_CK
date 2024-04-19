@@ -170,6 +170,7 @@
 
 package com.java.controllers;
 
+import com.java.config.CacheManager;
 import com.java.models.*;
 import com.java.service.catalog.ProductService;
 import com.java.service.customer.CustomerService;
@@ -417,7 +418,7 @@ public class SiteController implements ErrorController {
         int quantity = Integer.parseInt(req.getParameter("quantity-ord"));
         String phone = req.getParameter("phone_number_quan");
 //        System.out.println(phone);
-        System.out.println("quan ord - 1: "+quantity);
+//        System.out.println("quan ord - 1: "+quantity);
 
         int quan_stock = Integer.parseInt(req.getParameter("quan_stock"));
         System.out.println("hello word: "+quan_stock);
@@ -517,6 +518,11 @@ public class SiteController implements ErrorController {
         String totalCustomerOrder = ordersService.currentCustomerOrder(customer.getCustomer_id());
         String customerVoucherUsed = customerVoucherService.totalCustomerVoucherUsed(customer.getCustomer_id());
 
+//        SINGLETON PATTERN
+        CacheManager cache = CacheManager.getInstance();
+        cache.setCache("customerVoucherUsed", customerVoucherUsed);
+        cache.setCache("totalCustomerOrder", totalCustomerOrder);
+
         if (customerVoucherUsed == null){
             customerVoucherUsed = "0";
         }
@@ -538,8 +544,13 @@ public class SiteController implements ErrorController {
 
         Customer customer = customerService.findCusByPhone(phone);
 
-        String totalCustomerOrder = ordersService.currentCustomerOrder(customer.getCustomer_id());
-        String totalCustomerVoucherUsed = customerVoucherService.totalCustomerVoucherUsed(customer.getCustomer_id());
+//        String totalCustomerOrder = ordersService.currentCustomerOrder(customer.getCustomer_id());
+//        String totalCustomerVoucherUsed = customerVoucherService.totalCustomerVoucherUsed(customer.getCustomer_id());
+
+        CacheManager cache = CacheManager.getInstance();
+        String totalCustomerVoucherUsed = (String) cache.getCache("customerVoucherUsed");
+        String totalCustomerOrder = (String) cache.getCache("totalCustomerOrder");
+//        System.out.println("CVU: "+totalCustomerVoucherUsed);
 
         String customerVoucherID = customerVoucherService.AUTO_CSV_ID();
         Date date_used = Date.valueOf(LocalDate.now());
