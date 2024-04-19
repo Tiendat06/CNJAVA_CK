@@ -8,6 +8,7 @@ import com.java.controllers.ChainOfResponsibility.PasswordMatchHandler;
 import com.java.models.Account;
 import com.java.models.MyUserDetail;
 import com.java.repository.AccountRepository;
+import com.java.service.log.LogHistoryService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -34,6 +35,9 @@ public class LogController {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private LogHistoryService logHistoryService;
     @GetMapping("/login")
     public String login_GET() {
         return  "/log/login";
@@ -48,7 +52,7 @@ public class LogController {
         return "/log/failed";
     }
 
-//  ROL
+    //  ROL
     @PostMapping("/login")
     public String login_POST(Model model, HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
@@ -75,11 +79,13 @@ public class LogController {
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    if (auth != null) {
-        new SecurityContextLogoutHandler().logout(request, response, auth);
-    }
-    return "redirect:/";
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+
+
+        return "redirect:/";
     }
 
     @GetMapping("/verify")

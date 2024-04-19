@@ -1,6 +1,4 @@
-package com.java.config;
-
-import com.java.service.customer.singleton.EMailSender;
+package com.java.config.singleton;
 
 import java.util.HashMap;
 import java.util.Map;

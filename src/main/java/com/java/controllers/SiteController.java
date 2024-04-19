@@ -170,7 +170,7 @@
 
 package com.java.controllers;
 
-import com.java.config.CacheManager;
+import com.java.config.singleton.CacheManager;
 import com.java.models.*;
 import com.java.service.catalog.ProductService;
 import com.java.service.customer.CustomerService;
@@ -246,6 +246,8 @@ public class SiteController implements ErrorController {
 //            myUserDetail.getCombinedUser().getAccount().setStatus(false);
             session.setAttribute("temp_pass", myUserDetail.getCombinedUser().getAccount().isTemp_pass());
             return "redirect:/log/change_pass";
+        } else{
+
         }
         return "redirect:/1";
     }
