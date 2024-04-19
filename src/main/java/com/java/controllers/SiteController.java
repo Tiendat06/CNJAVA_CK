@@ -772,6 +772,4 @@ public class SiteController implements ErrorController {
         return null;
 
     }
-
-
 }
