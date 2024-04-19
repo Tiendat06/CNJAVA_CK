@@ -47,6 +47,15 @@ public interface OrderRepository extends JpaRepository<Order, String> {
             "and ord.date_created is null and odt.product_id = pro.product_id group by odt.order_id")
     Optional<String> getOrderIdToCancel(@Param("userId") String userId);
 
+    @Query("SELECT ord.order_id, pay.date_created, cus.customer_name, u.first_name, u.last_name, tra.status, pay.total_amount \n" +
+            "FROM orders ord, transaction tra, payment pay, user u, customers cus \n" +
+            "WHERE ord.order_id = tra.order_id \n" +
+            "    AND pay.date_created = ord.date_created \n" +
+            "    AND ord.user_id = u.user_id \n" +
+            "    AND cus.customer_id = ord.customer_id \n" +
+            "    AND pay.payment_id = tra.payment_id \n" +
+            "    AND ord.order_id = :orderId")
+    Object getOrderByOrderID(@Param("orderId") String orderId);
     @Query("select ord.order_id, pay.date_created, cus.customer_name, use.first_name, use.last_name, tra.status, pay.total_amount " +
             "from orders ord, transaction tra, payment pay, user use, customers cus " +
             "where ord.order_id = tra.order_id and pay.date_created = ord.date_created and " +

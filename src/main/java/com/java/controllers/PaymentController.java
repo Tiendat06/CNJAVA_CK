@@ -1,5 +1,9 @@
 package com.java.controllers;
 
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.draw.VerticalPositionMark;
+import com.java.models.Customer;
 import com.java.models.MyUserDetail;
 import com.java.models.VatReport;
 import com.java.models.VatReportItem;
@@ -11,19 +15,29 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.StringWriter;
-import java.lang.reflect.Field;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/payment")
@@ -37,14 +51,14 @@ public class PaymentController {
     public OrderFacade orderFacade;
 
     @GetMapping("/report")
-    public String index(Model model){
+    public String index(Model model) {
         model.addAttribute("content", "report");
         return "redirect:/payment/report/1";
     }
 
     @GetMapping("/report/{pageNo}")
     public String order_list_pagination(Model model, @PathVariable int pageNo,
-                        @RequestParam(defaultValue = "10") int pageSize){
+                                        @RequestParam(defaultValue = "10") int pageSize) {
         model.addAttribute("content", "report");
         MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         model.addAttribute("userImg", myUserDetail.getCombinedUser().getUser().getImage());
@@ -59,7 +73,7 @@ public class PaymentController {
 
     @GetMapping("/report/{pageNo}/ajax")
     public String order_list_pagination_AJAX(Model model, @PathVariable int pageNo,
-                                        @RequestParam(defaultValue = "10") int pageSize){
+                                             @RequestParam(defaultValue = "10") int pageSize) {
 
         Date currentDate = new Date(System.currentTimeMillis());
 //        System.out.println(currentDate);
@@ -71,7 +85,7 @@ public class PaymentController {
     }
 
     @GetMapping("/report/order-list/{ordId}")
-    public String getOderListInDetails(@PathVariable String ordId, Model model){
+    public String getOderListInDetails(@PathVariable String ordId, Model model) {
         List<Object[]> odtList = ordersService.getAllOrderListDetails(ordId);
         model.addAttribute("odtList", odtList);
         return "/payment/order_list_details";
@@ -79,14 +93,14 @@ public class PaymentController {
 
     @GetMapping("/report/sort-order-list/{dateStart}/{dateEnd}")
     public String getOderListOrderByDate(@RequestParam(defaultValue = "1") int pageNo, @RequestParam(defaultValue = "10") int pageSize,
-                                         @PathVariable Date dateStart, @PathVariable Date dateEnd, Model model){
-        Page<Object[]> ordList = ordersService.getAllOrderListOrderByDate(pageNo-1, pageSize, dateStart, dateEnd);
+                                         @PathVariable Date dateStart, @PathVariable Date dateEnd, Model model) {
+        Page<Object[]> ordList = ordersService.getAllOrderListOrderByDate(pageNo - 1, pageSize, dateStart, dateEnd);
         model.addAttribute("orderList", ordList);
         return "/payment/order_list_sort_by_date";
     }
 
     @GetMapping("/report/total/{dateStart}/{dateEnd}")
-    public String getTotalOrderByDate(@PathVariable Date dateStart, @PathVariable Date dateEnd, Model model){
+    public String getTotalOrderByDate(@PathVariable Date dateStart, @PathVariable Date dateEnd, Model model) {
         List<Object[]> totalMoney = ordersService.getTotalMoneyOrderByDate(dateStart, dateEnd);
         List<Object[]> totalOrder = ordersService.getTotalOrderOrderByDate(dateStart, dateEnd);
         List<Object[]> totalProduct = ordersService.getTotalProductOrderByDate(dateStart, dateEnd);
@@ -95,16 +109,14 @@ public class PaymentController {
 
         List<Object[]> quanNPriceList = ordersService.getQuanAndPrice(dateStart, dateEnd);
         float sum = 0.0f;
-        for (Object[] item: quanNPriceList) {
+        for (Object[] item : quanNPriceList) {
             int quan = (int) item[0];
             float price = (float) item[1];
             sum += quan * price;
         }
         System.out.println(totalAmount);
         System.out.println(sum);
-//        System.out.println(sum);
-//        (Math.round(sum * 100.0) / 100.0
-        Float totalProfit = (float) ((float) Math.round((totalAmount - sum) *100.0) / 100.0);
+        Float totalProfit = (float) ((float) Math.round((totalAmount - sum) * 100.0) / 100.0);
 
         model.addAttribute("totalMoney", totalMoney);
         model.addAttribute("totalOrder", totalOrder);
@@ -114,70 +126,143 @@ public class PaymentController {
         return "/payment/total";
     }
 
-//    @GetMapping("/report/VAT")
-//    @ResponseBody
-//    public String exportFileVAT(HttpServletRequest req, HttpServletResponse resp){
-//        String vatType = req.getParameter("vat-type");
-//        String orderID = req.getParameter("order-id-vat");
-//        List<Object[]> odtList = ordersService.getAllOrderListDetails(orderID);
-//        for (Object[] x: odtList) {
-//            String productName = (String) x[0];
-//            int quanity = (int) x[2];
-//            double change_give = (float) x[3];
-//            String description = (String) x[4];
-//        }
-//
-//
-//        return  vatType + " " + orderID;
-//    }
-@GetMapping("/report/VAT")
-public ResponseEntity<String> exportFileVAT(HttpServletRequest req, HttpServletResponse resp) throws JAXBException {
-    String vatType = req.getParameter("vat-type");
-    String orderID = req.getParameter("order-id-vat");
-    List<Object[]> odtList = ordersService.getAllOrderListDetails(orderID);
-    return exportXML(orderID,odtList);
-}
+    @GetMapping("/report/VAT")
+    public ResponseEntity<byte[]> exportFileVAT(HttpServletRequest req, HttpServletResponse resp) throws JAXBException, IOException {
+        String vatType = req.getParameter("vat-type");
+        String orderID = req.getParameter("order-id-vat");
+        List<Object[]> odtList = ordersService.getAllOrderListDetails(orderID);
+        Object[] odtDetail = (Object[]) ordersService.getOrderByOrderID(orderID);
+        Timestamp timestamp = (Timestamp) odtDetail[1];
+        String cusName = (String) odtDetail[2];
+        String posFirstName = (String) odtDetail[3];
+        String posLastName = (String) odtDetail[4];
+        String status = (String) odtDetail[5];
+        float totalAmount = (float) odtDetail[6];
 
-private ResponseEntity<String> exportXML(String orderID,List<Object[]> odtList) throws JAXBException {
-    VatReport vatReport = new VatReport();
-    vatReport.setOrderId(orderID);
-    List<VatReportItem> items = new ArrayList<>();
-    for (Object[] data : odtList) {
-        VatReportItem item = new VatReportItem();
-        item.setProductName((String) data[0]);
-        item.setQuantity((int) data[2]);
-        // Assuming data[3] is a monetary value, convert to double
-        item.setChangeGiven(Double.parseDouble(String.valueOf(data[3])));
-        item.setDescription((String) data[4]);
-        items.add(item);
+        List<VatReportItem> items = new ArrayList<>();
+        for (Object[] data : odtList) {
+            VatReportItem item = new VatReportItem();
+            item.setProductName((String) data[0]);
+            item.setQuantity((int) data[2]);
+            item.setChangeGiven(Double.parseDouble(String.valueOf(data[3])));
+            item.setDescription((String) data[4]);
+            items.add(item);
+        }
+
+        if (vatType.equals("PDF")) {
+            return exportPDF(timestamp,cusName,posFirstName,posLastName,status,totalAmount,items);
+        }
+        return exportXML(timestamp,cusName,posFirstName,posLastName,status,totalAmount,orderID, odtList);
     }
-    vatReport.setItems(items);
 
+    private ResponseEntity<byte[]> exportXML(Timestamp timestamp, String cusName, String posFirstName, String posLastName, String status, float total_amount, String orderID, List<Object[]> odtList) throws JAXBException {
 
-    double totalAmount = vatReport.getItems().stream().mapToDouble(VatReportItem::getChangeGiven).sum();
-    vatReport.setTotalAmount(totalAmount);
+        VatReport vatReport = new VatReport();
+        vatReport.setTimestamp(timestamp);
+        vatReport.setCusName(cusName);
+        vatReport.setPosFirstName(posFirstName);
+        vatReport.setPosLastName(posLastName);
+        vatReport.setStatus(status);
 
+        vatReport.setOrderId(orderID);
+        List<VatReportItem> items = new ArrayList<>();
+        for (Object[] data : odtList) {
+            VatReportItem item = new VatReportItem();
+            item.setProductName((String) data[0]);
+            item.setQuantity((int) data[2]);
+            // Assuming data[3] is a monetary value, convert to double
+            item.setChangeGiven(Double.parseDouble(String.valueOf(data[3])));
+            item.setDescription((String) data[4]);
+            items.add(item);
+        }
+        vatReport.setItems(items);
+        vatReport.setTotalAmount(total_amount);
 
+        // Use JAXB to convert VAT report object to XML string
+        JAXBContext jaxbContext = JAXBContext.newInstance(VatReport.class);
+        Marshaller marshaller = jaxbContext.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true); // Formatted output for readability
 
-    // Use JAXB to convert VAT report object to XML string
-    JAXBContext jaxbContext = JAXBContext.newInstance(VatReport.class);
-    Marshaller marshaller = jaxbContext.createMarshaller();
-    marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true); // Formatted output for readability
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        marshaller.marshal(vatReport, outputStream);
+        byte[] xmlBytes = outputStream.toByteArray();
 
-    StringWriter stringWriter = new StringWriter();
-    marshaller.marshal(vatReport, stringWriter);
-    String xmlString = stringWriter.toString();
+        // Set response headers for XML content
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_XML);
+        headers.setContentDisposition(ContentDisposition.attachment()
+                .filename("vat_report_" + orderID + ".xml")
+                .build());
 
-    // Set response headers for XML content
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.APPLICATION_XML);
-    headers.setContentDisposition(ContentDisposition.attachment()
-            .filename("vat_report_" + orderID + ".xml")
-            .build());
+        // Return XML response entity with appropriate headers
+        return new ResponseEntity<>(xmlBytes, headers, HttpStatus.OK);
+    }
 
-    // Return XML response entity with appropriate headers
-    return new ResponseEntity<>(xmlString, headers, HttpStatus.OK);
-}
+    public ResponseEntity<byte[]> exportPDF(Timestamp timestamp,String cusName,String posFirstName,String posLastName,String status,float total_amount,List<VatReportItem> vatReportItem ) throws IOException {
+        try {
 
+        ByteArrayOutputStream baos = createInvoicePdf(total_amount,timestamp, cusName,posFirstName,posLastName,status,vatReportItem);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("inline", "invoice.pdf");
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+        // Download invoice PDF
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(baos.toByteArray());
+
+        } catch (NumberFormatException e){
+            e.printStackTrace();
+        } catch (DocumentException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+    public ByteArrayOutputStream createInvoicePdf(float customer_given,Timestamp timestamp,String cusName,String posFirstName,String posLastName,String status,List<VatReportItem> vatReportItem  ) throws DocumentException {
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        Document document = new Document();
+        PdfWriter.getInstance(document, baos);
+        document.open();
+
+        Font titleFont = FontFactory.getFont(FontFactory.TIMES_ROMAN, 20, BaseColor.BLACK);
+        Paragraph title = new Paragraph("Invoice", titleFont);
+        title.setAlignment(Element.ALIGN_CENTER);
+        document.add(title);
+
+        Font contentFont = FontFactory.getFont(FontFactory.TIMES_ROMAN, 13, BaseColor.BLACK);
+
+        document.add(new Chunk("Customer name: " + cusName + "\n", contentFont));
+        document.add(new Chunk("Date created: " + timestamp.toString() + "\n", contentFont));
+        document.add(new Chunk("Sealer: " + posFirstName + ' ' + posLastName + "\n", contentFont));
+        document.add(new Chunk("Status: " + status + "\n\n", contentFont));
+
+        Paragraph paragraph = new Paragraph();
+        paragraph.add(new Chunk("SN          ", contentFont));
+        paragraph.add(new Chunk("Product name", contentFont));
+        paragraph.add(new Chunk(new VerticalPositionMark()));
+        paragraph.add(new Chunk("Quantity     ", contentFont));
+        document.add(paragraph);
+
+        int i = 1;
+        for (VatReportItem item: vatReportItem) {
+            document.add(createDetailParagraph(i+"           ", item.getProductName(), ""+item.getQuantity(), contentFont));
+            i++;
+        }
+        document.add(new Paragraph("----------------------------------------------------------------------------------------------------------------------------------"));
+
+        document.add(new Paragraph("Total Amount: " + customer_given + "$"));
+        document.add(new Paragraph("Customer Given: " + customer_given + "$"));
+        document.close();
+        return baos;
+    }
+    private Paragraph createDetailParagraph(String index, String productName, String quantity, Font contentFont) {
+        Paragraph paragraph = new Paragraph();
+        paragraph.add(new Chunk(index+") "+productName, contentFont));
+        paragraph.add(new Chunk(new VerticalPositionMark()));
+        paragraph.add(new Chunk(quantity, contentFont));
+        return paragraph;
+    }
 
 }

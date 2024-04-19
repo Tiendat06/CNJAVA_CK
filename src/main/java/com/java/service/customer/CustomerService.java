@@ -74,6 +74,10 @@ public class CustomerService implements ICustomerService {
             return orderRepository.getOderListDetails(ordId);
         }
 
+        public Object getOrderByOrderID(String ordId) {
+            return orderRepository.getOrderByOrderID(ordId);
+        }
+
         public Page<Object[]> getAllOrderListOrderByDate(int pageNo, int pageSize, Date date_start, Date date_end){
             Pageable pageable = PageRequest.of(pageNo , pageSize);
             return orderRepository.getAllOrderListSortByDatetime(pageable ,date_start, date_end);
