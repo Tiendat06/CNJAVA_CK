@@ -3,10 +3,7 @@ package com.java.controllers;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.VerticalPositionMark;
-import com.java.models.Customer;
-import com.java.models.MyUserDetail;
-import com.java.models.VatReport;
-import com.java.models.VatReportItem;
+import com.java.models.*;
 import com.java.service.customer.CustomerService;
 import com.java.service.order.OrderFacade;
 import com.java.service.payment.services.PaymentService;
@@ -126,143 +123,154 @@ public class PaymentController {
         return "/payment/total";
     }
 
+
     @GetMapping("/report/VAT")
     public ResponseEntity<byte[]> exportFileVAT(HttpServletRequest req, HttpServletResponse resp) throws JAXBException, IOException {
         String vatType = req.getParameter("vat-type");
         String orderID = req.getParameter("order-id-vat");
-        List<Object[]> odtList = ordersService.getAllOrderListDetails(orderID);
-        Object[] odtDetail = (Object[]) ordersService.getOrderByOrderID(orderID);
-        Timestamp timestamp = (Timestamp) odtDetail[1];
-        String cusName = (String) odtDetail[2];
-        String posFirstName = (String) odtDetail[3];
-        String posLastName = (String) odtDetail[4];
-        String status = (String) odtDetail[5];
-        float totalAmount = (float) odtDetail[6];
-
-        List<VatReportItem> items = new ArrayList<>();
-        for (Object[] data : odtList) {
-            VatReportItem item = new VatReportItem();
-            item.setProductName((String) data[0]);
-            item.setQuantity((int) data[2]);
-            item.setChangeGiven(Double.parseDouble(String.valueOf(data[3])));
-            item.setDescription((String) data[4]);
-            items.add(item);
+        ReportExporter exporter;
+        if ("PDF".equals(vatType)) {
+            exporter = new PDFReportExporter(orderID,ordersService);
         }
-
-        if (vatType.equals("PDF")) {
-            return exportPDF(timestamp,cusName,posFirstName,posLastName,status,totalAmount,items);
+        else  {
+            exporter = new XMLReportExporter(orderID,ordersService);
         }
-        return exportXML(timestamp,cusName,posFirstName,posLastName,status,totalAmount,orderID, odtList);
+        return  exporter.exportFileVAT();
     }
 
-    private ResponseEntity<byte[]> exportXML(Timestamp timestamp, String cusName, String posFirstName, String posLastName, String status, float total_amount, String orderID, List<Object[]> odtList) throws JAXBException {
-
-        VatReport vatReport = new VatReport();
-        vatReport.setTimestamp(timestamp);
-        vatReport.setCusName(cusName);
-        vatReport.setPosFirstName(posFirstName);
-        vatReport.setPosLastName(posLastName);
-        vatReport.setStatus(status);
-
-        vatReport.setOrderId(orderID);
-        List<VatReportItem> items = new ArrayList<>();
-        for (Object[] data : odtList) {
-            VatReportItem item = new VatReportItem();
-            item.setProductName((String) data[0]);
-            item.setQuantity((int) data[2]);
-            // Assuming data[3] is a monetary value, convert to double
-            item.setChangeGiven(Double.parseDouble(String.valueOf(data[3])));
-            item.setDescription((String) data[4]);
-            items.add(item);
-        }
-        vatReport.setItems(items);
-        vatReport.setTotalAmount(total_amount);
-
-        // Use JAXB to convert VAT report object to XML string
-        JAXBContext jaxbContext = JAXBContext.newInstance(VatReport.class);
-        Marshaller marshaller = jaxbContext.createMarshaller();
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true); // Formatted output for readability
-
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        marshaller.marshal(vatReport, outputStream);
-        byte[] xmlBytes = outputStream.toByteArray();
-
-        // Set response headers for XML content
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_XML);
-        headers.setContentDisposition(ContentDisposition.attachment()
-                .filename("vat_report_" + orderID + ".xml")
-                .build());
-
-        // Return XML response entity with appropriate headers
-        return new ResponseEntity<>(xmlBytes, headers, HttpStatus.OK);
-    }
-
-    public ResponseEntity<byte[]> exportPDF(Timestamp timestamp,String cusName,String posFirstName,String posLastName,String status,float total_amount,List<VatReportItem> vatReportItem ) throws IOException {
-        try {
-
-        ByteArrayOutputStream baos = createInvoicePdf(total_amount,timestamp, cusName,posFirstName,posLastName,status,vatReportItem);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("inline", "invoice.pdf");
-        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-
-        // Download invoice PDF
-        return ResponseEntity.ok()
-                .headers(headers)
-                .body(baos.toByteArray());
-
-        } catch (NumberFormatException e){
-            e.printStackTrace();
-        } catch (DocumentException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
-    public ByteArrayOutputStream createInvoicePdf(float customer_given,Timestamp timestamp,String cusName,String posFirstName,String posLastName,String status,List<VatReportItem> vatReportItem  ) throws DocumentException {
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Document document = new Document();
-        PdfWriter.getInstance(document, baos);
-        document.open();
-
-        Font titleFont = FontFactory.getFont(FontFactory.TIMES_ROMAN, 20, BaseColor.BLACK);
-        Paragraph title = new Paragraph("Invoice", titleFont);
-        title.setAlignment(Element.ALIGN_CENTER);
-        document.add(title);
-
-        Font contentFont = FontFactory.getFont(FontFactory.TIMES_ROMAN, 13, BaseColor.BLACK);
-
-        document.add(new Chunk("Customer name: " + cusName + "\n", contentFont));
-        document.add(new Chunk("Date created: " + timestamp.toString() + "\n", contentFont));
-        document.add(new Chunk("Sealer: " + posFirstName + ' ' + posLastName + "\n", contentFont));
-        document.add(new Chunk("Status: " + status + "\n\n", contentFont));
-
-        Paragraph paragraph = new Paragraph();
-        paragraph.add(new Chunk("SN          ", contentFont));
-        paragraph.add(new Chunk("Product name", contentFont));
-        paragraph.add(new Chunk(new VerticalPositionMark()));
-        paragraph.add(new Chunk("Quantity     ", contentFont));
-        document.add(paragraph);
-
-        int i = 1;
-        for (VatReportItem item: vatReportItem) {
-            document.add(createDetailParagraph(i+"           ", item.getProductName(), ""+item.getQuantity(), contentFont));
-            i++;
-        }
-        document.add(new Paragraph("----------------------------------------------------------------------------------------------------------------------------------"));
-
-        document.add(new Paragraph("Total Amount: " + customer_given + "$"));
-        document.add(new Paragraph("Customer Given: " + customer_given + "$"));
-        document.close();
-        return baos;
-    }
-    private Paragraph createDetailParagraph(String index, String productName, String quantity, Font contentFont) {
-        Paragraph paragraph = new Paragraph();
-        paragraph.add(new Chunk(index+") "+productName, contentFont));
-        paragraph.add(new Chunk(new VerticalPositionMark()));
-        paragraph.add(new Chunk(quantity, contentFont));
-        return paragraph;
-    }
+//    @GetMapping("/report/VAT")
+//    public ResponseEntity<byte[]> exportFileVAT(HttpServletRequest req, HttpServletResponse resp) throws JAXBException, IOException {
+//        String vatType = req.getParameter("vat-type");
+//        String orderID = req.getParameter("order-id-vat");
+//        VatReport vatReport = prepareVAT_information(orderID);
+//        loggingAction(orderID);
+//        if (vatType.equals("PDF")) {
+//            return exportPDF(vatReport);
+//        }
+//        return exportXML(vatReport);
+//    }
+//
+//    private  void loggingAction(String orderID) {
+//        return;
+//    }
+//    private VatReport prepareVAT_information(String orderID) {
+//        List<Object[]> odtList = ordersService.getAllOrderListDetails(orderID);
+//        Object[] odtDetail = (Object[]) ordersService.getOrderByOrderID(orderID);
+//        Timestamp timestamp = (Timestamp) odtDetail[1];
+//        String cusName = (String) odtDetail[2];
+//        String posFirstName = (String) odtDetail[3];
+//        String posLastName = (String) odtDetail[4];
+//        String status = (String) odtDetail[5];
+//        float totalAmount = (float) odtDetail[6];
+//
+//        List<VatReportItem> items = new ArrayList<>();
+//        for (Object[] data : odtList) {
+//            VatReportItem item = new VatReportItem();
+//            item.setProductName((String) data[0]);
+//            item.setQuantity((int) data[2]);
+//            item.setChangeGiven(Double.parseDouble(String.valueOf(data[3])));
+//            item.setDescription((String) data[4]);
+//            items.add(item);
+//        }
+//
+//        VatReport vatReport = new VatReport();
+//        vatReport.setTimestamp(timestamp);
+//        vatReport.setCusName(cusName);
+//        vatReport.setPosFirstName(posFirstName);
+//        vatReport.setPosLastName(posLastName);
+//        vatReport.setStatus(status);
+//
+//        vatReport.setItems(items);
+//        vatReport.setTotalAmount(totalAmount);
+//        return vatReport;
+//    }
+//
+//    private ResponseEntity<byte[]> exportXML(VatReport vatReport) throws JAXBException {
+//
+//        // Use JAXB to convert VAT report object to XML string
+//        JAXBContext jaxbContext = JAXBContext.newInstance(VatReport.class);
+//        Marshaller marshaller = jaxbContext.createMarshaller();
+//        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true); // Formatted output for readability
+//
+//        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//        marshaller.marshal(vatReport, outputStream);
+//        byte[] xmlBytes = outputStream.toByteArray();
+//
+//        // Set response headers for XML content
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_XML);
+//        headers.setContentDisposition(ContentDisposition.attachment()
+//                .filename("vat_report_"+ vatReport.getTimestamp()+ ".xml")
+//                .build());
+//
+//        // Return XML response entity with appropriate headers
+//        return new ResponseEntity<>(xmlBytes, headers, HttpStatus.OK);
+//    }
+//
+//    public ResponseEntity<byte[]> exportPDF(VatReport vatReport) throws IOException {
+//        try {
+//
+//        ByteArrayOutputStream baos = createInvoicePdf(vatReport);
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_PDF);
+//        headers.setContentDispositionFormData("inline", "vat_report_" + vatReport.getTimestamp() +".pdf");
+//        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+//
+//        // Download invoice PDF
+//        return ResponseEntity.ok()
+//                .headers(headers)
+//                .body(baos.toByteArray());
+//
+//        } catch (NumberFormatException e){
+//            e.printStackTrace();
+//        } catch (DocumentException e) {
+//            throw new RuntimeException(e);
+//        }
+//        return null;
+//    }
+//    public ByteArrayOutputStream createInvoicePdf(VatReport vatReport) throws DocumentException {
+//
+//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//        Document document = new Document();
+//        PdfWriter.getInstance(document, baos);
+//        document.open();
+//
+//        Font titleFont = FontFactory.getFont(FontFactory.TIMES_ROMAN, 20, BaseColor.BLACK);
+//        Paragraph title = new Paragraph("VAT REPORT", titleFont);
+//        title.setAlignment(Element.ALIGN_CENTER);
+//        document.add(title);
+//
+//        Font contentFont = FontFactory.getFont(FontFactory.TIMES_ROMAN, 13, BaseColor.BLACK);
+//
+//        document.add(new Chunk("Customer name: " + vatReport.getCusName() + "\n", contentFont));
+//        document.add(new Chunk("Date created: " + vatReport.getTimestamp().toString() + "\n", contentFont));
+//        document.add(new Chunk("Sealer: " + vatReport.getPosFirstName() + ' ' + vatReport.getPosLastName() + "\n", contentFont));
+//        document.add(new Chunk("Status: " + vatReport.getStatus() + "\n\n", contentFont));
+//
+//        Paragraph paragraph = new Paragraph();
+//        paragraph.add(new Chunk("SN          ", contentFont));
+//        paragraph.add(new Chunk("Product name", contentFont));
+//        paragraph.add(new Chunk(new VerticalPositionMark()));
+//        paragraph.add(new Chunk("Quantity     ", contentFont));
+//        document.add(paragraph);
+//
+//        int i = 1;
+//        for (VatReportItem item: vatReport.getItems()) {
+//            document.add(createDetailParagraph(i+"           ", item.getProductName(), ""+item.getQuantity(), contentFont));
+//            i++;
+//        }
+//        document.add(new Paragraph("----------------------------------------------------------------------------------------------------------------------------------"));
+//        document.add(new Paragraph("Total Amount: " + String.format("%.2f", vatReport.getTotalAmount()) + "$"));
+//        document.add(new Paragraph("Customer Given: " + String.format("%.2f", vatReport.getTotalAmount()) + "$"));
+//        document.close();
+//        return baos;
+//    }
+//    private Paragraph createDetailParagraph(String index, String productName, String quantity, Font contentFont) {
+//        Paragraph paragraph = new Paragraph();
+//        paragraph.add(new Chunk(index+" "+productName, contentFont));
+//        paragraph.add(new Chunk(new VerticalPositionMark()));
+//        paragraph.add(new Chunk(quantity, contentFont));
+//        return paragraph;
+//    }
 
 }
