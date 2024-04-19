@@ -1,7 +1,6 @@
 package com.java.config.singleton;
 
 import com.java.models.LogHistory;
-import com.java.repository.LogHistoryRepository;
 import com.java.service.log.LogHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
