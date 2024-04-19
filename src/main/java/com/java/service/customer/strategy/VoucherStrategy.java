@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 public class VoucherStrategy {
     private IStrategy iStrategy;
 //    public VoucherStrategy(){}
-    public void setStrategy(IStrategy price){
-        this.iStrategy = price;
+    public void setStrategy(IStrategy strategy){
+        this.iStrategy = strategy;
     }
 
     public double calculateVoucher(double price, int discount){

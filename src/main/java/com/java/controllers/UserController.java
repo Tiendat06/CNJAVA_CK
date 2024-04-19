@@ -1,5 +1,8 @@
 package com.java.controllers;
 
+import com.java.controllers.Decorative.CompressDecorator;
+import com.java.controllers.Decorative.Export;
+import com.java.controllers.Decorative.NormalExport;
 import com.java.service.user.builder.IUserBuilder;
 import com.java.service.user.builder.UserBuilder;
 import com.java.models.Account;
@@ -8,10 +11,14 @@ import com.java.models.User;
 import com.java.service.account.AccountService;
 import com.java.service.image.ImageService;
 import com.java.service.user.UserService;
+import com.opencsv.CSVWriter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -19,12 +26,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Controller
 @RequestMapping("/user")
@@ -219,5 +231,18 @@ public class UserController {
 //        System.out.println(user_id);
 //        System.out.println(acc_id);
         resp.sendRedirect("/user/1");
+    }
+
+        @GetMapping("/export")
+    public ResponseEntity<byte[]> exportUser_POST(HttpServletResponse resp, HttpServletRequest req) throws IOException {
+//        System.out.println("hello world");
+        List<User> userList = userService.getAllUser();
+        String fileType = req.getParameter("id-export");
+        if (!fileType.isEmpty()){
+            return userService.exportUserReport(userList, fileType, resp);
+        }
+        resp.sendRedirect("/user");
+        return null;
+//        resp.sendRedirect("/1");
     }
 }

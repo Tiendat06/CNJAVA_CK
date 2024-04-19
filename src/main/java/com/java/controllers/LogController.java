@@ -128,6 +128,7 @@ public class LogController {
         String new_pwd = req.getParameter("re_new_pass");
         HttpSession session = req.getSession();
 
+//        CHAIN OF RESPONSIBILITY
         PasswordHandler handler = new EmptyPasswordHandler();
         PasswordHandler minLengthHandler = new MinLengthPasswordHandler();
         PasswordHandler passwordMatchHandler = new PasswordMatchHandler();

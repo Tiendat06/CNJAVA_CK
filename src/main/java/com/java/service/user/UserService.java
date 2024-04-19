@@ -6,11 +6,18 @@ import com.java.repository.UserRepository;
 import com.java.service.adapter_v1.IProvinceAPI;
 import com.java.service.adapter_v1.ProvinceAPIAdapter;
 import com.java.service.adapter_v1.ThirdPartyAdaptee;
+import com.java.service.user.adapter.IXLSXReport;
+import com.java.service.user.adapter.XLSXReport;
+import com.java.service.user.adapter.CSVReportAdapter;
+import com.java.service.user.command.ICommand;
+import com.java.service.user.command.MailSenderCommand;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -31,6 +38,10 @@ public class UserService {
     public Page<User> getUserPagination(int pageNo, int pageSize){
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         return userRepository.findAll(pageable);
+    }
+
+    public List<User> getAllUser(){
+        return userRepository.findAll();
     }
 
     public void addUser(User user){
@@ -69,6 +80,21 @@ public class UserService {
         return iProvinceAPI.getProvinceAPI();
     }
 
+    public ResponseEntity<byte[]> exportUserReport(List<User> userList, String fileType, HttpServletResponse response) throws IOException {
+//        ADAPTER PATTERN V2 [TTD]
+        IXLSXReport report = null;
+        if(fileType.equals("CSV")){
+            report = new CSVReportAdapter();
+        }else if (fileType.equals("XLSX")){
+            report = new XLSXReport();
+        } else {
+            response.sendRedirect("/user");
+            return null;
+        }
+//        report = new ReportAdapter();
+        return report.exportReportXLSXMethod(userList);
+    }
+
     public void sendEmail(User user, String url) {
 
         String from = "phanluonghuy4623@gmail.com";
@@ -95,8 +121,11 @@ public class UserService {
 
             helper.setText(content, true);
 
-            mailSender.send(message);
+//            mailSender.send(message);
 
+            // COMMAND PATTERN
+            ICommand cmd = new MailSenderCommand(mailSender, message);
+            cmd.execute();
         } catch (Exception e) {
             e.printStackTrace();
         }

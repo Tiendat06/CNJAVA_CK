@@ -7,6 +7,7 @@ import com.java.service.customer.CustomerVoucherService;
 import com.java.service.transaction.TransactionService;
 import com.java.service.customer.CustomerService;
 import com.java.service.payment.services.PaymentService;
+import com.java.service.voucher.VoucherService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -42,6 +43,8 @@ public class OrderFacade {
     private  CustomerService customerService;
     @Autowired
     private CustomerVoucherService customerVoucherService;
+    @Autowired
+    public VoucherService voucherService;
 //    @Autowired
 //    private PaypalController paypalController;
 
@@ -79,6 +82,7 @@ public class OrderFacade {
         Float total_amount = Float.parseFloat(customer_given) - Float.parseFloat(change_given);
         String phone = req.getParameter("phone");
 
+
         HttpSession session = req.getSession();
         try {
             if (Float.parseFloat(customer_given) >= total_amount){
@@ -109,9 +113,31 @@ public class OrderFacade {
         try {
             String userId = getUserIdFromRequest(req);
             Optional<String> order_id = ordersService.getOrderToPayment(userId);
+            System.out.println("ORD_USER: "+order_id);
             String tra_id = transactionService.AUTO_TRA_ID();
             String pay_id = paymentService.AUTO_PAY_ID();
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+            String voucher_id = customerVoucherService.getCustomerVoucherId(customer.getCustomer_id());
+//                System.out.println(voucher_id);
+            String voucher_name = "";
+            if (voucher_id != null){
+                Optional<CustomerVoucher> customerVoucher = customerVoucherService.findCustomerVoucherByCusIdAndVoucherId(customer.getCustomer_id(), Integer.parseInt(voucher_id));
+                if (customerVoucher.isPresent()){
+
+                    voucher_name = voucherService.findVoucherByVoucherId(Integer.parseInt(voucher_id));
+
+                    Date date_used = Date.valueOf(LocalDate.now());
+                    CustomerVoucher csv = new CustomerVoucher(customerVoucher.get().getCustomer_voucher_id(), customerVoucher.get().getVoucher_id(), customerVoucher.get().getCustomer_id(), date_used);
+                    customerVoucherService.updateCustomerVoucherInUsed(csv);
+                }
+            }
+
+            MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            List<Object[]> orderListCus = ordersService.getOrderOfCustomerInHome(myUserDetail.getCombinedUser().getUser().getUser_id());
+
+            //        send mail confirm invoice
+            customerService.sendMailConfirm(orderListCus, customer, voucher_name, String.valueOf(total_amount));
 
             if (order_id.isPresent()){
                 Optional<String> checkCusFirst = customerService.customerRepository.checkIsFirstCustomer(customer.getCustomer_id());
@@ -120,14 +146,6 @@ public class OrderFacade {
                 }
                 String order_id_val = order_id.get();
                 String totalCustomerOrderNote = ordersService.currentCustomerOrder(customer.getCustomer_id());
-                String voucher_id = customerVoucherService.getCustomerVoucherId(customer.getCustomer_id());
-
-                Optional<CustomerVoucher> customerVoucher = customerVoucherService.findCustomerVoucherByCusIdAndVoucherId(customer.getCustomer_id(), Integer.parseInt(voucher_id));
-                if (customerVoucher.isPresent()){
-                    Date date_used = Date.valueOf(LocalDate.now());
-                    CustomerVoucher csv = new CustomerVoucher(customerVoucher.get().getCustomer_voucher_id(), customerVoucher.get().getVoucher_id(), customerVoucher.get().getCustomer_id(), date_used);
-                    customerVoucherService.updateCustomerVoucherInUsed(csv);
-                }
 
 
                 ordersService.updateOrderToPayment(order_id_val, timestamp, totalCustomerOrderNote);

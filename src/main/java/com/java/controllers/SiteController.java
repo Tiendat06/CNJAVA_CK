@@ -174,16 +174,13 @@ import com.java.models.*;
 import com.java.service.catalog.ProductService;
 import com.java.service.customer.CustomerService;
 import com.java.service.customer.CustomerVoucherService;
+import com.java.service.customer.strategy.*;
 import com.java.service.order.OrderDetailsService;
 import com.java.service.order.OrderFacade;
 import com.java.service.payment.factories.PaymentFactory;
 import com.java.service.payment.processors.PaymentProcessor;
 import com.java.service.payment.services.PaymentService;
 import com.java.service.customer.proxy.ProxyCustomerService;
-import com.java.service.customer.strategy.HAPPY10Voucher;
-import com.java.service.customer.strategy.HAPPY30Voucher;
-import com.java.service.customer.strategy.IStrategy;
-import com.java.service.customer.strategy.VoucherStrategy;
 import com.java.service.transaction.TransactionService;
 import com.java.service.voucher.VoucherService;
 import jakarta.servlet.RequestDispatcher;
@@ -231,7 +228,7 @@ public class SiteController implements ErrorController {
     public CustomerVoucherService customerVoucherService;
     @Autowired
     public VoucherService voucherService;
-//    @Autowired
+    //    @Autowired
 //    public PaypalController paypalController;
     @Autowired
     private PaymentFactory factory;
@@ -313,7 +310,7 @@ public class SiteController implements ErrorController {
                     voucherStrategy.setStrategy(iStrategy);
                     totalBillInDouble = voucherStrategy.calculateVoucher((double)totalBill.get()[0], voucher_discount);
                 } else if(voucher.get().getVoucher_id() == 2){
-                    iStrategy = new HAPPY10Voucher();
+                    iStrategy = new HAPPY20Voucher();
                     voucherStrategy.setStrategy(iStrategy);
                     totalBillInDouble = voucherStrategy.calculateVoucher((double)totalBill.get()[0], voucher_discount);
                 }else if(voucher.get().getVoucher_id() == 3){
@@ -498,6 +495,7 @@ public class SiteController implements ErrorController {
         Customer customer = new Customer(id, fullname, address, phone, email, null);
 
 //        PROXY PATTERN (TTD)
+
         String result = proxyCustomerService.addCustomer(customer);
         if (result.equals("Success")){
             model.addAttribute("result", "Add Successfully !");
@@ -604,7 +602,7 @@ public class SiteController implements ErrorController {
                         voucherStrategy.setStrategy(iStrategy);
                         totalMoney = (float) voucherStrategy.calculateVoucher(totalMoney, voucher_discount);
                     } else if(voucher.get().getVoucher_id() == 2){
-                        iStrategy = new HAPPY10Voucher();
+                        iStrategy = new HAPPY20Voucher();
                         voucherStrategy.setStrategy(iStrategy);
                         totalMoney = (float) voucherStrategy.calculateVoucher(totalMoney, voucher_discount);
                     } else if(voucher.get().getVoucher_id() == 3){
@@ -692,13 +690,15 @@ public class SiteController implements ErrorController {
         Customer customer = customerService.findCusByPhone(phone);
         try {
             ResponseEntity<byte[]> invoice =  orderFacade.downloadInvoice(model,req,resp,customer);
+
             PaymentProcessor processor = factory.getPaymentProcessor(payment_method);
             RedirectView redirectView = processor.processPayment(total_amount);
             if (redirectView.isRedirectView());
             {
                 String url = redirectView.getUrl();
                 resp.sendRedirect(url);
-                String order_id = orderFacade.saveInvoiceDetailsToDatabase(req,total_amount, Float.valueOf(change_given),customer,payment_method);
+                String order_id = orderFacade.saveInvoiceDetailsToDatabase(req, total_amount, Float.valueOf(change_given), customer, payment_method);
+
                 return invoice;
             }
 
