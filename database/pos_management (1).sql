@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 08, 2024 at 09:19 PM
+-- Generation Time: Apr 20, 2024 at 05:14 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -56,7 +56,8 @@ INSERT INTO `account` (`ACCOUNT_ID`, `VERITFY`, `TEMP_PASS`, `STATUS`, `ROLE_ID`
 ('ACC0000010', 1, 0, 1, 2, 'admin123', NULL),
 ('ACC0000011', 1, 0, 1, 1, '$2a$10$utSzPFSsV7EdfoEvrCYH4OOh6lztoBf2T/B8S.FcA7.gmey1DoZGu', NULL),
 ('ACC0000012', 1, 1, 1, 2, '$2a$10$ZZoc/4Zza7uHuu11hg1pKeRSeBmycj1.O1U0LR3axeH4.b7xQb5Aa', NULL),
-('ACC0000013', 1, 1, 1, 2, '$2a$10$eSQZd1CJaeHEmdqpVsNd0epoX/3F/d0liMdKiex3NABkIgKJavSH2', NULL);
+('ACC0000013', 1, 1, 1, 2, '$2a$10$eSQZd1CJaeHEmdqpVsNd0epoX/3F/d0liMdKiex3NABkIgKJavSH2', NULL),
+('ACC0000014', 0, 1, 1, 2, '$2a$10$6zC8RGixpD9WZLBNgBWYJ.VpJ/6BOgLdipO5rplrsmd6BLlOHpMbO', '20240416160438-f53f7db1-aaed-4a4b-9e7f-1660abb5fa00');
 
 -- --------------------------------------------------------
 
@@ -133,13 +134,14 @@ INSERT INTO `customers` (`CUSTOMER_ID`, `NAME`, `ADDRESS`, `PHONE_NUMBER`, `EMAI
 ('CUS0000008', 'Grace Gray', '505 Redwood St', '555-4321', 'grace@example.com', '2023-12-19 15:10:30'),
 ('CUS0000009', 'Frank Orange', '606 Oakwood St', '555-7654', 'frank@example.com', '2023-12-19 15:10:30'),
 ('CUS0000010', 'Holly Purple', '707 Walnut St', '555-3456', 'holly@example.com', '2023-12-19 15:10:30'),
-('CUS0000011', 'Tạ Tiến Đạt', 'Admin Address', '0356779197', '521h0442@student.tdtu.edu.vn', '2023-12-26 02:43:28'),
+('CUS0000011', 'Tạ Tiến Đạt', 'Admin Address', '0356779197', 'tadat290903@gmail.com', '2023-12-26 02:43:28'),
 ('CUS0000012', 'Jake John', 'Admin Address', '0147258369', 'jakejohn3004@gmail.com', '2023-12-26 02:42:39'),
 ('CUS0000013', 'Jake John 2', 'Admin Address', '0123456789', 'jakejohn@gmail.com', '2023-12-26 02:41:16'),
 ('CUS0000014', 'Jake John 2', 'Admin Address', '0147896325', 'jakejohn@gmail.com', '2023-12-26 16:44:11'),
 ('CUS0000015', 'Jammy Carrol', 'California', '0321654987', 'jammycarrol@gmail.com', NULL),
 ('CUS0000016', 'Tạ Tiến Đạt', 'Thành phố Hà Nội', '0231456987', 'jakystyle@gmail.com', NULL),
-('CUS0000017', 'Tạ Tiến Đạt', 'Thành phố Cần Thơ', '0231456666', 'AJStyle@gmail.com', NULL);
+('CUS0000017', 'Tạ Tiến Đạt', 'Thành phố Cần Thơ', '0231456666', 'AJStyle@gmail.com', NULL),
+('CUS0000018', 'Admin 2', 'Tỉnh Sơn La', '0789456123', 'admin2@gmail.com', NULL);
 
 -- --------------------------------------------------------
 
@@ -160,6 +162,30 @@ CREATE TABLE `customers_voucher` (
 
 INSERT INTO `customers_voucher` (`CUSTOMER_VOUCHER_ID`, `VOUCHER_ID`, `CUSTOMER_ID`, `DATE_USED`) VALUES
 ('CSV0000001', 1, 'CUS0000011', '2024-04-09');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `log_history`
+--
+
+CREATE TABLE `log_history` (
+  `LOG_ID` varchar(500) NOT NULL,
+  `USER_ID` varchar(500) DEFAULT NULL,
+  `DATE` datetime DEFAULT NULL,
+  `STATUS` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `log_history`
+--
+
+INSERT INTO `log_history` (`LOG_ID`, `USER_ID`, `DATE`, `STATUS`) VALUES
+('LOG0000001', 'USE0000001', '2024-04-20 00:33:49', 'LOGIN'),
+('LOG0000002', 'USE0000001', '2024-04-20 00:38:00', 'LOGIN'),
+('LOG0000003', 'USE0000001', '2024-04-20 00:40:14', 'LOGIN'),
+('LOG0000004', 'USE0000001', '2024-04-20 01:41:26', 'LOGIN'),
+('LOG0000005', 'USE0000001', '2024-04-20 01:42:24', 'LOGIN');
 
 -- --------------------------------------------------------
 
@@ -211,7 +237,12 @@ INSERT INTO `orders` (`ORDER_ID`, `USER_ID`, `DATE_CREATED`, `NOTE`, `CUSTOMER_I
 ('ORD0000029', 'USE0000001', '2024-04-08 13:51:24', '8', 'CUS0000011'),
 ('ORD0000030', 'USE0000001', '2024-04-08 22:41:15', '9', 'CUS0000011'),
 ('ORD0000031', 'USE0000001', '2024-04-08 23:44:42', '10', 'CUS0000011'),
-('ORD0000032', 'USE0000001', '2024-04-09 00:09:16', '11', 'CUS0000011');
+('ORD0000032', 'USE0000001', '2024-04-09 00:09:16', '11', 'CUS0000011'),
+('ORD0000033', 'USE0000001', '2024-04-09 15:08:02', '12', 'CUS0000011'),
+('ORD0000034', 'USE0000001', '2024-04-18 19:59:29', '13', 'CUS0000011'),
+('ORD0000035', 'USE0000001', '2024-04-18 20:27:34', '14', 'CUS0000011'),
+('ORD0000036', 'USE0000001', '2024-04-18 20:31:44', '15', 'CUS0000011'),
+('ORD0000037', 'USE0000001', '2024-04-18 20:50:31', '16', 'CUS0000011');
 
 -- --------------------------------------------------------
 
@@ -302,7 +333,14 @@ INSERT INTO `order_details` (`ORDER_DETAILS_ID`, `ORDER_ID`, `PRODUCT_ID`, `QUAN
 ('ODT0000072', 'ORD0000030', 'PRO0000011', 2),
 ('ODT0000073', 'ORD0000030', 'PRO0000012', 2),
 ('ODT0000074', 'ORD0000031', 'PRO0000005', 1),
-('ODT0000075', 'ORD0000032', 'PRO0000011', 1);
+('ODT0000075', 'ORD0000032', 'PRO0000011', 1),
+('ODT0000076', 'ORD0000033', 'PRO0000003', 1),
+('ODT0000077', 'ORD0000033', 'PRO0000002', 1),
+('ODT0000078', 'ORD0000034', 'PRO0000011', 2),
+('ODT0000079', 'ORD0000034', 'PRO0000012', 2),
+('ODT0000080', 'ORD0000035', 'PRO0000012', 1),
+('ODT0000081', 'ORD0000036', 'PRO0000008', 3),
+('ODT0000082', 'ORD0000037', 'PRO0000008', 4);
 
 -- --------------------------------------------------------
 
@@ -354,7 +392,12 @@ INSERT INTO `payment` (`PAYMENT_ID`, `PAYMENT_METHOD_ID`, `total_amount`, `chang
 ('PAY0000029', 'PMM0000003', 134.96, 5865.04, '2024-04-08 13:51:24'),
 ('PAY0000030', 'PMM0000002', 6400, 600, '2024-04-08 22:41:15'),
 ('PAY0000031', 'PMM0000002', 14.99, 585.01, '2024-04-08 23:44:42'),
-('PAY0000032', 'PMM0000002', 200, 400, '2024-04-09 00:09:16');
+('PAY0000032', 'PMM0000002', 200, 400, '2024-04-09 00:09:16'),
+('PAY0000033', 'PMM0000002', 40.48, 9.52, '2024-04-09 15:08:02'),
+('PAY0000034', 'PMM0000002', 6400, 0, '2024-04-18 19:59:29'),
+('PAY0000035', 'PMM0000002', 3000, 0, '2024-04-18 20:27:34'),
+('PAY0000036', 'PMM0000002', 23.97, 0.03, '2024-04-18 20:31:44'),
+('PAY0000037', 'PMM0000002', 31.96, 0.04, '2024-04-18 20:50:31');
 
 -- --------------------------------------------------------
 
@@ -403,17 +446,17 @@ CREATE TABLE `product` (
 
 INSERT INTO `product` (`PRODUCT_ID`, `NAME`, `DESCRIPTION`, `QTY_STOCK`, `price`, `CATEGORY_ID`, `image`, `retail_price`, `DATE_CREATED`, `barcode`) VALUES
 ('PRO0000001', 'Laptop', 'High-performance laptop', 8, 999.99, 1, 'PRO0000001.png', 1099.99, '2023-12-19 07:52:27', 'PRO0000001_barcode.png'),
-('PRO0000002', 'T-shirt', 'Cotton T-shirt', 46, 19.99, 2, 'PRO0000002.png', 24.99, '2023-12-19 07:52:27', 'PRO0000002_barcode.png'),
-('PRO0000003', 'Book', 'Bestseller novel', 11, 14.99, 3, 'PRO0000003.png', 19.99, '2023-12-19 07:52:27', 'PRO0000003_barcode.png'),
+('PRO0000002', 'T-shirt', 'Cotton T-shirt', 45, 19.99, 2, 'PRO0000002.png', 24.99, '2023-12-19 07:52:27', 'PRO0000002_barcode.png'),
+('PRO0000003', 'Book', 'Bestseller novel', 10, 14.99, 3, 'PRO0000003.png', 19.99, '2023-12-19 07:52:27', 'PRO0000003_barcode.png'),
 ('PRO0000004', 'Vase', 'Elegant home decor', 12, 49.99, 4, 'PRO0000004.png', 69.99, '2023-12-19 07:52:27', 'PRO0000004_barcode.png'),
 ('PRO0000005', 'Lipstick', 'Matte finish', 25, 9.99, 5, 'PRO0000005.png', 14.99, '2023-12-19 07:52:27', 'PRO0000005_barcode.png'),
 ('PRO0000006', 'Running Shoes', 'Comfortable running shoes', 15, 79.99, 6, 'PRO0000006.png', 99.99, '2023-12-19 07:52:27', 'PRO0000006_barcode.png'),
 ('PRO0000007', 'Toy Car', 'Remote-controlled car', 39, 29.99, 7, 'PRO0000007.png', 39.99, '2023-12-19 07:52:27', 'PRO0000007_barcode.png'),
-('PRO0000008', 'Chocolate', 'Assorted chocolates', 49, 4.99, 8, 'PRO0000008.png', 7.99, '2023-12-19 07:52:27', 'PRO0000008_barcode.png'),
+('PRO0000008', 'Chocolate', 'Assorted chocolates', 42, 4.99, 8, 'PRO0000008.png', 7.99, '2023-12-19 07:52:27', 'PRO0000008_barcode.png'),
 ('PRO0000009', 'Coffee Table', 'Modern furniture', 7, 199.99, 9, 'PRO0000009.png', 249.99, '2023-12-19 07:52:27', 'PRO0000009_barcode.png'),
 ('PRO0000010', 'Diamond Ring', '18k gold', 4, 499.99, 10, 'PRO0000010.png', 699.99, '2023-12-19 07:52:27', 'PRO0000010_barcode.png'),
-('PRO0000011', 'Pant', 'This is pants from UK', 95, 100, 2, 'PRO0000011.png', 200, '2023-12-25 17:02:57', 'PRO0000011_barcode.png'),
-('PRO0000012', 'MacBook Air Pro', 'Mac Book Air Black', 47, 2000, 1, 'PRO0000012.png', 3000, '2023-12-26 09:25:31', 'PRO0000012_barcode.png');
+('PRO0000011', 'Pant', 'This is pants from UK', 93, 100, 2, 'PRO0000011.png', 200, '2023-12-25 17:02:57', 'PRO0000011_barcode.png'),
+('PRO0000012', 'MacBook Air Pro', 'Mac Book Air Black', 44, 2000, 1, 'PRO0000012.png', 3000, '2023-12-26 09:25:31', 'PRO0000012_barcode.png');
 
 -- --------------------------------------------------------
 
@@ -500,7 +543,12 @@ INSERT INTO `transaction` (`TRANSACTION_ID`, `PAYMENT_ID`, `STATUS`, `ORDER_ID`)
 ('TRA0000029', 'PAY0000029', 'Completed', 'ORD0000029'),
 ('TRA0000030', 'PAY0000030', 'Completed', 'ORD0000030'),
 ('TRA0000031', 'PAY0000031', 'Completed', 'ORD0000031'),
-('TRA0000032', 'PAY0000032', 'Completed', 'ORD0000032');
+('TRA0000032', 'PAY0000032', 'Completed', 'ORD0000032'),
+('TRA0000033', 'PAY0000033', 'Completed', 'ORD0000033'),
+('TRA0000034', 'PAY0000034', 'Completed', 'ORD0000034'),
+('TRA0000035', 'PAY0000035', 'Completed', 'ORD0000035'),
+('TRA0000036', 'PAY0000036', 'Completed', 'ORD0000036'),
+('TRA0000037', 'PAY0000037', 'Completed', 'ORD0000037');
 
 -- --------------------------------------------------------
 
@@ -538,7 +586,8 @@ INSERT INTO `user` (`USER_ID`, `FIRST_NAME`, `LAST_NAME`, `EMAIL`, `PHONE_NUMBER
 ('USE0000010', 'Eva', 'Green', 'eva.green@example.com', '555-eva', 'Tỉnh Lào Cai', 'user_profile.png', 'ACC0000010', '1991-04-12', 'Female'),
 ('USE0000011', 'Tạ', 'Tiến Đạt', 'tadat290903@gmail.com', '0356779197', 'Tỉnh Bắc Ninh', 'user_profile.png', 'ACC0000011', '2024-01-01', 'Male'),
 ('USE0000012', 'Tạ', 'Tiến Đạt', 'jakejohn3004@gmail.com', '0123456789', 'Tỉnh Bến Tre', 'user_profile.png', 'ACC0000012', '2024-03-13', 'Male'),
-('USE0000013', 'Tạ', 'Tiến Đạt', 'tiendat79197@gmail.com', '0213654789', 'Thành phố Hồ Chí Minh', 'user_profile.png', 'ACC0000013', '2024-03-07', 'Male');
+('USE0000013', 'Tạ', 'Tiến Đạt', 'tiendat79197@gmail.com', '0213654789', 'Thành phố Hồ Chí Minh', 'user_profile.png', 'ACC0000013', '2024-03-07', 'Male'),
+('USE0000014', 'Tạ', 'Tiến Đạt', 'tadat290903@gmail.com', '0356779197', 'Tỉnh Bến Tre', 'user_profile.png', 'ACC0000014', '2024-04-04', 'Male');
 
 -- --------------------------------------------------------
 
@@ -606,6 +655,12 @@ ALTER TABLE `customers`
 --
 ALTER TABLE `customers_voucher`
   ADD PRIMARY KEY (`CUSTOMER_VOUCHER_ID`,`VOUCHER_ID`,`CUSTOMER_ID`);
+
+--
+-- Indexes for table `log_history`
+--
+ALTER TABLE `log_history`
+  ADD PRIMARY KEY (`LOG_ID`);
 
 --
 -- Indexes for table `orders`

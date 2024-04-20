@@ -40,7 +40,7 @@ public class LogHistoryService {
     @EventListener
     public void handleLogoutSuccess(LogoutSuccessEvent event) {
 //        String username = event.getAuthentication().getName();
-        MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        MyUserDetail myUserDetail = (MyUserDetail) event.getAuthentication().getPrincipal();
         String user_id = myUserDetail.getCombinedUser().getUser().getUser_id();
         Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
         LogManager logManager = LogManager.getInstance();
