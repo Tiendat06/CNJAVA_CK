@@ -1,11 +1,13 @@
 package com.java.controllers;
 
 
+import com.java.config.singleton.LogManager;
 import com.java.controllers.ChainOfResponsibility.EmptyPasswordHandler;
 import com.java.controllers.ChainOfResponsibility.MinLengthPasswordHandler;
 import com.java.controllers.ChainOfResponsibility.PasswordHandler;
 import com.java.controllers.ChainOfResponsibility.PasswordMatchHandler;
 import com.java.models.Account;
+import com.java.models.LogHistory;
 import com.java.models.MyUserDetail;
 import com.java.repository.AccountRepository;
 import com.java.service.log.LogHistoryService;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -81,6 +84,13 @@ public class LogController {
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
+            MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String user_id = myUserDetail.getCombinedUser().getUser().getUser_id();
+            Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+            LogManager logManager = LogManager.getInstance();
+            String log_id = logHistoryService.AUTO_LOG_ID();
+
+            logManager.setLog(new LogHistory(log_id, user_id, currentTimestamp, "LOGOUT"));
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
 

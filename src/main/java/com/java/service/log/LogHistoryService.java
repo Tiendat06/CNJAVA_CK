@@ -37,17 +37,16 @@ public class LogHistoryService {
         logManager.setLog(new LogHistory(log_id, user_id, currentTimestamp, "LOGIN"));
     }
 
-    @EventListener
-    public void handleLogoutSuccess(LogoutSuccessEvent event) {
-//        String username = event.getAuthentication().getName();
-        MyUserDetail myUserDetail = (MyUserDetail) event.getAuthentication().getPrincipal();
-        String user_id = myUserDetail.getCombinedUser().getUser().getUser_id();
-        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
-        LogManager logManager = LogManager.getInstance();
-        String log_id = AUTO_LOG_ID();
-
-        logManager.setLog(new LogHistory(log_id, user_id, currentTimestamp, "LOGOUT"));
-    }
+//    @EventListener
+//    public void handleLogoutSuccess(LogoutSuccessEvent event) {
+//        MyUserDetail myUserDetail = (MyUserDetail) event.getAuthentication().getPrincipal();
+//        String user_id = myUserDetail.getCombinedUser().getUser().getUser_id();
+//        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+//        LogManager logManager = LogManager.getInstance();
+//        String log_id = AUTO_LOG_ID();
+//
+//        logManager.setLog(new LogHistory(log_id, user_id, currentTimestamp, "LOGOUT"));
+//    }
 
     public String AUTO_LOG_ID(){
         String maxID = logHistoryRepository.maxID();
