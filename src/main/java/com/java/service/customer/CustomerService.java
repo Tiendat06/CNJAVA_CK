@@ -9,6 +9,9 @@ import com.java.service.adapter_v1.ProvinceAPIAdapter;
 import com.java.service.adapter_v1.ThirdPartyAdaptee;
 import com.java.service.customer.proxy.ICustomerService;
 import com.java.service.customer.singleton.EMailSender;
+import com.java.service.user.command.ConfirmOrderMailSenderCommand;
+import com.java.service.user.command.ICommand;
+import com.java.service.user.command.MailSenderInvoker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -61,8 +64,13 @@ public class CustomerService implements ICustomerService {
         String to = customer.getCustomer_email();
         String subject = "Invoice Verification";
 
-        EMailSender eMailSender = EMailSender.getInstance();
-        eMailSender.sendMail(from, to, subject, orderListCus, customer, mailSender, voucher_name, total_amount);
+        ICommand cmd = new ConfirmOrderMailSenderCommand(mailSender, customer, voucher_name, total_amount, orderListCus);
+        MailSenderInvoker invoker = new MailSenderInvoker();
+        invoker.setCommand(cmd);
+        invoker.execute();
+
+//        EMailSender eMailSender = EMailSender.getInstance();
+//        eMailSender.sendMail(from, to, subject, orderListCus, customer, mailSender, voucher_name, total_amount);
     }
 
     public List<String> getProvinceAPI() throws IOException {

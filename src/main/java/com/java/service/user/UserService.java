@@ -10,8 +10,8 @@ import com.java.service.user.adapter.IXLSXReport;
 import com.java.service.user.adapter.XLSXReport;
 import com.java.service.user.adapter.CSVReportAdapter;
 import com.java.service.user.command.ICommand;
-import com.java.service.user.command.MailSenderCommand;
-import jakarta.mail.internet.MimeMessage;
+import com.java.service.user.command.MailSenderInvoker;
+import com.java.service.user.command.VerifyAccountMailSenderCommand;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,7 +19,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -97,38 +96,42 @@ public class UserService {
 
     public void sendEmail(User user, String url) {
 
-        String from = "phanluonghuy4623@gmail.com";
-        String to = user.getEmail();
-        String subject = "Account Verfication";
-        String content = "Dear [[name]],<br>" + "Please click the link below to verify your registration:<br>"
-                + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>" + "Thank you,<br>" + "Final Project with love <3";
+//        String from = "phanluonghuy4623@gmail.com";
+//        String to = user.getEmail();
+//        String subject = "Account Verfication";
+//        String content = "Dear [[name]],<br>" + "Please click the link below to verify your registration:<br>"
+//                + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>" + "Thank you,<br>" + "Final Project with love <3";
+//
+//        try {
+//
+//            MimeMessage message = mailSender.createMimeMessage();
+//            MimeMessageHelper helper = new MimeMessageHelper(message);
+//
+//            helper.setFrom(from, "Final Project");
+//            helper.setTo(to);
+//            helper.setSubject(subject);
+//
+//            content = content.replace("[[name]]", user.getFirst_name() + " " + user.getLast_name());
+//            String siteUrl = url + "/log/verify?code=" + accountRepository.findVerifyCodeByUserId(user.getUser_id());
+//
+//            System.out.println(siteUrl);
+//
+//            content = content.replace("[[URL]]", siteUrl);
+//
+//            helper.setText(content, true);
 
-        try {
-
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message);
-
-            helper.setFrom(from, "Final Project");
-            helper.setTo(to);
-            helper.setSubject(subject);
-
-            content = content.replace("[[name]]", user.getFirst_name() + " " + user.getLast_name());
-            String siteUrl = url + "/log/verify?code=" + accountRepository.findVerifyCodeByUserId(user.getUser_id());
-
-            System.out.println(siteUrl);
-
-            content = content.replace("[[URL]]", siteUrl);
-
-            helper.setText(content, true);
+            String verifyCode = accountRepository.findVerifyCodeByUserId(user.getUser_id());
 
 //            mailSender.send(message);
 
             // COMMAND PATTERN
-            ICommand cmd = new MailSenderCommand(mailSender, message);
-            cmd.execute();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            ICommand cmd = new VerifyAccountMailSenderCommand(mailSender, user, url, verifyCode);
+            MailSenderInvoker invoker = new MailSenderInvoker();
+            invoker.setCommand(cmd);
+            invoker.execute();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
     }
 

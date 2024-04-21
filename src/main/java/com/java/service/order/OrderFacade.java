@@ -137,7 +137,7 @@ public class OrderFacade {
             List<Object[]> orderListCus = ordersService.getOrderOfCustomerInHome(myUserDetail.getCombinedUser().getUser().getUser_id());
 
             //        send mail confirm invoice
-//            customerService.sendMailConfirm(orderListCus, customer, voucher_name, String.valueOf(total_amount));
+            customerService.sendMailConfirm(orderListCus, customer, voucher_name, String.valueOf(total_amount));
 
             if (order_id.isPresent()){
                 Optional<String> checkCusFirst = customerService.customerRepository.checkIsFirstCustomer(customer.getCustomer_id());
