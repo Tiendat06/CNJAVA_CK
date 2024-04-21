@@ -12,6 +12,6 @@ import java.util.Optional;
 @Repository
 public interface VoucherRepository extends JpaRepository<Voucher, Integer> {
 
-    @Query("select v from voucher v where v.voucher_id = :id")
+    @Query("select v.voucher_name from voucher v where v.voucher_id = :id")
     String findVoucherNameByVoucherId(@Param("id") int id);
 }

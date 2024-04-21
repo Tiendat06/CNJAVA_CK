@@ -12,7 +12,7 @@ public class VoucherStrategy {
         this.iStrategy = strategy;
     }
 
-    public double calculateVoucher(double price, int discount){
-        return iStrategy.calculateVoucher(price, discount);
+    public double calculateVoucher(double price){
+        return iStrategy.calculateVoucher(price);
     }
 }

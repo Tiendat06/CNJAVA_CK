@@ -44,7 +44,7 @@ public class ConfirmOrderMailSenderCommand implements ICommand{
             }
 
             if (!this.voucher_name.isEmpty()){
-                content += "<p style='margin-bottom: 0;'>"+ this.voucher_name +"</p>";
+                content += "<p style='margin-bottom: 0;'>Voucher: "+ this.voucher_name +"</p>";
             }
 
             content += "Total bill: " + total_amount + "$<br>Thank you,<br>" + "Final Project with love <3";

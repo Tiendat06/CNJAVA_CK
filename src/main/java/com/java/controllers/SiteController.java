@@ -280,15 +280,17 @@ public class SiteController implements ErrorController {
         Optional<Object[]> totalBill = ordersService.totalBillInHome(myUserDetail.getCombinedUser().getUser().getUser_id());
 //        System.out.println(totalBill.get()[0]);
 //        Object totalBills = totalBill.get()[0];
+//        System.out.println(totalBill.get()[0]);
         double totalBillInDouble = 0.0;
-        if (totalBill.get()[0] != null){
-            totalBillInDouble = (double) totalBill.get()[0];
-        }else{
+        if (totalBill.isPresent()){
+            if (totalBill.get()[0] != null){
+                totalBillInDouble = (double) totalBill.get()[0];
+            }else{
+                totalBillInDouble = 0.0;
+            }
+        } else{
             totalBillInDouble = 0.0;
         }
-
-//        System.out.println(totalBills);
-
 
 //        ADAPTER PATTERN (TTD)
         List<String> provinceAPI = customerService.getProvinceAPI();
@@ -310,17 +312,14 @@ public class SiteController implements ErrorController {
                 VoucherStrategy voucherStrategy = new VoucherStrategy();
                 if (voucher.get().getVoucher_id() == 1){
                     iStrategy = new HAPPY10Voucher();
-                    voucherStrategy.setStrategy(iStrategy);
-                    totalBillInDouble = voucherStrategy.calculateVoucher((double)totalBill.get()[0], voucher_discount);
                 } else if(voucher.get().getVoucher_id() == 2){
                     iStrategy = new HAPPY20Voucher();
-                    voucherStrategy.setStrategy(iStrategy);
-                    totalBillInDouble = voucherStrategy.calculateVoucher((double)totalBill.get()[0], voucher_discount);
                 }else if(voucher.get().getVoucher_id() == 3){
                     iStrategy = new HAPPY30Voucher();
-                    voucherStrategy.setStrategy(iStrategy);
-                    totalBillInDouble = voucherStrategy.calculateVoucher((double)totalBill.get()[0], voucher_discount);
                 }
+                voucherStrategy.setStrategy(iStrategy);
+                totalBillInDouble = voucherStrategy.calculateVoucher(totalBillInDouble);
+//                System.out.println(totalBillInDouble);
 
                 if (voucher.isPresent()){
                     model.addAttribute("voucherName", voucher.get().getVoucher_name());
@@ -612,17 +611,13 @@ public class SiteController implements ErrorController {
                     VoucherStrategy voucherStrategy = new VoucherStrategy();
                     if (voucher.get().getVoucher_id() == 1){
                         iStrategy = new HAPPY10Voucher();
-                        voucherStrategy.setStrategy(iStrategy);
-                        totalMoney = (float) voucherStrategy.calculateVoucher(totalMoney, voucher_discount);
                     } else if(voucher.get().getVoucher_id() == 2){
                         iStrategy = new HAPPY20Voucher();
-                        voucherStrategy.setStrategy(iStrategy);
-                        totalMoney = (float) voucherStrategy.calculateVoucher(totalMoney, voucher_discount);
                     } else if(voucher.get().getVoucher_id() == 3){
                         iStrategy = new HAPPY30Voucher();
-                        voucherStrategy.setStrategy(iStrategy);
-                        totalMoney = (float) voucherStrategy.calculateVoucher(totalMoney, voucher_discount);
                     }
+                    voucherStrategy.setStrategy(iStrategy);
+                    totalMoney = (float) voucherStrategy.calculateVoucher(totalMoney);
 
                     if (voucher.isPresent()){
                         model.addAttribute("voucherName", voucher.get().getVoucher_name());

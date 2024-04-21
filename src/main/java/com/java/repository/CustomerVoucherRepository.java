@@ -22,7 +22,7 @@ public interface CustomerVoucherRepository extends JpaRepository<CustomerVoucher
         });
     }
 
-    @Query("select csv from customers_voucher csv where csv.customer_id = :cus_id and csv.voucher_id = :voucher_id")
+    @Query("select csv from customers_voucher csv where csv.customer_id = :cus_id and csv.voucher_id = :voucher_id and csv.date_used is null")
     Optional<CustomerVoucher> findCustomerVoucherByCusIdAndVoucherId(@Param("cus_id") String customer_id, @Param("voucher_id") int voucher_id);
 
     @Query("select sum(CAST(v.voucher_discount as BIGDECIMAL ) ) from customers_voucher csv, voucher v " +
