@@ -43,7 +43,7 @@ public class PDFReportExporter extends ReportExporter {
 
     @Override
     public void loggingAction(String orderID) {
-        final Logger logger = (Logger) LoggerFactory.getLogger(ReportExporter.class);
+        final Logger logger = (Logger) LoggerFactory.getLogger(PDFReportExporter.class);
         logger.info("Logging orderID: {}", orderID);
 
     }

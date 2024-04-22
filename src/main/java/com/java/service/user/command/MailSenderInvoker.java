@@ -5,6 +5,7 @@ import java.util.Queue;
 
 public class MailSenderInvoker {
     private final Queue<ICommand> commands;
+
     public MailSenderInvoker(){
         this.commands = new LinkedList<>();
     }
