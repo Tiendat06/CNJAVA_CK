@@ -1,9 +1,11 @@
 package com.java.models;
 
+import ch.qos.logback.classic.Logger;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.VerticalPositionMark;
 import com.java.service.customer.CustomerService;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,13 +14,12 @@ import java.io.ByteArrayOutputStream;
 
 public class PDFReportExporter extends ReportExporter {
 
-
     public PDFReportExporter(String orderID, CustomerService.OrdersService ordersService) {
         super(orderID, ordersService);
     }
 
     @Override
-    protected ResponseEntity<byte[]> export(VatReport vatReport) {
+    public ResponseEntity<byte[]> export(VatReport vatReport) {
         try {
 
             ByteArrayOutputStream baos = createInvoicePdf(vatReport);
@@ -41,7 +42,9 @@ public class PDFReportExporter extends ReportExporter {
     }
 
     @Override
-    protected void loggingAction(String orderID) {
+    public void loggingAction(String orderID) {
+        final Logger logger = (Logger) LoggerFactory.getLogger(ReportExporter.class);
+        logger.info("Logging orderID: {}", orderID);
 
     }
     private ByteArrayOutputStream createInvoicePdf(VatReport vatReport) throws DocumentException {

@@ -1,15 +1,8 @@
 package com.java.models;
 
-import com.itextpdf.text.DocumentException;
 import com.java.service.customer.CustomerService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.xml.bind.JAXBException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +24,7 @@ public abstract class ReportExporter {
         return export(vatReport);
     }
 
-    protected VatReport prepareVATInformation() {
+    public VatReport prepareVATInformation() {
         List<Object[]> odtList = ordersService.getAllOrderListDetails(orderID);
         Object[] odtDetail = (Object[]) ordersService.getOrderByOrderID(orderID);
         Timestamp timestamp = (Timestamp) odtDetail[1];
@@ -63,8 +56,8 @@ public abstract class ReportExporter {
         return vatReport;
     }
 
-    protected abstract ResponseEntity<byte[]> export(VatReport vatReport);
+    public abstract ResponseEntity<byte[]> export(VatReport vatReport);
 
-    protected abstract void loggingAction(String orderID);
+    public abstract void loggingAction(String orderID);
 }
 

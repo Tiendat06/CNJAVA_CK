@@ -160,6 +160,12 @@
 			<version>5.6</version> <!-- Use the latest version -->
 		</dependency>
 
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>

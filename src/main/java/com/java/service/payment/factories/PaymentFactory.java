@@ -12,8 +12,6 @@ import java.util.Map;
 @Component
 public class PaymentFactory {
 
-//    @Autowired
-//    private Map<String, PaymentProcessor> processors;
     @Autowired
     public PaypalProcessor paypalProcessor;
     @Autowired

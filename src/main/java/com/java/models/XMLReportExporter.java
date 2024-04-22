@@ -1,12 +1,15 @@
 package com.java.models;
 
+import ch.qos.logback.classic.Logger;
 import com.java.service.customer.CustomerService;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 
 import java.io.ByteArrayOutputStream;
+
 
 public class XMLReportExporter extends ReportExporter {
 
@@ -15,7 +18,7 @@ public class XMLReportExporter extends ReportExporter {
     }
 
     @Override
-    protected ResponseEntity<byte[]> export(VatReport vatReport) {
+    public ResponseEntity<byte[]> export(VatReport vatReport) {
         // Use JAXB to convert VAT report object to XML string
         JAXBContext jaxbContext = null;
         try {
@@ -41,7 +44,8 @@ public class XMLReportExporter extends ReportExporter {
     }
 
     @Override
-    protected void loggingAction(String orderID) {
-
+    public void loggingAction(String orderID) {
+        final Logger logger = (Logger) LoggerFactory.getLogger(XMLReportExporter.class);
+        logger.info("Logging orderID: {}", orderID);
     }
 }
