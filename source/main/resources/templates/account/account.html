@@ -1,0 +1,101 @@
+<div th:fragment="account">
+    <div class="main-content-user">
+        <p style="font-size: 1.6rem">Account Management</p>
+    </div>
+
+<!--    <div class="main-content-user__button text-light p-3 w-100 text-right" style="">-->
+<!--        <button type="submit" class="btn btn-primary text-light pt-2 pl-3 pr-3 pb-2 bg-primary">-->
+<!--            <i style="background-color: white" class="text-light bg-primary fa-solid fa-user-gear"></i>-->
+<!--            Add user-->
+<!--        </button>-->
+<!--    </div>-->
+
+    <div style="" class="main-content-user__manage pt-3 pl-4 pr-4">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="main-content-user__manage-title">
+                    <h5 class="main-content-user__manage-heading pb-3">
+                        Authorization table
+                    </h5>
+                </div>
+
+                <table class="main-content-user__table table table-striped table-bordered table-hover">
+                    <thead class="main-content-user__thead text-white text-center">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Full name</th>
+                        <th scope="col">Manager</th>
+                        <th scope="col">Sales</th>
+                        <th scope="col">Lock</th>
+                        <th scope="col">Verified</th>
+                        <th scope="col">Resend Mail</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="tbody-account">
+                    <th:block th:each="a, itemStat: ${accList}">
+                        <tr>
+                            <th scope="row">[[${itemStat.index + 1}]]</th>
+                            <td>
+                                <img style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover" th:src="@{/img/user_profile.png}" alt="" srcset="">
+                                [[${a[2]}]] [[${a[3]}]]
+                            </td>
+                            <td class="text-center">
+<!--                                 btn btn-outline-secondary main-content-account__role-action -->
+                                <a th:href="@{/account/{accID}/Admin(accID=${a[5]})}" th:class="${a[1] == 'Admin' and a[0] == true} ? 'bg-primary-new text-light btn btn-outline-secondary main-content-account--role-action': 'btn btn-outline-secondary main-content-account--role-action' ">
+                                    <i class="fa-solid fa-user-tie"></i>
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a th:href="@{/account/{accID}/Staff(accID=${a[5]})}" style="width: 45px; height: 42px" th:class="${a[1] == 'Staff' and a[0] == true} ? 'bg-primary-new text-light btn btn-outline-secondary main-content-account--role-action': 'btn btn-outline-secondary main-content-account--role-action'">
+                                    <i class="fa-solid fa-users"></i>
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a th:href="@{/account/lock/{accID}/{lock}(accID=${a[5]},lock=${a[0]})}" th:class="${not a[0]} ? 'bg-danger text-light btn btn-outline-secondary main-content-account--role-action': 'btn btn-outline-secondary main-content-account--role-action'">
+                                    <i class="fa-solid fa-lock"></i>
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a href="" th:class="${not a[6]} ? 'bg-danger text-light btn btn-outline-secondary main-content-account--role-action': 'bg-success-new text-light btn btn-outline-secondary main-content-account--role-action'">
+                                    <i class="fa-solid fa-key"></i>
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a style="width: 43px; height: 41px" th:href="@{/account/sendEmail/{accID}(accID=${a[5]})}" class="btn btn-outline-secondary main-content-account--role-action">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </th:block>
+                    <script>
+                        // alert("hiiii")
+                    </script>
+                    </tbody>
+                </table>
+
+                <ul style="float: right; cursor: pointer" th:if="${accList.totalPages > 1}" class="pagination">
+                    <li class="page-item">
+                        <a th:if="${accList.hasPrevious()}" th:data-page_number="@{'/account/' + ${accList.previousPageable().pageNumber + 1}}" class="page-link">Previous</a>
+                    </li>
+                    <li th:each="pageNumber : ${#numbers.sequence(0, accList.totalPages - 1)}" class="page-item">
+                        <a th:data-page_number="@{'/account/' + ${pageNumber + 1}}"
+                           th:text="${pageNumber + 1}"
+                           th:class="${pageNumber + 1 == accList.number ? 'active page-link' : 'page-link'}">
+                        </a>
+                    </li>
+
+                    <li class="page-item">
+                        <a th:if="${accList.hasNext()}" th:data-page_number="@{'/account/' + ${accList.nextPageable().pageNumber + 1}}" class="page-link">Next</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        jsInAccount()
+
+    </script>
+
+</div>

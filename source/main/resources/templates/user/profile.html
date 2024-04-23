@@ -1,0 +1,132 @@
+<div th:fragment="profile">
+    <th:block th:each="u: ${userInfo}">
+    <form th:action="@{/user/profile/update}" method="post" enctype="multipart/form-data" class="d-flex flex-wrap">
+
+    <div class="col-lg-4" style="position: relative">
+        <div style="" class="bg--outside main-profile__top-side"></div>
+
+        <input type="hidden" name="user_id" th:value="${u[10]}">
+        <div style="" class="main-profile__img text-center">
+            <label for="fileInput">
+                <img id="profile-img" style="width: 100px; height: 100px; border-radius: 50%; z-index: 1; object-fit: cover" th:src="@{/img/{image}(image=${u[7]})}" alt="" srcset="">
+            </label>
+<!--            <label for="fileInput">-->
+<!--                <img id="profile-img" style="width: 100px; height: 100px; border-radius: 50%; z-index: 1; object-fit: cover" th:src="@{/img/{image}(image=${u[7]})}" alt="" srcset="">-->
+<!--            </label>-->
+            <input type="file" name="fileImg" id="fileInput" style="display: none;" accept="image/*" onchange="handleUploadImg()">
+
+        </div>
+        <div style="" class="main-profile__bottom-side">
+            <div style="padding-top: 4rem" class="form-group w-100 d-flex flex-wrap justify-content-center text-center">
+                <h5 class="col-lg-12 mb-3">[[${u[0]}]] [[${u[1]}]]</h5>
+                <div style="color: #838383;border-radius: 10px; padding: 2px" class="main-profile__bottom-side--role text-light bg-success w-25 text-center mb-2">
+                    <small>[[${u[9]}]]</small>
+                </div>
+                <small style="color: #838383" class="col-lg-12 mb-2">[[${u[6]}]]</small>
+                <small style="color: #838383" class="col-lg-12">[[${u[4]}]]</small>
+            </div>
+        </div>
+    </div>
+
+    <div style="" class="col-lg-8">
+        <div style="background-color: white; border-radius: 10px" class="main-home-profile__edit p-4 d-flex flex-wrap">
+            <div class="form-group col-lg-6 login-form--info">
+                <label class="login-form__label" for="firstname">First name</label>
+                <input class="form-control login-form__input" th:value="${u[0]}" type="text" name="firstname" id="firstname" placeholder="First name" required>
+            </div>
+
+            <div class="form-group col-lg-6 login-form--info">
+                <label class="login-form__label" for="lastname">Last name</label>
+                <input class="form-control login-form__input" th:value="${u[1]}" type="text" name="lastname" id="lastname" placeholder="Last name" required>
+            </div>
+
+            <div class="form-group col-lg-6 login-form--info">
+                <label class="login-form__label" for="gender">Gender</label>
+                <select name="gender" class="form-control" id="gender">
+                    <option class="login-form__label" value="none">--Choose gender--</option>
+                    <option class="login-form__label" th:selected="${u[2] == 'Male'}" value="Male">Male</option>
+                    <option class="login-form__label" th:selected="${u[2] == 'Female'}" value="Female">Female</option>
+                </select>
+            </div>
+
+            <div class="form-group col-lg-6 login-form--info">
+                <label class="login-form__label" for="date">Birthday</label>
+                <input class="form-control login-form__label login-form__input" th:value="${u[3]}" type="date" name="date" id="date" placeholder="Address" required>
+            </div>
+
+            <div class="form-group col-lg-12 login-form--info">
+                <label class="login-form__label" for="email">Email</label>
+                <input class="form-control login-form__input" th:value="${u[4]}" type="email" name="email" id="email" placeholder="Email" required>
+            </div>
+
+            <div class="form-group col-lg-12 login-form--info">
+                <label class="login-form__label" for="address">Address</label>
+                <input class="form-control login-form__input" th:value="${u[5]}" type="text" name="address" id="address" placeholder="Address" required>
+            </div>
+
+            <div class="form-group col-lg-12 login-form--info">
+                <label class="login-form__label" for="phone">Phone number</label>
+                <input class="form-control login-form__input" th:value="${u[6]}" type="number" name="phone" id="phone" placeholder="Phone number" required>
+            </div>
+
+            <div th:unless='${add_success == ""}' class="alert col-lg-12 col-md-12 col-sm-12 main-profile__error">
+                <div class="alert alert-info text-center main-profile__error--inner">
+                    <p class="mb-0 main-profile__error--para">[[${add_success}]]</p>
+                </div>
+            </div>
+
+            <div class="main-home-profile__btn col-lg-12 text-right">
+                <a data-toggle="modal" data-target="#edit-user" class="btn btn-primary"
+                        th:data-id="${u[10]}"
+                        th:data-firstname="${u[0]}"
+                        th:data-lastname="${u[1]}"
+                        th:data-gender="${u[2]}"
+                        th:data-birthday="${u[3]}"
+                        th:data-email="${u[4]}"
+                        th:data-address="${u[5]}"
+                        th:data-phone="${u[6]}"
+                        th:data-img="${u[7]}" >Update
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="modal fade" tabindex="-1"  id="edit-user">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Update Confirmation</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <!-- ID item đc click gắn ở đây, kéo lên mục delete chỉnh lại data-id -->
+                            <input type="hidden" name="userIdEdit" id="userId-edit" value="">
+
+                            <p>Are you sure to update these information ?</p>
+
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn-show-details btn btn-primary">Update</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+    </form>
+    </th:block>
+
+</div>
+<script>
+    jsInSettings()
+</script>

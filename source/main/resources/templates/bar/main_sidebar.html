@@ -1,0 +1,74 @@
+<div th:fragment="main_sidebar">
+
+    <div class="main-sidebar" style="background-color: white; min-height: 100%; border-right: 0.5px solid #ccc">
+        <ul class="main-sidebar__list">
+<!--            <a th:href="@{${condition == true} ? '/path1' : '/path2'}">Click me</a>-->
+<!--            comment-->
+            <a th:href="@{/1}" class="main-sidebar__item d-block" style="color: #525252">
+                <i style="background-color: white" class="main-sidebar__item--icon p-3 bg-light fa-solid fa-house"></i>
+                <p class="mb-0 mt-1">Home</p>
+            </a>
+            <th:block th:if="${#strings.contains(#authentication.principal.authorities,'Admin')}">
+            <a th:href="@{/user/1}" class="main-sidebar__item d-block" style="color: #525252">
+                <i style="background-color: white" class="main-sidebar__item--icon p-3 bg-light fa-solid fa-user-gear"></i>
+                <p class="mb-0 mt-1">User</p>
+            </a>
+            <a th:href="@{/account/1}" class="main-sidebar__item d-block" style="color: #525252">
+                <i style="background-color: white" class="main-sidebar__item--icon p-3 bg-light fa-solid fa-users-gear"></i>
+                <p class="mb-0 mt-1">Account</p>
+            </a>
+
+<!--            <a th:href="@{/payment/email/1}" class="main-sidebar__item d-block" style="color: #525252">-->
+<!--                <i style="background-color: white" class="main-sidebar__item&#45;&#45;icon p-3 bg-light fa-solid fa-chart-pie"></i>-->
+<!--                <p class="mb-0 mt-1">Report</p>-->
+<!--            </a>-->
+            </th:block>
+            <a th:href="@{/product/1}" class="main-sidebar__item d-block" style="color: #525252">
+                <i style="background-color: white" class="main-sidebar__item--icon p-3 bg-light fa-solid fa-store"></i>
+                <p class="mb-0 mt-1">Product</p>
+            </a>
+            <a th:href="@{/customer/1}" class="main-sidebar__item d-block" style="color: #525252">
+                <i style="background-color: white" class="main-sidebar__item--icon p-3 bg-light fa-solid fa-people-group"></i>
+                <p class="mb-0 mt-1">Customer</p>
+            </a>
+            <a th:href="@{/payment/report/1}" class="main-sidebar__item d-block" style="color: #525252">
+                <i style="background-color: white" class="main-sidebar__item--icon p-3 bg-light fa-solid fa-chart-pie"></i>
+                <p class="mb-0 mt-1">Report</p>
+            </a>
+
+            <a th:href="@{/user/profile}" class="main-sidebar__item d-block" style="color: #525252">
+                <!--                <i style="background-color: white" class="main-sidebar__item&#45;&#45;icon p-3 bg-light fa-regular fa-user"></i>-->
+                <i style="background-color: white" class="main-sidebar__item--icon p-3 bg-light fa-solid fa-gear"></i>
+                <p class="mb-0 mt-1">Settings</p>
+            </a>
+
+            <a th:href="@{/log/change_pass}" class="main-sidebar__item d-block" style="color: #525252">
+                <!--                <i style="background-color: white" class="main-sidebar__item&#45;&#45;icon p-3 bg-light fa-regular fa-user"></i>-->
+                <i style="background-color: white" class="main-sidebar__item--icon p-3 bg-light fa-solid fa-lock"></i>
+                <p class="mb-0 mt-1">Change pass</p>
+            </a>
+
+            <a th:href="@{/log/logout}" class="main-sidebar__item d-block" style="color: #525252">
+                <!--                <i style="background-color: white" class="main-sidebar__item&#45;&#45;icon p-3 bg-light fa-solid fa-house"></i>-->
+                <i style="background-color: white" class="main-sidebar__item--icon p-3 bg-light fa-solid fa-right-to-bracket"></i>
+                <p class="mb-0 mt-1">Log out</p>
+            </a>
+        </ul>
+
+<!--        <ul class="main-sidebar__list mt-auto">-->
+<!--            <a href="/settings" class="main-sidebar__item d-block" style="color: #525252">-->
+<!--&lt;!&ndash;                <i style="background-color: white" class="main-sidebar__item&#45;&#45;icon p-3 bg-light fa-regular fa-user"></i>&ndash;&gt;-->
+<!--                <i style="background-color: white" class="main-sidebar__item&#45;&#45;icon p-3 bg-light fa-solid fa-gear"></i>-->
+<!--                <p class="mb-0 mt-1">Settings</p>-->
+<!--            </a>-->
+
+<!--            <a href="/log/logout" class="main-sidebar__item d-block" style="color: #525252">-->
+<!--&lt;!&ndash;                <i style="background-color: white" class="main-sidebar__item&#45;&#45;icon p-3 bg-light fa-solid fa-house"></i>&ndash;&gt;-->
+<!--                <i style="background-color: white" class="main-sidebar__item&#45;&#45;icon p-3 bg-light fa-solid fa-right-to-bracket"></i>-->
+<!--                <p class="mb-0 mt-1">Log out</p>-->
+<!--            </a>-->
+
+<!--        </ul>-->
+    </div>
+
+</div>
