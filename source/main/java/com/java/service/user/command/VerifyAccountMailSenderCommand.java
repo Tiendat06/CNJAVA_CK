@@ -40,7 +40,7 @@ public class VerifyAccountMailSenderCommand implements ICommand{
             content = content.replace("[[name]]", user.getFirst_name() + " " + user.getLast_name());
             String siteUrl = this.url + "/log/verify?code=" + this.verifyCode;
 
-            System.out.println(siteUrl);
+//            System.out.println(siteUrl);
 
             content = content.replace("[[URL]]", siteUrl);
 
