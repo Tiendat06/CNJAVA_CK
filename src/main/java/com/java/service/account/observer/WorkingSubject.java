@@ -8,7 +8,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import java.io.IOException;
 
 public class WorkingSubject extends MailSenderSubject{
-//    private final int count = 100;
     protected int value;
     private final User user;
     private final JavaMailSender javaMailSender;
