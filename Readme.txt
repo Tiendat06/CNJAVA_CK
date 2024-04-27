@@ -1,5 +1,7 @@
 - In this project, we are using XAMPP to get the phpMyAdmin
 - Please using file .sql in folder "database" to get the database
+- 'src' folder is a 'source' folder
+- To run this project, please go to 'src\main\java\com\java\' and run file 'CnjavaApplication.java'
 
 admin account:
 username: admin
