@@ -197,7 +197,7 @@ public class ProductController {
     public ResponseEntity<byte[]> exportProduct_POST(@RequestParam("id-export-product") String exportOption) throws IOException {
 //        DECORATOR PATTERN
         List<Product> productList = productService.getAllProducts();
-        Export export;
+        Export export = new NormalExport();
         if ("Normal".equals(exportOption)) {
             export = new NormalExport();
 //            return userService.exportUserReport(userList);
@@ -206,9 +206,9 @@ public class ProductController {
 //            headers.setContentDispositionFormData("attachment", "user_report.csv");
 //            headers.setContentLength(csvData.length);
 //            return new ResponseEntity<>(csvData, headers, HttpStatus.OK);
-        }else if("Compress".equals(exportOption)) {
-            Export ex2 = new NormalExport();
-            export = new CompressDecorator(ex2);
+        } if("Compress".equals(exportOption)) {
+//            Export ex2 = new NormalExport();
+            export = new CompressDecorator(export);
 //            byte[] compressedFile = compressUserReport(userList);
 //            HttpHeaders headers = new HttpHeaders();
 //            headers.setContentDispositionFormData("attachment", "compressed_user_report.zip");
