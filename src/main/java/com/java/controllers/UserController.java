@@ -191,9 +191,7 @@ public class UserController {
                                     .setGenderBuilder(gender);
 
         User user = userBuilder.build();
-
         userService.addUser(user);
-
         String url = req.getRequestURL().toString();
         url = url.replace(req.getServletPath(), "");
         userService.sendEmail(user, url);

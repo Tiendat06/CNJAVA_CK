@@ -515,8 +515,6 @@ public class SiteController implements ErrorController {
 
     @GetMapping("/find/{phone_number}")
     public String findCusByPhone(@PathVariable String phone_number, Model model, HttpServletRequest req){
-//        System.out.println("hiiii");
-//        System.out.println(phone_number);
         HttpSession session = req.getSession();
 
         Customer customer = customerService.findCusByPhone(phone_number);
@@ -589,8 +587,6 @@ public class SiteController implements ErrorController {
     @GetMapping("/calculate/{money_Given}")
     public String calculateCustomerGivenChange(@PathVariable String money_Given,Model model, HttpServletRequest req, HttpSession session){
 
-//        System.out.println("hiiii");
-//        String moneyGiven = req.getParameter("number");
         MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         Optional<Object[]> totalBillList = ordersService.totalBillInHome(myUserDetail.getCombinedUser().getUser().getUser_id());
@@ -628,15 +624,9 @@ public class SiteController implements ErrorController {
                         model.addAttribute("voucherName", voucher.get().getVoucher_name());
                     }
                 }
-
-
             }
-
-
-
             float cus_given_change = (float) (Math.round((Float.parseFloat(money_Given) - totalMoney) * 100.0) / 100.0);
             model.addAttribute("cus_given_change", cus_given_change);
-
             return "home/cus_given_change";
         }
         model.addAttribute("cus_given_change", "0.0");

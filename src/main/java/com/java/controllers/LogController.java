@@ -87,14 +87,13 @@ public class LogController {
             MyUserDetail myUserDetail = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             String user_id = myUserDetail.getCombinedUser().getUser().getUser_id();
             Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+//            SINGLETON PATTERN
             LogManager logManager = LogManager.getInstance();
             String log_id = logHistoryService.AUTO_LOG_ID();
 
             logManager.setLog(new LogHistory(log_id, user_id, currentTimestamp, "LOGOUT"));
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-
-
         return "redirect:/";
     }
 
@@ -164,7 +163,9 @@ public class LogController {
 
         model.addAttribute("content", "change_pass");
         return "index";
-//        String pwd = req.getParameter("new_pass");
+
+    }
+    //        String pwd = req.getParameter("new_pass");
 //        String new_pwd = req.getParameter("re_new_pass");
 //        HttpSession session = req.getSession();
 //
@@ -189,7 +190,6 @@ public class LogController {
 //
 //        model.addAttribute("content", "change_pass");
 //        return "index";
-    }
 
 }
 

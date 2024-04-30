@@ -200,20 +200,11 @@ public class ProductController {
         Export export = new NormalExport();
         if ("Normal".equals(exportOption)) {
             export = new NormalExport();
-//            return userService.exportUserReport(userList);
-//            byte[] csvData = generateCSVData(userList);
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.setContentDispositionFormData("attachment", "user_report.csv");
-//            headers.setContentLength(csvData.length);
-//            return new ResponseEntity<>(csvData, headers, HttpStatus.OK);
-        } if("Compress".equals(exportOption)) {
-//            Export ex2 = new NormalExport();
-            export = new CompressDecorator(export);
-//            byte[] compressedFile = compressUserReport(userList);
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.setContentDispositionFormData("attachment", "compressed_user_report.zip");
-//            headers.setContentLength(compressedFile.length);
-//            return new ResponseEntity<>(compressedFile, headers, HttpStatus.OK);
+
+        } else if("Compress".equals(exportOption)) {
+            Export ex2 = new NormalExport();
+            export = new CompressDecorator(ex2);
+
         }else {
             return ResponseEntity.badRequest().body("Invalid export option".getBytes());
         }
@@ -228,6 +219,17 @@ public class ProductController {
         headers.setContentLength(exportedData.length);
         return new ResponseEntity<>(exportedData, headers, HttpStatus.OK);
     }
+    //            return userService.exportUserReport(userList);
+//            byte[] csvData = generateCSVData(userList);
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.setContentDispositionFormData("attachment", "user_report.csv");
+//            headers.setContentLength(csvData.length);
+//            return new ResponseEntity<>(csvData, headers, HttpStatus.OK);
+    //            byte[] compressedFile = compressUserReport(userList);
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.setContentDispositionFormData("attachment", "compressed_user_report.zip");
+//            headers.setContentLength(compressedFile.length);
+//            return new ResponseEntity<>(compressedFile, headers, HttpStatus.OK);
 
 //    @GetMapping("/export")
 //    public ResponseEntity<byte[]> exportProductData(HttpServletRequest req, HttpServletResponse resp) throws IOException {

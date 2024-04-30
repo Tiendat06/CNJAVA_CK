@@ -95,8 +95,16 @@ public class UserService {
     }
 
     public void sendEmail(User user, String url) {
+            String verifyCode = accountRepository.findVerifyCodeByUserId(user.getUser_id());
 
-//        String from = "phanluonghuy4623@gmail.com";
+            // COMMAND PATTERN
+            ICommand cmd = new VerifyAccountMailSenderCommand(mailSender, user, url, verifyCode);
+            MailSenderInvoker invoker = new MailSenderInvoker();
+            invoker.setCommand(cmd);
+            invoker.execute();
+    }
+
+    //        String from = "phanluonghuy4623@gmail.com";
 //        String to = user.getEmail();
 //        String subject = "Account Verfication";
 //        String content = "Dear [[name]],<br>" + "Please click the link below to verify your registration:<br>"
@@ -119,20 +127,8 @@ public class UserService {
 //            content = content.replace("[[URL]]", siteUrl);
 //
 //            helper.setText(content, true);
-
-            String verifyCode = accountRepository.findVerifyCodeByUserId(user.getUser_id());
-
 //            mailSender.send(message);
-
-            // COMMAND PATTERN
-            ICommand cmd = new VerifyAccountMailSenderCommand(mailSender, user, url, verifyCode);
-            MailSenderInvoker invoker = new MailSenderInvoker();
-            invoker.setCommand(cmd);
-            invoker.execute();
-//        } catch (Exception e) {
+    //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-
-    }
-
 }
